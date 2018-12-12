@@ -1,14 +1,18 @@
 package academy.konrad.group.battleships.server;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-class ServerApp {
+public class ServerApp extends HttpServlet {
 
-  private static final int PORT_NUMBER = 8081;
+  private static final int PORT_NUMBER = 6666;
   private static final LoggedClientsSet LOGGED_CLIENTS_SET = new LoggedClientsSet();
 
   public static void main(String[] args) {
@@ -42,4 +46,9 @@ class ServerApp {
       }
     }
   }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        out.print("Battleship says hello!");
+    }
 }
