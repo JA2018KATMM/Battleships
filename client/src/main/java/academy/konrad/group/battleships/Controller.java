@@ -19,6 +19,7 @@ public class Controller {
     if(Listener.getListener().isConnected()){
 
       String text = Listener.getListener().listen();
+
       main_button.setText(text);
     }
   }
