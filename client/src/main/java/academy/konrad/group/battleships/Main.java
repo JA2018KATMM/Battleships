@@ -1,4 +1,4 @@
-package academy.konrad_group.battleships;
+package academy.konrad.group.battleships;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +13,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL url = new File("client/src/main/resources/sample.fxml").toURI().toURL();
-        FXMLLoader loader = new FXMLLoader(url);
-        Parent root = loader.load();
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("sample.fxml"));
+//        URL url = new File("client/src/main/resources/sample.fxml").toURI().toURL();
+//        FXMLLoader loader = new FXMLLoader(url);
+//        Parent root = loader.load();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();

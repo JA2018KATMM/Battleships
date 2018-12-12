@@ -1,4 +1,4 @@
-package academy.konrad_group.battleships;
+package academy.konrad.group.battleships;
 
 public class App {
     public static void main(String[] args) {
