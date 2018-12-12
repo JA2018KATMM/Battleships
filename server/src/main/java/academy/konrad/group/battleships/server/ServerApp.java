@@ -12,7 +12,7 @@ import java.net.Socket;
 
 public class ServerApp extends HttpServlet {
 
-  private static final int PORT_NUMBER = 6666;
+  private static final int PORT_NUMBER = 8082;
   private static final LoggedClientsSet LOGGED_CLIENTS_SET = new LoggedClientsSet();
 
   public static void main(String[] args) {
