@@ -1,14 +1,27 @@
 package academy.konrad.group.battleships;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
 
 class Listener {
 
-  private static Socket socket;
+  private static Listener listener;
+  private Socket socket;
 
-  static String listen() throws IOException {
+  private Listener(){
+
+  }
+
+  static Listener getListener(){
+    if(listener == null){
+      listener = new Listener();
+    }
+    return listener;
+  }
+
+
+
+  String listen() throws IOException {
 
     DataOutputStream oos = new DataOutputStream(socket.getOutputStream());
     DataInputStream ois = new DataInputStream(socket.getInputStream());
@@ -20,12 +33,15 @@ class Listener {
     return message;
   }
 
-  static void connect() throws IOException {
-    InetAddress host = InetAddress.getLocalHost();
-    socket = new Socket(host.getHostName(), 8081);
+  void connect() {
+    try {
+      socket = new Socket("51.38.130.222", 8081);
+    }catch (IOException e){
+      e.printStackTrace();
+    }
   }
 
-  static boolean isConnected() {
+  boolean isConnected() {
     return (socket != null && !socket.isClosed());
   }
 }

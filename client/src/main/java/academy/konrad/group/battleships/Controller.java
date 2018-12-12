@@ -16,9 +16,9 @@ public class Controller {
   @FXML
   public void doMainButton() throws Exception {
 
-    if(Listener.isConnected()){
+    if(Listener.getListener().isConnected()){
 
-      String text = Listener.listen();
+      String text = Listener.getListener().listen();
       main_button.setText(text);
     }
   }
