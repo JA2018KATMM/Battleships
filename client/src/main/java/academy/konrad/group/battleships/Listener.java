@@ -7,6 +7,7 @@ import java.net.Socket;
 class Listener {
 
   private static Listener listener;
+
   private Socket socket = new Socket();
 
   private Listener(){
@@ -35,6 +36,7 @@ class Listener {
   void connect() {
     try {
       socket.connect(new InetSocketAddress("51.38.130.222", 6666), 5000);
+
     }catch (IOException e){
       e.printStackTrace();
     }
@@ -42,6 +44,5 @@ class Listener {
 
   boolean isConnected() {
     return socket.isConnected();
-
   }
 }
