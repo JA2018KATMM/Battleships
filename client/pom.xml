@@ -11,25 +11,29 @@
     </parent>
     <artifactId>client</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>javaFX</artifactId>
+            <version>2.2</version>
+            <scope>system</scope>
+            <systemPath>/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar</systemPath>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${version.plugin.maven.jar}</version>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>8.8.3</version>
                 <configuration>
-                    <archive>
-                        <index>true</index>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>academy.konrad_group.battleships.App</mainClass>
-                        </manifest>
-                    </archive>
+                    <mainClass>academy.konrad_group.battleships.App</mainClass>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
+
 </project>
 
 
