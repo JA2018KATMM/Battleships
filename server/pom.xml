@@ -21,7 +21,7 @@
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>${project.groupId}.${parent.artifactId}.${project.artifactId}.ServerApp</mainClass>
+                            <mainClass>${project.groupId}.${project.parent.artifactId}.${project.artifactId}.ServerApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
