@@ -22,15 +22,23 @@ class ServerApp {
       exception.printStackTrace();
     }
 
-    while (true) {
-      try (Socket clientSocket = serverSocket.accept()) {
+    boolean shouldContinue = true;
 
+    while (shouldContinue) {
+      try {
+        Socket clientSocket = serverSocket.accept();
         DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
         DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
 
-        LOGGED_CLIENTS_SET.addClient(new LoggedClient(clientSocket, dis, dos, LOGGED_CLIENTS_SET));
+        LoggedClient loggedClient = new LoggedClient(clientSocket, dis, dos, LOGGED_CLIENTS_SET);
+        loggedClient.inform("Witaj w grze statki!");
+        LOGGED_CLIENTS_SET.addClient(loggedClient);
+
+        Thread thread = new Thread(loggedClient);
+        thread.start();
       } catch (IOException exception) {
         exception.printStackTrace();
+        shouldContinue = false;
       }
     }
   }

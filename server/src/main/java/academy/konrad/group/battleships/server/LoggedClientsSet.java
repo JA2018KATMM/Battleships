@@ -16,4 +16,8 @@ class LoggedClientsSet {
       thread.inform(message);
     }
   }
+
+  void removeClient(LoggedClient loggedClient) {
+    this.threads.remove(loggedClient);
+  }
 }

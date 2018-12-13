@@ -2,6 +2,7 @@ package academy.konrad.group.battleships.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -23,6 +24,7 @@ class LoggedClient implements Runnable {
 
     while (true) {
       try {
+
         String message = dis.readUTF();
 
         if (message.equals("logout")) {
@@ -31,9 +33,12 @@ class LoggedClient implements Runnable {
         }
 
         loggedClientsSet.informAll(message);
-
+      } catch (EOFException exception) {
+        // do nothing
       } catch (IOException exception) {
         exception.printStackTrace();
+        close();
+        return;
       }
     }
     try {
@@ -46,5 +51,16 @@ class LoggedClient implements Runnable {
 
   void inform(String message) throws IOException {
     this.dos.writeUTF(message);
+  }
+
+  void close() {
+    try {
+      this.dis.close();
+      this.dos.close();
+      clientSocket.close();
+      loggedClientsSet.removeClient(this);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
