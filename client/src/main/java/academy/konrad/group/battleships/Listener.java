@@ -1,12 +1,13 @@
 package academy.konrad.group.battleships;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 class Listener {
 
   private static Listener listener;
-  private Socket socket;
+  private Socket socket = new Socket();
 
   private Listener(){
 
@@ -35,13 +36,14 @@ class Listener {
 
   void connect() {
     try {
-      socket = new Socket("51.38.130.222", 8081);
+
+      socket.connect(new InetSocketAddress("51.38.130.222", 6666), 5000);
     }catch (IOException e){
       e.printStackTrace();
     }
   }
 
   boolean isConnected() {
-    return (socket != null && !socket.isClosed());
+    return socket.isConnected();
   }
 }
