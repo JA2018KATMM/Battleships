@@ -20,8 +20,6 @@ class Listener {
     return listener;
   }
 
-
-
   String listen() throws IOException {
 
     DataOutputStream oos = new DataOutputStream(socket.getOutputStream());
@@ -36,7 +34,6 @@ class Listener {
 
   void connect() {
     try {
-
       socket.connect(new InetSocketAddress("51.38.130.222", 6666), 5000);
     }catch (IOException e){
       e.printStackTrace();
