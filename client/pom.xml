@@ -7,24 +7,22 @@
     <parent>
        <groupId>academy.konrad.group</groupId>
        <artifactId>battleships</artifactId>
-       <version>0.1</version>
+       <version>${project.version}</version>
     </parent>
     <artifactId>client</artifactId>
-
+    
+    <properties>
+        <!-- dependencies versions -->
+        <version.dependency.javafx-fxml>12-ea+5</version.dependency.javafx-fxml>
+        <!-- plugin versions -->
+        <version.plugin.maven.shade-plugin>3.2.0</version.plugin.maven.shade-plugin>
+    </properties>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>11</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>11</version>
+            <version>${version.dependency.javafx-fxml}</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -32,7 +30,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>${version.plugin.maven.shade-plugin}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -51,15 +49,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>
