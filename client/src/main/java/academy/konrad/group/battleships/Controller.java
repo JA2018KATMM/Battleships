@@ -7,11 +7,5 @@ import javafx.scene.control.Label;
 
 public class Controller {
 
-  @FXML
-  private Button main_button;
-
-  @FXML
-  private Label container;
-
 
 }

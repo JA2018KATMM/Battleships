@@ -15,8 +15,8 @@ public class Connection {
     initialize();
   }
 
-  static Socket getConnection(){
-    if(connection == null){
+  static Socket getConnection() {
+    if (connection == null) {
       connection = new Connection();
     }
     return socket;
@@ -26,8 +26,8 @@ public class Connection {
     try {
       socket.connect(new InetSocketAddress("51.38.130.222", 6666), 5000);
       return true;
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException exception) {
+      exception.printStackTrace();
       return false;
     }
   }
