@@ -25,6 +25,7 @@
         <!-- dependencies versions -->
         <version.dependency.testng>6.14.3</version.dependency.testng>
         <version.dependency.testng-data-supplier>1.7.0</version.dependency.testng-data-supplier>
+        <version.dependency.mockito-core>2.23.4</version.dependency.mockito-core>
         <!-- plugin versions should go here, so below they can be omitted -->
         <version.plugin.maven.jacoco>0.8.2</version.plugin.maven.jacoco>
         <version.plugin.maven.checkstyle>3.0.0</version.plugin.maven.checkstyle>
@@ -55,7 +56,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.23.4</version>
+            <version>${version.dependency.mockito-core}</version>
             <scope>test</scope>
         </dependency>
 
@@ -146,21 +147,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${version.plugin.maven.jar}</version>
-            </plugin>                 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${version.plugin.maven.compiler}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${version.plugin.maven.resources}</version>
             </plugin>
         </plugins>
     </build>
