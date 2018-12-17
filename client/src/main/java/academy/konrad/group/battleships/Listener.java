@@ -32,7 +32,8 @@ class Listener {
     oos.close();
     return message;
   }
-
+  //PMD throws warning when IP is hard-coded
+  @SuppressWarnings("PMD")
   void connect() {
     try {
       socket.connect(new InetSocketAddress("51.38.130.222", 6666), 5000);

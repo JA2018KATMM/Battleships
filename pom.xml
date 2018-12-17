@@ -34,6 +34,11 @@
         <version.plugin.maven.jar>3.1.0</version.plugin.maven.jar>
         <version.plugin.maven.compiler>3.8.0</version.plugin.maven.compiler>
         <version.plugin.maven.resources>3.1.0</version.plugin.maven.resources>
+        <!-- why pmd and findbugs together? -->
+        <!-- https://stackoverflow.com/questions/4297014/what-are-the-differences-between-pmd-and-   findbugs -->
+        <version.plugin.maven.pmd>3.11.0</version.plugin.maven.pmd>
+        <!-- there is version 3.0.6 of findbugs but it is marked as SNAPSHOT -->
+        <version.plugin.maven.findbugs>3.0.5</version.plugin.maven.findbugs>
     </properties>
 
     <dependencies>
@@ -59,7 +64,6 @@
             <version>${version.dependency.mockito-core}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -70,7 +74,7 @@
                 <version>${version.plugin.maven.checkstyle}</version>
                 <executions>
                     <execution>
-                        <id>validate</id>
+                        <id>checkstyle-validate</id>
                         <phase>validate</phase>
                         <configuration>
                             <configLocation>google_checks.xml</configLocation>
@@ -84,6 +88,34 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${version.plugin.maven.pmd}</version>
+                <executions>
+                    <execution>
+                        <id>pmd-validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${version.plugin.maven.findbugs}</version>
+                <executions>
+                    <execution>
+                        <id>findbugs-validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>    
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
