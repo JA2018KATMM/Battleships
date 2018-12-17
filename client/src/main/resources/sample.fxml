@@ -6,16 +6,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="academy.konrad.group.battleships.Controller">
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
+<AnchorPane prefHeight="694.0" prefWidth="858.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="academy.konrad.group.battleships.userinterface.Controller">
    <children>
-      <Button fx:id="main_button" mnemonicParsing="false" onAction="#doMainButton" prefHeight="115.0" prefWidth="200.0" text="Połączenie z serwerem" GridPane.rowIndex="1" />
+      <Pane fx:id="local" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <BorderPane fx:id="borderPane" layoutX="100.0" layoutY="55.0" prefHeight="203.0" prefWidth="359.0" />
+         </children>
+      </Pane>
+      <Button fx:id="test" layoutX="101.0" layoutY="604.0" mnemonicParsing="false" onAction="#startTwo" text="Start" />
    </children>
-</GridPane>
+</AnchorPane>

@@ -1,4 +1,4 @@
-package academy.konrad.group.battleships;
+package academy.konrad.group.battleships.userinterface;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

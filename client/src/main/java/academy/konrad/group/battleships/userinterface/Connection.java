@@ -1,4 +1,4 @@
-package academy.konrad.group.battleships;
+package academy.konrad.group.battleships.userinterface;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
