@@ -13,15 +13,5 @@ public class Controller {
   @FXML
   private Label container;
 
-  @FXML
-  public void doMainButton() throws Exception {
-
-    if(Listener.getListener().isConnected()){
-
-      String text = Listener.getListener().listen();
-      main_button.setText(text);
-    }
-  }
-
 
 }
