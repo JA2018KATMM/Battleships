@@ -35,11 +35,11 @@
         <version.plugin.maven.jar>3.1.0</version.plugin.maven.jar>
         <version.plugin.maven.compiler>3.8.0</version.plugin.maven.compiler>
         <version.plugin.maven.resources>3.1.0</version.plugin.maven.resources>
-        <!-- why pmd and findbugs together? -->
+        <!-- why pmd and spotbugs together? -->
         <!-- https://stackoverflow.com/questions/4297014/what-are-the-differences-between-pmd-and-   findbugs -->
         <version.plugin.maven.pmd>3.11.0</version.plugin.maven.pmd>
-        <!-- there is version 3.0.6 of findbugs but it is marked as SNAPSHOT -->
-        <version.plugin.maven.findbugs>3.0.5</version.plugin.maven.findbugs>
+        <version.plugin.maven.spotbugs>3.1.9</version.plugin.maven.spotbugs>
+       
     </properties>
 
     <dependencies>
@@ -106,7 +106,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>3.1.9</version>
+                <version>${version.plugin.maven.spotbugs}</version>
                 <executions>
                     <execution>
                         <id>spotbugs-check</id>
