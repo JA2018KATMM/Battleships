@@ -6,6 +6,7 @@ import javafx.scene.layout.TilePane;
 
 import java.io.Serializable;
 
+
 class Board extends TilePane implements Serializable {
 
   private EventHandler<? super MouseEvent> handler;
@@ -17,7 +18,7 @@ class Board extends TilePane implements Serializable {
     setMaxSize(300, 300);
   }
 
-  void fillBoard(int fieldNumber){
+  void fillBoard(int fieldNumber) {
     for (int i = 0; i < fieldNumber; i++) {
       Field field = new Field();
       field.setId(String.valueOf(i));

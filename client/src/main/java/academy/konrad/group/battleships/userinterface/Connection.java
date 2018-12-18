@@ -6,9 +6,8 @@ import java.net.Socket;
 
 public class Connection {
 
-  private static Connection connection;
-
   private static final Socket socket = new Socket();
+  private static Connection connection;
 
   Connection() {
     //TODO Obluga braku połączenia w gui

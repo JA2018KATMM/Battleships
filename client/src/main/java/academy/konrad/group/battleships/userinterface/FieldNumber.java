@@ -4,24 +4,21 @@ import java.io.Serializable;
 
 public class FieldNumber implements Serializable {
 
-  private String fieldId;
   private static final long serialVersionUID = 1L;
-  public FieldNumber(String fieldId) {
+  private String fieldId;
+
+  FieldNumber(String fieldId) {
     this.fieldId = fieldId;
   }
 
-  public String getFieldId() {
+  String getFieldId() {
     return fieldId;
-  }
-
-  public void setFieldId(String fieldId) {
-    this.fieldId = fieldId;
   }
 
   @Override
   public String toString() {
-    return "FieldNumber{" +
-        "fieldId='" + fieldId + '\'' +
-        '}';
+    return "FieldNumber{"
+        + "fieldId='" + fieldId + '\''
+        + '}';
   }
 }

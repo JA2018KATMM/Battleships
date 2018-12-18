@@ -26,9 +26,6 @@ public class Controller implements Initializable {
   private Button test;
 
   @FXML
-  private Button read;
-
-  @FXML
   private void startTwo() {
     enemyBoard = new Board(event -> {
 
@@ -38,12 +35,14 @@ public class Controller implements Initializable {
     playerBoard = new Board(event -> {
       Field field = (Field) event.getSource();
       field.setFill(Color.RED);
+      field.setDisable(true);
       try {
         new Sender().send(new FieldNumber(field.getId()));
-      } catch (IOException e) {
-        e.printStackTrace();
+      } catch (IOException exception) {
+        exception.printStackTrace();
       }
       updateEnemyBoard();
+      this.playerBoard.setDisable(false);
 
     });
     ((Board) this.playerBoard).fillBoard(100);
@@ -56,10 +55,11 @@ public class Controller implements Initializable {
 
   private void updateEnemyBoard() {
 
+    this.playerBoard.setDisable(true);
     FieldNumber fieldNumber = (FieldNumber) new Listener().listen();
     String fieldToMark = fieldNumber.getFieldId();
-    for(Node elem : this.enemyBoard.getChildren()){
-      if(elem.getId().equals(fieldToMark)){
+    for (Node elem : this.enemyBoard.getChildren()) {
+      if (elem.getId().equals(fieldToMark)) {
         Field field = (Field) elem;
         field.setFill(Color.RED);
         return;
