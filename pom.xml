@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>academy.konrad.group</groupId>
     <artifactId>battleships</artifactId>
-    <version>0.1</version>
+    <version>${project.version}</version>
     <packaging>pom</packaging>
     <modules>
         <module>server</module>
@@ -15,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- https://maven.apache.org/general.html#special-characters-site -->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.version>0.1</project.version>
         <project.java.version>1.8</project.java.version>
         <maven.compiler.source>${project.java.version}</maven.compiler.source>
         <maven.compiler.target>${project.java.version}</maven.compiler.target>
@@ -25,7 +26,8 @@
         <!-- dependencies versions -->
         <version.dependency.testng>6.14.3</version.dependency.testng>
         <version.dependency.testng-data-supplier>1.7.0</version.dependency.testng-data-supplier>
-        <!-- plugin versions should go here, so below they can be omitted -->
+        <version.dependency.mockito-core>2.23.4</version.dependency.mockito-core>
+        <!-- plugin versions -->
         <version.plugin.maven.jacoco>0.8.2</version.plugin.maven.jacoco>
         <version.plugin.maven.checkstyle>3.0.0</version.plugin.maven.checkstyle>
         <version.plugin.maven.mockito>2.23.4</version.plugin.maven.mockito>
@@ -33,6 +35,8 @@
         <version.plugin.maven.jar>3.1.0</version.plugin.maven.jar>
         <version.plugin.maven.compiler>3.8.0</version.plugin.maven.compiler>
         <version.plugin.maven.resources>3.1.0</version.plugin.maven.resources>
+        <version.plugin.maven.spotbugs>3.1.9</version.plugin.maven.spotbugs>
+       
     </properties>
 
     <dependencies>
@@ -55,10 +59,9 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.23.4</version>
+            <version>${version.dependency.mockito-core}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -69,7 +72,7 @@
                 <version>${version.plugin.maven.checkstyle}</version>
                 <executions>
                     <execution>
-                        <id>validate</id>
+                        <id>checkstyle-validate</id>
                         <phase>validate</phase>
                         <configuration>
                             <configLocation>google_checks.xml</configLocation>
@@ -82,6 +85,19 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${version.plugin.maven.spotbugs}</version>
+                <executions>
+                    <execution>
+                        <id>spotbugs-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>                   
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -146,21 +162,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${version.plugin.maven.jar}</version>
-            </plugin>                 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${version.plugin.maven.compiler}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${version.plugin.maven.resources}</version>
             </plugin>
         </plugins>
     </build>
