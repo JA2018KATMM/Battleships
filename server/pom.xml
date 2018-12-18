@@ -23,6 +23,12 @@
             <artifactId>servlet-api</artifactId>
             <version>${version.plugin.javax.servlet-api}</version>
         </dependency>
+
+        <dependency>
+            <groupId>academy.konrad.group</groupId>
+            <artifactId>client</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
