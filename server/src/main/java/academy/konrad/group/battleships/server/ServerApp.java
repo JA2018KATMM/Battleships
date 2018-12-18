@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 public class ServerApp extends HttpServlet {
 
     public void init() {
+      System.err.println("init \n \n ");
       Thread listenerThread = new ListenerThread();
       listenerThread.start();
     }

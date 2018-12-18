@@ -7,9 +7,10 @@ public class Sender {
 
   void send(Object object) throws IOException {
 
-    ObjectOutputStream oos = new ObjectOutputStream(Connection.getConnection().getOutputStream());
-    oos.writeObject(object);
-    oos.close();
+    if(Connection.getConnection().isConnected()) {
+      ObjectOutputStream oos = new ObjectOutputStream(Connection.getConnection().getOutputStream());
+      oos.writeObject(object);
+    }
 
   }
 }

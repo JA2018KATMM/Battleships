@@ -5,19 +5,19 @@ import java.util.Vector;
 
 class LoggedClientsSet {
 
-  private final Vector<LoggedClient> threads = new Vector<>();
+  private final Vector<ClientsPair> threads = new Vector<>();
 
-  synchronized boolean addClient(LoggedClient loggedClient) {
-    return threads.add(loggedClient);
+  synchronized boolean addClient(ClientsPair clientsPair) {
+    return threads.add(clientsPair);
   }
 
   synchronized void informAll(String message) throws IOException {
-    for (LoggedClient thread : this.threads) {
-      thread.inform(message);
+    for (ClientsPair thread : this.threads) {
+      //thread.inform(message);
     }
   }
 
-  void removeClient(LoggedClient loggedClient) {
-    this.threads.remove(loggedClient);
+  void removeClient(ClientsPair clientsPair) {
+    this.threads.remove(clientsPair);
   }
 }

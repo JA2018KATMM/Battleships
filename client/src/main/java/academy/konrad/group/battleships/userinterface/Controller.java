@@ -9,6 +9,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -29,6 +30,11 @@ public class Controller implements Initializable {
 
       Field field = (Field) event.getSource();
       field.setFill(Color.RED);
+      try {
+        new Sender().send(new FieldNumber(field.getId()));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     });
     ((Board) this.enemyBoard).fillBoard(100);
 
