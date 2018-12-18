@@ -1,8 +1,5 @@
 package academy.konrad.group.battleships.userinterface;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -10,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
@@ -39,9 +39,6 @@ public class Controller implements Initializable {
 
     this.borderPane.setCenter(vbox);
   }
-
-
-
 
 
   @Override
