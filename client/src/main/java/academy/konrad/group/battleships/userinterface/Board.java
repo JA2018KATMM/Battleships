@@ -1,30 +1,28 @@
 package academy.konrad.group.battleships.userinterface;
 
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.TilePane;
 
 import java.io.Serializable;
 
-class Board extends Parent implements Serializable {
+class Board extends TilePane implements Serializable {
 
-  private VBox rows = new VBox();
+  private EventHandler<? super MouseEvent> handler;
 
   Board(EventHandler<? super MouseEvent> handler) {
-    for (int i = 0; i < 10; i++) {
-      HBox row = new HBox();
-      for (int j = 0; j < 10; j++) {
-        CustomRectangle customRectangle = new CustomRectangle();
-        customRectangle.setId(String.valueOf((i * 10) + j + 1));
-        customRectangle.setOnMouseClicked(handler);
-        row.getChildren().add(customRectangle);
-      }
+    this.handler = handler;
+    setPrefTileHeight(30);
+    setPrefTileWidth(30);
+    setMaxSize(300, 300);
+  }
 
-      rows.getChildren().add(row);
+  void fillBoard(int fieldNumber){
+    for (int i = 0; i < fieldNumber; i++) {
+      Field field = new Field();
+      field.setId(String.valueOf(i));
+      field.setOnMouseClicked(handler);
+      getChildren().addAll(field);
     }
-
-    getChildren().add(rows);
   }
 }

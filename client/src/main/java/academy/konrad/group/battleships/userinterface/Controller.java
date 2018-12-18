@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -13,8 +14,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-  private Board enemyBoard;
-  private Board playerBoard;
+  private TilePane enemyBoard;
+  private TilePane playerBoard;
 
   @FXML
   private BorderPane borderPane;
@@ -26,20 +27,21 @@ public class Controller implements Initializable {
   private void startTwo() {
     enemyBoard = new Board(event -> {
 
-      CustomRectangle customRectangle = (CustomRectangle) event.getSource();
-      customRectangle.setFill(Color.RED);
+      Field field = (Field) event.getSource();
+      field.setFill(Color.RED);
     });
+    ((Board) this.enemyBoard).fillBoard(100);
 
     playerBoard = new Board(event -> {
 
     });
+    ((Board) this.playerBoard).fillBoard(100);
 
     VBox vbox = new VBox(50, enemyBoard, playerBoard);
     vbox.setAlignment(Pos.CENTER);
 
     this.borderPane.setCenter(vbox);
   }
-
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
