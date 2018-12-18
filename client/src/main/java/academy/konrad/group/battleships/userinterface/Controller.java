@@ -32,18 +32,18 @@ public class Controller implements Initializable {
   private void startTwo() {
     enemyBoard = new Board(event -> {
 
-      Field field = (Field) event.getSource();
-      field.setFill(Color.RED);
-      try {
-        new Sender().send(new FieldNumber(field.getId()));
-        updateEnemyBoard();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
     });
     ((Board) this.enemyBoard).fillBoard(100);
 
     playerBoard = new Board(event -> {
+      Field field = (Field) event.getSource();
+      field.setFill(Color.RED);
+      try {
+        new Sender().send(new FieldNumber(field.getId()));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      updateEnemyBoard();
 
     });
     ((Board) this.playerBoard).fillBoard(100);

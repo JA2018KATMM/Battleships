@@ -10,8 +10,10 @@ class Listener {
     Object fromServer = null;
     try {
       ObjectInputStream ois = new ObjectInputStream(Connection.getConnection().getInputStream());
-      fromServer = ois.read();
+      fromServer = ois.readObject();
     }catch (IOException e){
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
     return fromServer;
