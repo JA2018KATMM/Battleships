@@ -5,11 +5,15 @@ import java.io.ObjectInputStream;
 
 class Listener {
 
-  Object listen() throws IOException {
+  Object listen() {
 
-    ObjectInputStream ois = new ObjectInputStream(Connection.getConnection().getInputStream());
-    Object fromServer = ois.read();
-    ois.close();
+    Object fromServer = null;
+    try {
+      ObjectInputStream ois = new ObjectInputStream(Connection.getConnection().getInputStream());
+      fromServer = ois.read();
+    }catch (IOException e){
+      e.printStackTrace();
+    }
     return fromServer;
   }
 }

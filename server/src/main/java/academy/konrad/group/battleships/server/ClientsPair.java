@@ -24,11 +24,18 @@ class ClientsPair implements Runnable {
     while (true) {
       try {
         System.out.println("Watek na serwerze");
-        ObjectInputStream ois = new ObjectInputStream(this.firstClientSocket.getInputStream());
-        FieldNumber fieldNumber = (FieldNumber) ois.readObject();
+        ObjectInputStream firstOutoutStream = new ObjectInputStream(this.firstClientSocket.getInputStream());
+        FieldNumber firstFieldNumber = (FieldNumber) firstOutoutStream.readObject();
+        System.out.println(firstFieldNumber);
+        ObjectOutputStream firstOutputStream = new ObjectOutputStream(this.secondClientSocket.getOutputStream());
+        firstOutputStream.writeObject(firstFieldNumber);
+
+        ObjectInputStream secondInputStream = new ObjectInputStream(this.secondClientSocket.getInputStream());
+        FieldNumber fieldNumber = (FieldNumber) secondInputStream.readObject();
         System.out.println(fieldNumber);
-        ObjectOutputStream outputStream = new ObjectOutputStream(this.secondClientSocket.getOutputStream());
-        outputStream.writeObject(fieldNumber);
+        ObjectOutputStream secondOutputStream = new ObjectOutputStream(this.firstClientSocket.getOutputStream());
+        secondOutputStream.writeObject(fieldNumber);
+
       } catch (IOException exception) {
         exception.printStackTrace();
         return;
