@@ -25,10 +25,10 @@ class ListenerThread extends Thread {
         while (shouldContinue) {
             try {
                 Socket firstClientSocket = serverSocket.accept();
-                //Socket secondClientSocket = serverSocket.accept();
-                if(firstClientSocket != null) {
+                Socket secondClientSocket = serverSocket.accept();
+                if(firstClientSocket != null && secondClientSocket !=null) {
                     System.out.println("Jest klient");
-                    ClientsPair clientsPair = new ClientsPair(firstClientSocket);
+                    ClientsPair clientsPair = new ClientsPair(firstClientSocket, secondClientSocket);
                     //LOGGED_CLIENTS_SET.addClient(loggedClient);
 
                     Thread thread = new Thread(clientsPair);

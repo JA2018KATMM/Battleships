@@ -32,6 +32,7 @@ public class Controller implements Initializable {
       field.setFill(Color.RED);
       try {
         new Sender().send(new FieldNumber(field.getId()));
+        System.out.println(new Listener().listen());
       } catch (IOException e) {
         e.printStackTrace();
       }

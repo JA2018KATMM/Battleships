@@ -12,9 +12,9 @@ class ClientsPair implements Runnable {
   //private DataOutputStream dos;
   //private final LoggedClientsSet loggedClientsSet;
 
-  ClientsPair(Socket firstClientSocket) {
+  ClientsPair(Socket firstClientSocket, Socket secondClientSocket) {
     this.firstClientSocket = firstClientSocket;
-    //this.secondClientSocket = secondClientSocket;
+    this.secondClientSocket = secondClientSocket;
     //this.loggedClientsSet = clients;
   }
 
@@ -27,6 +27,8 @@ class ClientsPair implements Runnable {
         ObjectInputStream ois = new ObjectInputStream(this.firstClientSocket.getInputStream());
         FieldNumber fieldNumber = (FieldNumber) ois.readObject();
         System.out.println(fieldNumber);
+        ObjectOutputStream outputStream = new ObjectOutputStream(this.secondClientSocket.getOutputStream());
+        outputStream.writeObject(fieldNumber);
       } catch (IOException exception) {
         exception.printStackTrace();
         return;
