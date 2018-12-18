@@ -4,10 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
 
-import java.io.Serializable;
-
-
-class Board extends TilePane implements Serializable {
+class Board extends TilePane {
 
   private EventHandler<? super MouseEvent> handler;
 
