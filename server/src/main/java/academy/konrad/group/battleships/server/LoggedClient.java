@@ -34,7 +34,7 @@ class LoggedClient implements Runnable {
 
         loggedClientsSet.informAll(message);
       } catch (EOFException exception) {
-        // do nothing
+        exception.printStackTrace();
       } catch (IOException exception) {
         exception.printStackTrace();
         close();
