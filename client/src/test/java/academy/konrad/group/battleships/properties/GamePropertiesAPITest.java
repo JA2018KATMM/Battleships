@@ -14,7 +14,7 @@ public class GamePropertiesAPITest {
     GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI(propertiesPath);
       //when
       int expectedBoardSize = 10;
-      int actualBoardSize = gamePropertiesAPI.getBoardSize();
+      int actualBoardSize = gamePropertiesAPI.getIntValueByKey("boardSize");
       //then
       assertEquals(actualBoardSize, expectedBoardSize, whyItFailed);
   }
@@ -28,7 +28,7 @@ public class GamePropertiesAPITest {
     gamePropertiesAPI.setNewBoardSize(20);
     //when
     int expectedBoardSize = 20;
-    int actualBoardSize = gamePropertiesAPI.getBoardSize();
+    int actualBoardSize = gamePropertiesAPI.getIntValueByKey("boardSize");
     //then
     assertEquals(actualBoardSize, expectedBoardSize, whyItFailed);
   }
@@ -41,7 +41,7 @@ public class GamePropertiesAPITest {
     GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI(wrongPropertiesPath);
     //when
     int expectedBoardSize = 10;
-    int actualBoardSize = gamePropertiesAPI.getBoardSize();
+    int actualBoardSize = gamePropertiesAPI.getIntValueByKey("boardSize");
     //then
     assertEquals(actualBoardSize, expectedBoardSize, whyItFailed);
   }
@@ -54,7 +54,7 @@ public class GamePropertiesAPITest {
     GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI(testPropertiesPath);
     //when
     int expectedBoardSize = 10;
-    int actualBoardSize = gamePropertiesAPI.getBoardSize();
+    int actualBoardSize = gamePropertiesAPI.getIntValueByKey("boardSize");
     //then
     assertEquals(actualBoardSize, expectedBoardSize, whyItFailed);
   }
