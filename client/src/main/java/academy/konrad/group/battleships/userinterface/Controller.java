@@ -65,7 +65,11 @@ public class Controller implements Initializable {
     } catch (IOException | ClassNotFoundException e) {
       e.printStackTrace();
     }
-    String fieldToMark = fieldNumber.getFieldId();
+    // TODO refactor code below
+    String fieldToMark = null;
+    if (fieldNumber != null) {
+      fieldToMark = fieldNumber.getFieldId();
+    }
     for (Node elem : this.enemyBoard.getChildren()) {
       if (elem.getId().equals(fieldToMark)) {
         Field field = (Field) elem;
