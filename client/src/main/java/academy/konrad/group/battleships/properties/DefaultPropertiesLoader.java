@@ -17,5 +17,4 @@ class DefaultPropertiesLoader {
     }
     return properties;
   }
-
 }
