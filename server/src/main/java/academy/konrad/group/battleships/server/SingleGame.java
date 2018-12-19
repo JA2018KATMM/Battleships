@@ -39,7 +39,7 @@ class SingleGame implements Runnable {
         ObjectOutputStream firstOutputStream =
             new ObjectOutputStream(this.secondClientSocket.getOutputStream());
         firstOutputStream.writeObject(firstFieldNumber);
-
+        Thread.sleep(1000);
         ObjectInputStream secondInputStream =
             new ObjectInputStream(this.secondClientSocket.getInputStream());
         FieldNumber fieldNumber = (FieldNumber) secondInputStream.readObject();
@@ -48,13 +48,17 @@ class SingleGame implements Runnable {
             new ObjectOutputStream(this.firstClientSocket.getOutputStream());
         secondOutputStream.writeObject(fieldNumber);
 
+        Thread.sleep(1000);
+
       }
     }catch (IOException exception) {
         exception.printStackTrace();
         return;
       } catch (ClassNotFoundException exception) {
         exception.printStackTrace();
-      }
+      } catch (InterruptedException e) {
+      e.printStackTrace();
     }
+  }
 
 }

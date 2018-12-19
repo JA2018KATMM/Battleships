@@ -48,7 +48,7 @@ public class Controller implements Initializable {
       if(isSecondClient){
         start();
       }
-    }catch (ClassCastException exception){
+    }catch (NullPointerException | ClassCastException exception){
       this.message.setText("Nie ma drugiego gracza");
     }
   }
