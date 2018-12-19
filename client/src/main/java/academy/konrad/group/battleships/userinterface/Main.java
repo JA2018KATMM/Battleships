@@ -18,7 +18,8 @@ public class Main extends Application {
     Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("sample.fxml"));
     primaryStage.setTitle("Statki");
     primaryStage.setScene(new Scene(root, 1000, 1000));
-    Connection.getConnection();
     primaryStage.show();
+
+
   }
 }
