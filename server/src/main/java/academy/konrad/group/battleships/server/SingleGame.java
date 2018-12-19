@@ -22,7 +22,7 @@ class SingleGame implements Runnable {
 
     try {
       sendToClient(this.firstClientSocket, Boolean.TRUE);
-      sendToClient(this.secondClientSocket, Boolean.TRUE);
+      sendToClient(this.secondClientSocket, Boolean.FALSE);
 
       while (true) {
 

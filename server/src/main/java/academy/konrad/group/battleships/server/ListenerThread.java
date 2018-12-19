@@ -33,6 +33,7 @@ class ListenerThread extends Thread {
 
           Thread thread = new Thread(clientsPair);
           thread.start();
+          clients.clear();
         }
 
       } catch (IOException exception) {

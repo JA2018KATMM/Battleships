@@ -46,7 +46,9 @@ public class Controller implements Initializable {
     try {
       Boolean isSecondClient = (Boolean) object;
       if(isSecondClient){
-        start();
+        startAsFirstPlayer();
+      }else{
+        startAsSecondPlayer();
       }
     }catch (NullPointerException | ClassCastException exception){
       this.message.setText("Nie ma drugiego gracza");
@@ -54,7 +56,7 @@ public class Controller implements Initializable {
   }
 
 
-  private void start() {
+  private void startAsFirstPlayer() {
     this.message.setText("");
     enemyBoard = new Board(event -> {
 
@@ -68,6 +70,30 @@ public class Controller implements Initializable {
       this.message.setText("Czekam na drugiego gracza");
       sendField(field.getId());
       updateEnemyBoard();
+      this.playerBoard.setDisable(false);
+    });
+    ((Board) this.playerBoard).fillBoard(100);
+
+    VBox vbox = new VBox(50, enemyBoard, playerBoard);
+    vbox.setAlignment(Pos.CENTER);
+
+    this.borderPane.setCenter(vbox);
+  }
+
+  private void startAsSecondPlayer() {
+    this.message.setText("");
+    enemyBoard = new Board(event -> {
+
+    });
+    ((Board) this.enemyBoard).fillBoard(100);
+
+    playerBoard = new Board(event -> {
+      updateEnemyBoard();
+      Field field = (Field) event.getSource();
+      field.setFill(Color.RED);
+      field.setDisable(true);
+      this.message.setText("Czekam na drugiego gracza");
+      sendField(field.getId());
       this.playerBoard.setDisable(false);
     });
     ((Board) this.playerBoard).fillBoard(100);
