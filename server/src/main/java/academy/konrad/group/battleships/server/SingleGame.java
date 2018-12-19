@@ -8,43 +8,34 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 class SingleGame implements Runnable {
-  private Socket firstClientSocket;
-  private Socket secondClientSocket;
+  private final ObjectInputStream firstIS;
+  private final ObjectInputStream secondIS;
+  private final ObjectOutputStream firstOS;
+  private final ObjectOutputStream secondOS;
 
-  SingleGame(Socket firstClientSocket, Socket secondClientSocket) {
-    this.firstClientSocket = firstClientSocket;
-    this.secondClientSocket = secondClientSocket;
-
+  SingleGame(Socket firstClientSocket, Socket secondClientSocket) throws IOException {
+    firstIS = new ObjectInputStream(firstClientSocket.getInputStream());
+    secondIS = new ObjectInputStream(secondClientSocket.getInputStream());
+    firstOS = new ObjectOutputStream(firstClientSocket.getOutputStream());
+    secondOS = new ObjectOutputStream(secondClientSocket.getOutputStream());
   }
 
   @Override
   public void run() {
 
-    while (true) {
-      try {
-        System.out.println("Watek na serwerze");
-        ObjectInputStream firstInputStream =
-            new ObjectInputStream(this.firstClientSocket.getInputStream());
-        FieldNumber firstFieldNumber = (FieldNumber) firstInputStream.readObject();
-        System.out.println(firstFieldNumber);
-        ObjectOutputStream firstOutputStream =
-            new ObjectOutputStream(this.secondClientSocket.getOutputStream());
-        firstOutputStream.writeObject(firstFieldNumber);
+    try {
+      while (true) {
+          FieldNumber firstFieldNumber = (FieldNumber) firstIS.readObject();
+          secondOS.writeObject(firstFieldNumber);
 
-        ObjectInputStream secondInputStream =
-            new ObjectInputStream(this.secondClientSocket.getInputStream());
-        FieldNumber fieldNumber = (FieldNumber) secondInputStream.readObject();
-        System.out.println(fieldNumber);
-        ObjectOutputStream secondOutputStream =
-            new ObjectOutputStream(this.firstClientSocket.getOutputStream());
-        secondOutputStream.writeObject(fieldNumber);
+          FieldNumber fieldNumber = (FieldNumber) secondIS.readObject();
+          firstOS.writeObject(fieldNumber);
 
-      } catch (IOException exception) {
-        exception.printStackTrace();
-        return;
-      } catch (ClassNotFoundException exception) {
-        exception.printStackTrace();
+          firstOS.flush();
+          secondOS.flush();
       }
+    } catch (IOException|ClassNotFoundException  exception) {
+      exception.printStackTrace();
     }
   }
 

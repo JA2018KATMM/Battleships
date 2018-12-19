@@ -1,37 +1,30 @@
 package academy.konrad.group.battleships.userinterface;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class Connection {
 
-  private static final Socket socket = new Socket();
-  private static Connection connection;
+  private final static  Socket socket = new Socket();
 
-  Connection() {
-    //TODO Obluga braku połączenia w gui
-    initialize();
+
+  public static void initialize() throws IOException {
+   socket.connect(new InetSocketAddress("localhost", 6666), 5000);
   }
 
-  static Socket getConnection() {
-    if (connection == null) {
-      connection = new Connection();
-    }
-    return socket;
+  //TODO PREVENT NPE
+  public static OutputStream getOutputStream() throws IOException {
+    return socket.getOutputStream();
   }
 
-  boolean initialize() {
-    try {
-      socket.connect(new InetSocketAddress("51.38.130.222", 8081), 5000);
-      return true;
-    } catch (IOException exception) {
-      exception.printStackTrace();
-      return false;
-    }
+  //TODO PREVENT NPE
+  public static InputStream getInputStream() throws IOException {
+    return socket.getInputStream();
   }
 
-  boolean isConnected() {
-    return Connection.getConnection().isConnected();
-  }
+  //TODO CHECK HOW TO CLOSE SOCKET
+
 }

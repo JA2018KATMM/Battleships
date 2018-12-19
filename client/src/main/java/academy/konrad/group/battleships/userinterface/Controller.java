@@ -37,7 +37,7 @@ public class Controller implements Initializable {
       field.setFill(Color.RED);
       field.setDisable(true);
       try {
-        new Sender().send(new FieldNumber(field.getId()));
+        Sender.send(new FieldNumber(field.getId()));
       } catch (IOException exception) {
         exception.printStackTrace();
       }
@@ -56,7 +56,12 @@ public class Controller implements Initializable {
   private void updateEnemyBoard() {
 
     this.playerBoard.setDisable(true);
-    FieldNumber fieldNumber = (FieldNumber) new Listener().listen();
+    FieldNumber fieldNumber = null;
+    try {
+      fieldNumber = (FieldNumber) Listener.listen();
+    } catch (IOException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
     String fieldToMark = fieldNumber.getFieldId();
     for (Node elem : this.enemyBoard.getChildren()) {
       if (elem.getId().equals(fieldToMark)) {
@@ -66,7 +71,6 @@ public class Controller implements Initializable {
       }
     }
   }
-
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

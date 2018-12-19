@@ -17,12 +17,12 @@
     
     <properties>
         <!-- dependencies versions -->
-        <version.plugin.javax.servlet-api>2.5</version.plugin.javax.servlet-api>
+        <version.plugin.javax.servlet-api>4.0.1</version.plugin.javax.servlet-api>
     </properties>
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${version.plugin.javax.servlet-api}</version>
         </dependency>
 

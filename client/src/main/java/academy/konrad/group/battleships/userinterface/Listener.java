@@ -3,16 +3,20 @@ package academy.konrad.group.battleships.userinterface;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import static academy.konrad.group.battleships.userinterface.Connection.getInputStream;
+
 class Listener {
 
-  Object listen() {
+  static ObjectInputStream ois;
+
+  static Object listen() throws IOException, ClassNotFoundException {
 
     Object fromServer = null;
-    try {
-      ObjectInputStream ois = new ObjectInputStream(Connection.getConnection().getInputStream());
+    while (fromServer == null) {
+      if (ois == null)
+        ois = new ObjectInputStream(getInputStream());
       fromServer = ois.readObject();
-    } catch (IOException | ClassNotFoundException exception) {
-      exception.printStackTrace();
+      System.out.println(fromServer);
     }
     return fromServer;
   }

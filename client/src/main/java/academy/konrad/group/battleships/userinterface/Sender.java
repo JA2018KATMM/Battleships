@@ -3,14 +3,15 @@ package academy.konrad.group.battleships.userinterface;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class Sender {
+import static academy.konrad.group.battleships.userinterface.Connection.getOutputStream;
 
-  void send(Object object) throws IOException {
+class Sender {
 
-    if (Connection.getConnection().isConnected()) {
-      ObjectOutputStream oos = new ObjectOutputStream(Connection.getConnection().getOutputStream());
-      oos.writeObject(object);
-    }
+  static ObjectOutputStream oos;
 
+  static void send(Object object) throws IOException {
+    if (oos == null)
+      oos = new ObjectOutputStream(getOutputStream());
+    oos.writeObject(object);
   }
 }
