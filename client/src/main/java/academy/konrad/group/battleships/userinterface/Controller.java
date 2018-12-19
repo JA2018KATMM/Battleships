@@ -35,9 +35,21 @@ public class Controller implements Initializable {
   @FXML
   private void connect(){
     if(Connection.getConnection().isConnected()){
-      start();
+      secondClient();
     }else {
       this.message.setText("Nie ma połączenia");
+    }
+  }
+
+  private void secondClient(){
+    Object object = new Listener().listen();
+    try {
+      Boolean isSecondClient = (Boolean) object;
+      if(isSecondClient){
+        start();
+      }
+    }catch (ClassCastException exception){
+      this.message.setText("Nie ma drugiego gracza");
     }
   }
 
