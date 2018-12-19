@@ -3,13 +3,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-    <servlet>
-        <servlet-name>server</servlet-name>
-        <servlet-class>academy.konrad.group.battleships.server.ServerApp</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>server</servlet-name>
-        <url-pattern>/home</url-pattern>
-    </servlet-mapping>
+    <listener>
+        <listener-class>academy.konrad.group.battleships.server.ContextListener</listener-class>
+    </listener>
 </web-app>

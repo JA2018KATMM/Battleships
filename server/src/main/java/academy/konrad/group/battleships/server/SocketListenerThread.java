@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-class ListenerThread extends Thread {
+class SocketListenerThread extends Thread {
 
   private static final int PORT_NUMBER = 6666;
   private static final List<Socket> clients = new ArrayList<>();
