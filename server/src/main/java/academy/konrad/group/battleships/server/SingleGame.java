@@ -10,6 +10,8 @@ import java.net.Socket;
 class SingleGame implements Runnable {
   private Socket firstClientSocket;
   private Socket secondClientSocket;
+  private ObjectOutputStream objectOutputStream;
+  private ObjectInputStream objectInputStream;
 
   SingleGame(Socket firstClientSocket, Socket secondClientSocket) {
     this.firstClientSocket = firstClientSocket;
@@ -20,8 +22,15 @@ class SingleGame implements Runnable {
   @Override
   public void run() {
 
-    while (true) {
-      try {
+    try {
+      this.objectOutputStream = new ObjectOutputStream(this.firstClientSocket.getOutputStream());
+      this.objectOutputStream.writeObject(Boolean.getBoolean("true"));
+      this.objectOutputStream = new ObjectOutputStream(this.secondClientSocket.getOutputStream());
+      this.objectOutputStream.writeObject(Boolean.getBoolean("true"));
+
+
+      while (true) {
+
         System.out.println("Watek na serwerze");
         ObjectInputStream firstInputStream =
             new ObjectInputStream(this.firstClientSocket.getInputStream());
@@ -39,13 +48,13 @@ class SingleGame implements Runnable {
             new ObjectOutputStream(this.firstClientSocket.getOutputStream());
         secondOutputStream.writeObject(fieldNumber);
 
-      } catch (IOException exception) {
+      }
+    }catch (IOException exception) {
         exception.printStackTrace();
         return;
       } catch (ClassNotFoundException exception) {
         exception.printStackTrace();
       }
     }
-  }
 
 }
