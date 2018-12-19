@@ -7,7 +7,7 @@ import static org.testng.Assert.*;
 public class GamePropertiesAPITest {
 
   @Test
-  public void shouldReturnDefaultBoardSize() throws Exception {
+  public void shouldReturnDefaultBoardSize() {
       //given
       String whyItFailed = "default board size was not loaded properly.";
     String propertiesPath = "src/main/resources/default.properties";
@@ -20,7 +20,7 @@ public class GamePropertiesAPITest {
   }
 
   @Test
-  public void shouldChangeBoardSizeToDifferentValue() throws Exception {
+  public void shouldChangeBoardSizeToDifferentValue() {
     //given
     String whyItFailed = "default board size was not loaded properly.";
     String propertiesPath = "src/main/resources/default.properties";
@@ -34,7 +34,7 @@ public class GamePropertiesAPITest {
   }
 
   @Test(expectedExceptions = CannotLoadConfigurationFileException.class)
-  public void shouldThrowExceptionWhenFilePathIsBroken() throws Exception {
+  public void shouldThrowExceptionWhenFilePathIsBroken() {
     //given
     String whyItFailed = "Wrong class path doesn't produce expected exception";
     String wrongPropertiesPath = "src/main/resources/wrong.properties";
@@ -47,7 +47,7 @@ public class GamePropertiesAPITest {
   }
 
   @Test(expectedExceptions = CannotReadPropertyException.class)
-  public void shouldThrowExceptionWhenPropertyNotNumber() throws Exception {
+  public void shouldThrowExceptionWhenPropertyNotNumber() {
     //given
     String whyItFailed = "Somehow a word was attempted to convert to int and no exception was thrown";
     String testPropertiesPath = "src/test/resources/test.properties";
