@@ -7,11 +7,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-class ClientsPair implements Runnable {
+class SingleGame implements Runnable {
   private Socket firstClientSocket;
   private Socket secondClientSocket;
 
-  ClientsPair(Socket firstClientSocket, Socket secondClientSocket) {
+  SingleGame(Socket firstClientSocket, Socket secondClientSocket) {
     this.firstClientSocket = firstClientSocket;
     this.secondClientSocket = secondClientSocket;
 
