@@ -11,7 +11,7 @@ import java.net.Socket;
 public class Connection {
   
   private final static  Socket socket = new Socket();
-  private GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI();
+  private static GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI();
 
   public static void initialize() throws IOException {
    socket.connect(new InetSocketAddress( gamePropertiesAPI.getValueByKey("ip"), gamePropertiesAPI.getIntValueByKey("port")), 5000);

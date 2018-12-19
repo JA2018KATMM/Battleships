@@ -30,30 +30,6 @@ public class Controller implements Initializable {
   private Label message;
 
   @FXML
-  private Button connect;
-
-  @FXML
-  private void connect(){
-    if(Connection.getConnection().isConnected()){
-      secondClient();
-    }else {
-      this.message.setText("Nie ma połączenia");
-    }
-  }
-
-  private void secondClient(){
-    Object object = new Listener().listen();
-    try {
-      Boolean isSecondClient = (Boolean) object;
-      if(isSecondClient){
-        start();
-      }
-    }catch (NullPointerException | ClassCastException exception){
-      this.message.setText("Nie ma drugiego gracza");
-    }
-  }
-
-
   private void start() {
     enemyBoard = new Board(event -> {
 

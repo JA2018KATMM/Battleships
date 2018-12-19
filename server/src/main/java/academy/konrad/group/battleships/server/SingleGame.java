@@ -1,5 +1,7 @@
 package academy.konrad.group.battleships.server;
 
+import academy.konrad.group.battleships.userinterface.FieldNumber;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -35,7 +37,6 @@ class SingleGame implements Runnable {
     } catch (IOException|ClassNotFoundException  exception) {
       exception.printStackTrace();
     }
-    return null;
   }
 
 }
