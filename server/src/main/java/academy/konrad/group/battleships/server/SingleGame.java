@@ -24,9 +24,9 @@ class SingleGame implements Runnable {
 
     try {
       this.objectOutputStream = new ObjectOutputStream(this.firstClientSocket.getOutputStream());
-      this.objectOutputStream.writeObject(Boolean.getBoolean("true"));
+      this.objectOutputStream.writeObject(Boolean.TRUE);
       this.objectOutputStream = new ObjectOutputStream(this.secondClientSocket.getOutputStream());
-      this.objectOutputStream.writeObject(Boolean.getBoolean("true"));
+      this.objectOutputStream.writeObject(Boolean.TRUE);
 
 
       while (true) {
