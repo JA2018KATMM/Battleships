@@ -11,7 +11,6 @@ class Listener {
     Object fromServer = null;
     try {
       Socket socket = Connection.getConnection();
-      socket.setSoTimeout(1000);
       ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
       fromServer = ois.readObject();
     } catch (IOException | ClassNotFoundException exception) {
