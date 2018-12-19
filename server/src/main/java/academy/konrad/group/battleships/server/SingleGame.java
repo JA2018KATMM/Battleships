@@ -1,7 +1,5 @@
 package academy.konrad.group.battleships.server;
 
-import academy.konrad.group.battleships.userinterface.FieldNumber;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,7 +9,7 @@ class SingleGame implements Runnable {
   private Socket firstClientSocket;
   private Socket secondClientSocket;
   private ObjectOutputStream objectOutputStream;
-  //private ObjectInputStream objectInputStream;
+  private ObjectInputStream objectInputStream;
 
   SingleGame(Socket firstClientSocket, Socket secondClientSocket) {
     this.firstClientSocket = firstClientSocket;
@@ -23,42 +21,48 @@ class SingleGame implements Runnable {
   public void run() {
 
     try {
-      this.objectOutputStream = new ObjectOutputStream(this.firstClientSocket.getOutputStream());
-      this.objectOutputStream.writeObject(Boolean.TRUE);
-      this.objectOutputStream = new ObjectOutputStream(this.secondClientSocket.getOutputStream());
-      this.objectOutputStream.writeObject(Boolean.TRUE);
-
+      sendToClient(this.firstClientSocket, Boolean.TRUE);
+      sendToClient(this.secondClientSocket, Boolean.TRUE);
 
       while (true) {
 
         System.out.println("Watek na serwerze");
-        ObjectInputStream firstInputStream =
-            new ObjectInputStream(this.firstClientSocket.getInputStream());
-        FieldNumber firstFieldNumber = (FieldNumber) firstInputStream.readObject();
-        System.out.println(firstFieldNumber);
-        ObjectOutputStream firstOutputStream =
-            new ObjectOutputStream(this.secondClientSocket.getOutputStream());
-        firstOutputStream.writeObject(firstFieldNumber);
+        Object receivedFromFirst = receiveFromClient(this.firstClientSocket);
         Thread.sleep(1000);
-        ObjectInputStream secondInputStream =
-            new ObjectInputStream(this.secondClientSocket.getInputStream());
-        FieldNumber fieldNumber = (FieldNumber) secondInputStream.readObject();
-        System.out.println(fieldNumber);
-        ObjectOutputStream secondOutputStream =
-            new ObjectOutputStream(this.firstClientSocket.getOutputStream());
-        secondOutputStream.writeObject(fieldNumber);
-
+        sendToClient(this.secondClientSocket, receivedFromFirst);
+        Thread.sleep(1000);
+        Object receivedFromSecond = receiveFromClient(this.secondClientSocket);
+        Thread.sleep(1000);
+        sendToClient(this.firstClientSocket, receivedFromSecond);
         Thread.sleep(1000);
 
       }
-    }catch (IOException exception) {
-        exception.printStackTrace();
-        return;
-      } catch (ClassNotFoundException exception) {
-        exception.printStackTrace();
-      } catch (InterruptedException e) {
+    } catch (InterruptedException e) {
       e.printStackTrace();
     }
+  }
+
+  private void sendToClient(Socket client, Object objectToSend) {
+    try {
+      client.setSoTimeout(5000);
+      this.objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+      this.objectOutputStream.writeObject(objectToSend);
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  private Object receiveFromClient(Socket client) {
+    try {
+      client.setSoTimeout(5000);
+      this.objectInputStream = new ObjectInputStream(client.getInputStream());
+      Object object = this.objectInputStream.readObject();
+      return object;
+    } catch (IOException | ClassNotFoundException exception) {
+      exception.printStackTrace();
+    }
+    //TODO custom wyjatek braku polaczenia
+    throw new IllegalStateException();
   }
 
 }
