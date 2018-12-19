@@ -10,8 +10,8 @@ class DefaultPropertiesLoader{
 
   static Properties loadPropertiesFromFile(String defaultPropertiesPath) throws CannotLoadConfigurationFileException {
     Properties properties = new Properties();
-    try {
-      properties.load(new FileInputStream(defaultPropertiesPath));
+    try (FileInputStream fileInputStream = new FileInputStream(defaultPropertiesPath)){
+      properties.load(fileInputStream);
     } catch (IOException e) {
       throw new CannotLoadConfigurationFileException();
     }
