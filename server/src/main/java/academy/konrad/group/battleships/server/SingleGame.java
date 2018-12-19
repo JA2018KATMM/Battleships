@@ -61,8 +61,7 @@ class SingleGame implements Runnable {
     } catch (IOException | ClassNotFoundException exception) {
       exception.printStackTrace();
     }
-    //TODO custom wyjatek braku polaczenia
-    throw new IllegalStateException();
+    return null;
   }
 
 }
