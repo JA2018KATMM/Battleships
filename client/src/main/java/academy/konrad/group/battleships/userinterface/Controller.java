@@ -89,12 +89,13 @@ public class Controller implements Initializable {
 
     playerBoard = new Board(event -> {
       updateEnemyBoard();
+      this.playerBoard.setDisable(false);
       Field field = (Field) event.getSource();
       field.setFill(Color.RED);
       field.setDisable(true);
       this.message.setText("Czekam na drugiego gracza");
       sendField(field.getId());
-      this.playerBoard.setDisable(false);
+
     });
     ((Board) this.playerBoard).fillBoard(100);
 
