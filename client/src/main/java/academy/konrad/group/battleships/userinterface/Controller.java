@@ -55,6 +55,7 @@ public class Controller implements Initializable {
 
 
   private void start() {
+    this.message.setText("");
     enemyBoard = new Board(event -> {
 
     });
@@ -64,6 +65,7 @@ public class Controller implements Initializable {
       Field field = (Field) event.getSource();
       field.setFill(Color.RED);
       field.setDisable(true);
+      this.message.setText("Czekam na drugiego gracza");
       sendField(field.getId());
       updateEnemyBoard();
       this.playerBoard.setDisable(false);
@@ -78,7 +80,7 @@ public class Controller implements Initializable {
 
   private void updateEnemyBoard() {
 
-    //this.playerBoard.setDisable(true);
+    this.playerBoard.setDisable(true);
     FieldNumber fieldNumber = (FieldNumber) new Listener().listen();
     String fieldToMark = fieldNumber.getFieldId();
     for (Node elem : this.enemyBoard.getChildren()) {

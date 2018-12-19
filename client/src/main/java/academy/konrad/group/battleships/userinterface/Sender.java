@@ -10,7 +10,6 @@ import java.net.Socket;
 
     if (Connection.getConnection().isConnected()) {
       Socket socket = Connection.getConnection();
-      socket.setSoTimeout(1000);
       ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
       oos.writeObject(object);
     }
