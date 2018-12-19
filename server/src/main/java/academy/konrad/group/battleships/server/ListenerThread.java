@@ -22,24 +22,23 @@ class ListenerThread extends Thread {
       exception.printStackTrace();
     }
 
-    boolean shouldContinue = true;
-
-    while (shouldContinue) {
+    while (!Thread.currentThread().isInterrupted()) {
       try {
         Socket clientSocket = serverSocket.accept();
         if (clientSocket != null) {
           clients.add(clientSocket);
         }
         if (clients.size() == 2) {
-          ClientsPair clientsPair = new ClientsPair(clients.get(0), clients.get(1));
-
+          SingleGame clientsPair = new SingleGame(clients.get(0), clients.get(1));
+          clients.clear();
+          System.out.println(clients.size());
           Thread thread = new Thread(clientsPair);
           thread.start();
         }
 
       } catch (IOException exception) {
         exception.printStackTrace();
-        shouldContinue = false;
+        Thread.currentThread().interrupt();
       }
     }
   }
