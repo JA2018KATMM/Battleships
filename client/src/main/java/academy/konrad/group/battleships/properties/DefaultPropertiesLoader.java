@@ -11,7 +11,7 @@ class DefaultPropertiesLoader {
 
   static Properties loadPropertiesFromFile(String defaultPropertiesPath) {
     Properties properties = new Properties();
-    try (FileInputStream fileInputStream = new FileInputStream(defaultPropertiesPath)) {
+    try (FileInputStream fileInputStream = new FileInputStream(defaultPropertiesPath)){
       properties.load(fileInputStream);
       return properties;
     }catch (FileNotFoundException e){
@@ -22,5 +22,4 @@ class DefaultPropertiesLoader {
     }
 
   }
-
 }

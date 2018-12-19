@@ -24,9 +24,7 @@ class ListenerThread extends Thread {
       exception.printStackTrace();
     }
 
-    boolean shouldContinue = true;
-
-    while (shouldContinue) {
+    while (!Thread.currentThread().isInterrupted()) {
       try {
         Socket clientSocket = serverSocket.accept();
         if (clientSocket != null) {
@@ -41,7 +39,7 @@ class ListenerThread extends Thread {
 
       } catch (IOException exception) {
         exception.printStackTrace();
-        shouldContinue = false;
+        Thread.currentThread().interrupt();
       }
     }
   }

@@ -1,5 +1,6 @@
 package academy.konrad.group.battleships.properties;
 
+import java.util.Locale;
 import java.util.Properties;
 
 class PropertiesKeeper {
@@ -13,8 +14,14 @@ class PropertiesKeeper {
   PropertiesKeeper(String defaultPropertiesPath) {
     gameProperties = DefaultPropertiesLoader.loadPropertiesFromFile(defaultPropertiesPath);
   }
+  
+  Locale getDefaultLocale() {
+    return new Locale(gameProperties.getProperty("locale"));
+  }
 
-  public void setNewBoardSize(int newBoardSize) {
+ 
+
+  void setNewBoardSize(int newBoardSize) {
     gameProperties.setProperty("boardSize", PropertyConverter.convertToString(newBoardSize));
   }
 
