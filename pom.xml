@@ -106,6 +106,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/battleships/server/*</exclude>
+                        <exclude>**/battleships/userinterface/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
