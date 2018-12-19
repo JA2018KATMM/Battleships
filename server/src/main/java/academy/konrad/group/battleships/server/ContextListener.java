@@ -11,6 +11,7 @@ public class ContextListener implements ServletContextListener {
   public void contextInitialized(ServletContextEvent servletContextEvent) {
     listenerThread = new ListenerThread();
     listenerThread.start();
+    System.out.println("Watek");
   }
 
   @Override
