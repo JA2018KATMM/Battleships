@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -26,7 +27,34 @@ public class Controller implements Initializable {
   private Button test;
 
   @FXML
-  private void startTwo() {
+  private Label message;
+
+  @FXML
+  private Button connect;
+
+  @FXML
+  private void connect(){
+    if(Connection.getConnection().isConnected()){
+      secondClient();
+    }else {
+      this.message.setText("Nie ma połączenia");
+    }
+  }
+
+  private void secondClient(){
+    Object object = new Listener().listen();
+    try {
+      Boolean isSecondClient = (Boolean) object;
+      if(isSecondClient){
+        start();
+      }
+    }catch (NullPointerException | ClassCastException exception){
+      this.message.setText("Nie ma drugiego gracza");
+    }
+  }
+
+
+  private void start() {
     enemyBoard = new Board(event -> {
 
     });
@@ -43,7 +71,6 @@ public class Controller implements Initializable {
       }
       updateEnemyBoard();
       this.playerBoard.setDisable(false);
-
     });
     ((Board) this.playerBoard).fillBoard(100);
 

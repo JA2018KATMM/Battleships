@@ -26,5 +26,7 @@ public class Main extends Application {
     primaryStage.setTitle("Statki");
     primaryStage.setScene(new Scene(root, 1000, 1000));
     primaryStage.show();
+
+
   }
 }

@@ -2,6 +2,7 @@ package academy.konrad.group.battleships.userinterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.Socket;
 
 import static academy.konrad.group.battleships.userinterface.Connection.getInputStream;
 

@@ -30,7 +30,8 @@ class ListenerThread extends Thread {
         }
         if (clients.size() == 2) {
           SingleGame clientsPair = new SingleGame(clients.get(0), clients.get(1));
-
+          clients.clear();
+          System.out.println(clients.size());
           Thread thread = new Thread(clientsPair);
           thread.start();
         }

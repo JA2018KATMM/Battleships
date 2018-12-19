@@ -2,11 +2,11 @@ package academy.konrad.group.battleships.userinterface;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import static academy.konrad.group.battleships.userinterface.Connection.getOutputStream;
 
 class Sender {
-
   static ObjectOutputStream oos;
 
   static void send(Object object) throws IOException {
