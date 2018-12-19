@@ -50,7 +50,7 @@ public class GamePropertiesAPITest {
   public void shouldThrowExceptionWhenPropertyNotNumber() throws Exception {
     //given
     String whyItFailed = "Somehow a word was attempted to convert to int and no exception was thrown";
-    String testPropertiesPath = "src/main/test/resources/test.properties";
+    String testPropertiesPath = "src/test/resources/test.properties";
     GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI(testPropertiesPath);
     //when
     int expectedBoardSize = 10;
