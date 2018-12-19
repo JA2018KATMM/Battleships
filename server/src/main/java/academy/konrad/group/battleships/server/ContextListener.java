@@ -5,14 +5,16 @@ import javax.servlet.ServletContextListener;
 
 public class ContextListener implements ServletContextListener {
 
+  private Thread listenerThread = null;
+
   @Override
   public void contextInitialized(ServletContextEvent servletContextEvent) {
-    Thread listenerThread = new SocketListenerThread();
+    listenerThread = new ListenerThread();
     listenerThread.start();
-    System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
   }
 
   @Override
   public void contextDestroyed(ServletContextEvent servletContextEvent) {
+    listenerThread.interrupt();
   }
 }

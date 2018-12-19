@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-class SocketListenerThread extends Thread {
+class ListenerThread extends Thread {
 
   private static final int PORT_NUMBER = 6666;
   private static final List<Socket> clients = new ArrayList<>();
@@ -22,9 +22,7 @@ class SocketListenerThread extends Thread {
       exception.printStackTrace();
     }
 
-    boolean shouldContinue = true;
-
-    while (shouldContinue) {
+    while (!Thread.currentThread().isInterrupted()) {
       try {
         Socket clientSocket = serverSocket.accept();
         if (clientSocket != null) {
@@ -39,7 +37,7 @@ class SocketListenerThread extends Thread {
 
       } catch (IOException exception) {
         exception.printStackTrace();
-        shouldContinue = false;
+        Thread.currentThread().interrupt();
       }
     }
   }
