@@ -14,16 +14,15 @@ class PropertiesKeeper {
     gameProperties = DefaultPropertiesLoader.loadPropertiesFromFile(defaultPropertiesPath);
   }
 
-  int getBoardSize(){
-    return PropertyConverter.convertToInt(gameProperties.getProperty("boardSize"));
-  }
-
-
   public void setNewBoardSize(int newBoardSize) {
     gameProperties.setProperty("boardSize", PropertyConverter.convertToString(newBoardSize));
   }
 
   public String getValueByKey(String key) {
     return gameProperties.getProperty(key);
+  }
+
+  public int getIntValueByKey(String key) {
+    return PropertyConverter.convertToInt(gameProperties.getProperty(key));
   }
 }

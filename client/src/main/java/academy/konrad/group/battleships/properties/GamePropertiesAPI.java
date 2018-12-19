@@ -11,8 +11,8 @@ public class GamePropertiesAPI {
     this.propertiesKeeper = new PropertiesKeeper();
   }
 
-  public int getBoardSize() {
-    return propertiesKeeper.getBoardSize();
+  public int getIntValueByKey(String key) {
+    return propertiesKeeper.getIntValueByKey(key);
   }
 
   public String getValueByKey(String key) {
