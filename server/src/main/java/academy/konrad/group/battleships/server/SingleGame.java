@@ -11,7 +11,7 @@ class SingleGame implements Runnable {
   private Socket firstClientSocket;
   private Socket secondClientSocket;
   private ObjectOutputStream objectOutputStream;
-  private ObjectInputStream objectInputStream;
+  //private ObjectInputStream objectInputStream;
 
   SingleGame(Socket firstClientSocket, Socket secondClientSocket) {
     this.firstClientSocket = firstClientSocket;
