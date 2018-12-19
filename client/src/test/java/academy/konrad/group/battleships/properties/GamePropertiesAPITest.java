@@ -2,6 +2,8 @@ package academy.konrad.group.battleships.properties;
 
 import org.testng.annotations.Test;
 
+import java.util.Locale;
+
 import static org.testng.Assert.*;
 
 public class GamePropertiesAPITest {
@@ -57,6 +59,31 @@ public class GamePropertiesAPITest {
     int actualBoardSize = gamePropertiesAPI.getBoardSize();
     //then
     assertEquals(actualBoardSize, expectedBoardSize, whyItFailed);
+  }
+
+  @Test
+  public void shouldPrintGreetingFromDefaultBundle() throws Exception {
+    //given
+    String whyItFailed = "Resource Bundle was not initialized properly";
+    String testPropertiesPath = "src/main/test/resources/test.properties";
+    GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI(testPropertiesPath);
+    //when
+    gamePropertiesAPI.setDefaultLanguage();
+    System.out.println(gamePropertiesAPI.getCurrentBundle().getString("welcomeMessage"));
+    //then
+    assertEquals(gamePropertiesAPI.getCurrentBundle().getString("welcomeMessage"), "Witaj w grze w statki!", whyItFailed);
+  }
+
+  @Test
+  public void shouldPrintGreetingFromEnglishBundle() throws Exception {
+    //given
+    String whyItFailed = "Resource Bundle was not changed to english";
+    String testPropertiesPath = "src/main/test/resources/test.properties";
+    GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI(testPropertiesPath);
+    //when
+    gamePropertiesAPI.changeLanguage("en");
+    //then
+    assertEquals(gamePropertiesAPI.getCurrentBundle().getString("welcomeMessage"), "Welcome to the Battleships game!", whyItFailed);
   }
 
 }
