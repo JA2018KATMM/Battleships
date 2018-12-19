@@ -1,7 +1,5 @@
 package academy.konrad.group.battleships.server;
 
-import academy.konrad.group.battleships.properties.GamePropertiesAPI;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,7 +8,7 @@ import java.util.List;
 
 class ListenerThread extends Thread {
 
-  private static final int PORT_NUMBER = new GamePropertiesAPI().getIntValueByKey("port");
+  private static final int PORT_NUMBER = 6666;
   private static final List<Socket> clients = new ArrayList<>();
 
   public void run() {
