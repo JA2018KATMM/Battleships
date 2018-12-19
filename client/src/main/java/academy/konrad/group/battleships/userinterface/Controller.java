@@ -88,13 +88,14 @@ public class Controller implements Initializable {
     ((Board) this.enemyBoard).fillBoard(100);
 
     playerBoard = new Board(event -> {
-      updateEnemyBoard();
-      this.playerBoard.setDisable(false);
+
       Field field = (Field) event.getSource();
       field.setFill(Color.RED);
       field.setDisable(true);
       this.message.setText("Czekam na drugiego gracza");
       sendField(field.getId());
+      updateEnemyBoard();
+      this.playerBoard.setDisable(false);
 
     });
     ((Board) this.playerBoard).fillBoard(100);
@@ -103,6 +104,7 @@ public class Controller implements Initializable {
     vbox.setAlignment(Pos.CENTER);
 
     this.borderPane.setCenter(vbox);
+    updateEnemyBoard();
   }
 
   private void updateEnemyBoard() {
