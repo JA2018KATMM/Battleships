@@ -23,7 +23,7 @@ public class Connection {
 
   boolean initialize() {
     try {
-      socket.connect(new InetSocketAddress("51.38.130.222", 8081), 5000);
+      socket.connect(new InetSocketAddress("localhost", 8081), 5000);
       return true;
     } catch (IOException exception) {
       exception.printStackTrace();
