@@ -31,7 +31,4 @@ public class Connection {
     }
   }
 
-  boolean isConnected() {
-    return Connection.getConnection().isConnected();
-  }
 }
