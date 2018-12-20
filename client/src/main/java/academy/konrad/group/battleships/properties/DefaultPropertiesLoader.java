@@ -14,7 +14,7 @@ class DefaultPropertiesLoader {
     try (FileInputStream fileInputStream = new FileInputStream(defaultPropertiesPath)){
       properties.load(fileInputStream);
       return properties;
-    }catch (FileNotFoundException e){
+    } catch (FileNotFoundException e) {
       throw new CannotLoadConfigurationFileException();
     } catch (IOException e) {
       e.printStackTrace();

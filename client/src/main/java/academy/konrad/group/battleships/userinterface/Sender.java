@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
- class Sender {
+class Sender {
+  static ObjectOutputStream oos;
 
-  void send(Object object) throws IOException {
+  private Sender() {
+  }
 
-    if (Connection.getConnection().isConnected()) {
-      Socket socket = Connection.getConnection();
-      ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-      oos.writeObject(object);
-    }
-
+  static void send(Object object) throws IOException {
+    if (oos == null)
+      oos = new ObjectOutputStream(Connection.getOutputStream());
+    oos.writeObject(object);
   }
 }

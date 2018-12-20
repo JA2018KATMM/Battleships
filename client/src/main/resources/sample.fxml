@@ -16,6 +16,6 @@
          </children>
       </Pane>
       <Label fx:id="message" layoutX="64.0" layoutY="595.0" prefHeight="0.0" prefWidth="641.0" />
-      <Button fx:id="connect" layoutX="712.0" layoutY="135.0" mnemonicParsing="false" onAction="#connect" text="Connect" />
+      <Button fx:id="connect" layoutX="712.0" layoutY="135.0" mnemonicParsing="false" onAction="#start" text="Connect" />
    </children>
 </AnchorPane>

@@ -14,12 +14,10 @@ class PropertiesKeeper {
   PropertiesKeeper(String defaultPropertiesPath) {
     gameProperties = DefaultPropertiesLoader.loadPropertiesFromFile(defaultPropertiesPath);
   }
-  
+
   Locale getDefaultLocale() {
     return new Locale(gameProperties.getProperty("locale"));
   }
-
- 
 
   void setNewBoardSize(int newBoardSize) {
     gameProperties.setProperty("boardSize", PropertyConverter.convertToString(newBoardSize));

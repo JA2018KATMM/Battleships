@@ -30,30 +30,6 @@ public class Controller implements Initializable {
   private Label message;
 
   @FXML
-  private Button connect;
-
-  @FXML
-  private void connect(){
-    if(Connection.getConnection().isConnected()){
-      secondClient();
-    }else {
-      this.message.setText("Nie ma połączenia");
-    }
-  }
-
-  private void secondClient(){
-    Object object = new Listener().listen();
-    try {
-      Boolean isSecondClient = (Boolean) object;
-      if(isSecondClient){
-        start();
-      }
-    }catch (NullPointerException | ClassCastException exception){
-      this.message.setText("Nie ma drugiego gracza");
-    }
-  }
-
-
   private void start() {
     enemyBoard = new Board(event -> {
 
@@ -64,7 +40,11 @@ public class Controller implements Initializable {
       Field field = (Field) event.getSource();
       field.setFill(Color.RED);
       field.setDisable(true);
-      sendField(field.getId());
+      try {
+        Sender.send(new FieldNumber(field.getId()));
+      } catch (IOException exception) {
+        exception.printStackTrace();
+      }
       updateEnemyBoard();
       this.playerBoard.setDisable(false);
     });
@@ -78,9 +58,17 @@ public class Controller implements Initializable {
 
   private void updateEnemyBoard() {
 
-    //this.playerBoard.setDisable(true);
-    FieldNumber fieldNumber = (FieldNumber) new Listener().listen();
-    String fieldToMark = fieldNumber.getFieldId();
+    this.playerBoard.setDisable(true);
+    FieldNumber fieldNumber = null;
+    try {
+      fieldNumber = (FieldNumber) Listener.listen();
+    } catch (IOException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+    String fieldToMark = null;
+    if (fieldNumber != null) {
+      fieldToMark = fieldNumber.getFieldId();
+    }
     for (Node elem : this.enemyBoard.getChildren()) {
       if (elem.getId().equals(fieldToMark)) {
         Field field = (Field) elem;
@@ -89,17 +77,6 @@ public class Controller implements Initializable {
       }
     }
   }
-
-  private void sendField(String fieldId){
-
-    try {
-      new Sender().send(new FieldNumber(fieldId));
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-
-  }
-
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

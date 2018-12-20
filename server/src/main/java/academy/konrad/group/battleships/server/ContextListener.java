@@ -2,7 +2,9 @@ package academy.konrad.group.battleships.server;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
+@WebListener
 public class ContextListener implements ServletContextListener {
 
   private Thread listenerThread = null;
