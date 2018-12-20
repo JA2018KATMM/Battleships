@@ -2,20 +2,22 @@ package academy.konrad.group.battleships.userinterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.Socket;
 
 class Listener {
 
-  Object listen() {
+  static ObjectInputStream ois;
+
+  private Listener() {
+  }
+
+  static Object listen() throws IOException, ClassNotFoundException {
 
     Object fromServer = null;
-    try {
-      Socket socket = Connection.getConnection();
-      ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+    while (fromServer == null) {
+      if (ois == null)
+        ois = new ObjectInputStream(Connection.getInputStream());
       fromServer = ois.readObject();
-    } catch (IOException | ClassNotFoundException exception) {
-      exception.printStackTrace();
-      return fromServer;
+      System.out.println(fromServer);
     }
     return fromServer;
   }

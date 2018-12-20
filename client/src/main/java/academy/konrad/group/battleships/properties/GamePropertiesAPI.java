@@ -22,7 +22,7 @@ public class GamePropertiesAPI {
   public String getValueByKey(String key) {
     return propertiesKeeper.getValueByKey(key);
   }
-  
+
   public void setDefaultLanguage() {
     resourceBundle = ResourceBundle.getBundle("Language", propertiesKeeper.getDefaultLocale());
   }
@@ -31,11 +31,11 @@ public class GamePropertiesAPI {
     resourceBundle = ResourceBundle.getBundle("Language", new Locale(locale));
   }
 
-  public ResourceBundle getCurrentBundle(){
+  public ResourceBundle getCurrentBundle() {
     return this.resourceBundle;
   }
- 
-  public void setNewBoardSize(int newBoardSize){
+
+  public void setNewBoardSize(int newBoardSize) {
     propertiesKeeper.setNewBoardSize(newBoardSize);
   }
 }
