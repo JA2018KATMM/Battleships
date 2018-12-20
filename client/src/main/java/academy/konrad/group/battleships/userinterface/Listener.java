@@ -2,6 +2,7 @@ package academy.konrad.group.battleships.userinterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.Socket;
 
 class Listener {
 
@@ -11,7 +12,6 @@ class Listener {
   }
 
   static Object listen() throws IOException, ClassNotFoundException {
-
     Object fromServer = null;
     while (fromServer == null) {
       if (ois == null)

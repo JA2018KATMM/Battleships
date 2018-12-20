@@ -19,7 +19,6 @@ class PropertiesKeeper {
     return new Locale(gameProperties.getProperty("locale"));
   }
 
-
   void setNewBoardSize(int newBoardSize) {
     gameProperties.setProperty("boardSize", PropertyConverter.convertToString(newBoardSize));
   }

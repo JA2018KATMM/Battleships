@@ -40,5 +40,4 @@ class SingleGame implements Runnable {
       }
     }
   }
-
 }
