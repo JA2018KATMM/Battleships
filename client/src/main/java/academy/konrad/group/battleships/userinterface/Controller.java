@@ -65,7 +65,6 @@ public class Controller implements Initializable {
     } catch (IOException | ClassNotFoundException e) {
       e.printStackTrace();
     }
-    // TODO refactor code below
     String fieldToMark = null;
     if (fieldNumber != null) {
       fieldToMark = fieldNumber.getFieldId();

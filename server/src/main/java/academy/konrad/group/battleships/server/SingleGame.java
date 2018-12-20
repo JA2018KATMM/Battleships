@@ -22,20 +22,22 @@ class SingleGame implements Runnable {
 
   @Override
   public void run() {
+    boolean shouldContinue = true;
+    while (shouldContinue) {
+      try {
+        FieldNumber firstFieldNumber = (FieldNumber) firstIS.readObject();
+        secondOS.writeObject(firstFieldNumber);
 
-    try {
-      while (true) {
-          FieldNumber firstFieldNumber = (FieldNumber) firstIS.readObject();
-          secondOS.writeObject(firstFieldNumber);
+        FieldNumber fieldNumber = (FieldNumber) secondIS.readObject();
+        firstOS.writeObject(fieldNumber);
 
-          FieldNumber fieldNumber = (FieldNumber) secondIS.readObject();
-          firstOS.writeObject(fieldNumber);
-
-          firstOS.flush();
-          secondOS.flush();
+        firstOS.flush();
+        secondOS.flush();
+        Thread.sleep(1000);
+      } catch (InterruptedException | IOException | ClassNotFoundException exception) {
+        exception.printStackTrace();
+        shouldContinue = false;
       }
-    } catch (IOException|ClassNotFoundException  exception) {
-      exception.printStackTrace();
     }
   }
 

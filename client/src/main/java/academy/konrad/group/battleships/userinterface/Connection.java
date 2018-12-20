@@ -8,24 +8,26 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class Connection {
-  
-  private final static  Socket socket = new Socket();
+class Connection {
+
+  private static final Socket socket = new Socket();
   private static GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI();
 
-  public static void initialize() throws IOException {
-   socket.connect(new InetSocketAddress( gamePropertiesAPI.getValueByKey("ip"), gamePropertiesAPI.getIntValueByKey("port")), 5000);
+  private Connection() {
   }
 
-  //TODO PREVENT NPE
-  public static OutputStream getOutputStream() throws IOException {
+  static void initialize() throws IOException {
+    InetSocketAddress socketAddress = new InetSocketAddress(
+        gamePropertiesAPI.getValueByKey("ip"),
+        gamePropertiesAPI.getIntValueByKey("port"));
+    socket.connect(socketAddress, 5000);
+  }
+
+  static OutputStream getOutputStream() throws IOException {
     return socket.getOutputStream();
   }
 
-  //TODO PREVENT NPE
-  public static InputStream getInputStream() throws IOException {
+  static InputStream getInputStream() throws IOException {
     return socket.getInputStream();
   }
-
-  //TODO CHECK HOW TO CLOSE SOCKET
 }
