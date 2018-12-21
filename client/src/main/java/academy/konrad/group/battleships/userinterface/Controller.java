@@ -1,5 +1,6 @@
 package academy.konrad.group.battleships.userinterface;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -12,12 +13,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-  private TilePane enemyBoard;
+  TilePane enemyBoard;
   private TilePane playerBoard;
 
   @FXML
@@ -29,23 +32,28 @@ public class Controller implements Initializable {
   @FXML
   private Label message;
 
+  private static ObjectOutputStream objectOutputStream;
+  private static ObjectInputStream objectInputStream;
+
   @FXML
   private void start() {
-    enemyBoard = new Board(event -> {
 
-    });
-    ((Board) this.enemyBoard).fillBoard(100);
-
+    enemyBoard = new EnemyBoard();
+    ((EnemyBoard) this.enemyBoard).fillBoard(100);
+    
     playerBoard = new Board(event -> {
       Field field = (Field) event.getSource();
       field.setFill(Color.RED);
       field.setDisable(true);
       try {
-        Sender.send(new FieldNumber(field.getId()));
+        if(objectOutputStream == null){
+          objectOutputStream = new ObjectOutputStream(Connection.getOutputStream());
+        }
+        objectOutputStream.writeObject(new FieldNumber(field.getId()));
+        objectOutputStream.flush();
       } catch (IOException exception) {
         exception.printStackTrace();
       }
-      updateEnemyBoard();
       this.playerBoard.setDisable(false);
     });
     ((Board) this.playerBoard).fillBoard(100);
@@ -56,27 +64,6 @@ public class Controller implements Initializable {
     this.borderPane.setCenter(vbox);
   }
 
-  private void updateEnemyBoard() {
-
-    this.playerBoard.setDisable(true);
-    FieldNumber fieldNumber = null;
-    try {
-      fieldNumber = (FieldNumber) Listener.listen();
-    } catch (IOException | ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-    String fieldToMark = null;
-    if (fieldNumber != null) {
-      fieldToMark = fieldNumber.getFieldId();
-    }
-    for (Node elem : this.enemyBoard.getChildren()) {
-      if (elem.getId().equals(fieldToMark)) {
-        Field field = (Field) elem;
-        field.setFill(Color.RED);
-        return;
-      }
-    }
-  }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

@@ -23,11 +23,23 @@ class Connection {
     socket.connect(socketAddress, 5000);
   }
 
-  static OutputStream getOutputStream() throws IOException {
-    return socket.getOutputStream();
+  static OutputStream getOutputStream() {
+    try {
+      return socket.getOutputStream();
+    }catch (IOException e){
+      e.printStackTrace();
+    }
+
+    throw new IllegalStateException();
   }
 
-  static InputStream getInputStream() throws IOException {
-    return socket.getInputStream();
+  static InputStream getInputStream() {
+    try {
+      socket.setSoTimeout(5000);
+      return socket.getInputStream();
+    }catch (IOException e){
+      e.printStackTrace();
+    }
+    throw new IllegalStateException();
   }
 }
