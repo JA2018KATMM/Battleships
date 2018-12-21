@@ -36,7 +36,7 @@ public class Controller implements Initializable {
   private Label message;
 
   private static ObjectOutputStream objectOutputStream;
-  private static ObjectInputStream objectInputStream;
+  //private static ObjectInputStream objectInputStream;
 
   @FXML
   private void start() {
