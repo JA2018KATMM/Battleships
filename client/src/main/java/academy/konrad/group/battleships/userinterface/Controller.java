@@ -17,8 +17,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-  private TilePane enemyBoard;
-  private TilePane playerBoard;
+//  private TilePane enemyBoard;
+//  private TilePane playerBoard;
 
   @FXML
   private BorderPane borderPane;
@@ -31,52 +31,55 @@ public class Controller implements Initializable {
 
   @FXML
   private void start() {
-    enemyBoard = new Board(event -> {
 
-    });
-    ((Board) this.enemyBoard).fillBoard(100);
-
-    playerBoard = new Board(event -> {
-      Field field = (Field) event.getSource();
-      field.setFill(Color.RED);
-      field.setDisable(true);
-      try {
-        Sender.send(new FieldNumber(field.getId()));
-      } catch (IOException exception) {
-        exception.printStackTrace();
-      }
-      updateEnemyBoard();
-      this.playerBoard.setDisable(false);
-    });
-    ((Board) this.playerBoard).fillBoard(100);
-
-    VBox vbox = new VBox(50, enemyBoard, playerBoard);
-    vbox.setAlignment(Pos.CENTER);
-
-    this.borderPane.setCenter(vbox);
+    BattleshipClient client = new BattleshipClient();
+    client.play();
+//    enemyBoard = new Board(event -> {
+//
+//    });
+//    ((Board) this.enemyBoard).fillBoard(100);
+//
+//    playerBoard = new Board(event -> {
+//      Field field = (Field) event.getSource();
+//      field.setFill(Color.RED);
+//      field.setDisable(true);
+//      try {
+//        Sender.send(new FieldNumber(field.getId()));
+//      } catch (IOException exception) {
+//        exception.printStackTrace();
+//      }
+//      updateEnemyBoard();
+//      this.playerBoard.setDisable(false);
+//    });
+//    ((Board) this.playerBoard).fillBoard(100);
+//
+//    VBox vbox = new VBox(50, enemyBoard, playerBoard);
+//    vbox.setAlignment(Pos.CENTER);
+//
+//    this.borderPane.setCenter(vbox);
   }
 
-  private void updateEnemyBoard() {
-
-    this.playerBoard.setDisable(true);
-    FieldNumber fieldNumber = null;
-    try {
-      fieldNumber = (FieldNumber) Listener.listen();
-    } catch (IOException | ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-    String fieldToMark = null;
-    if (fieldNumber != null) {
-      fieldToMark = fieldNumber.getFieldId();
-    }
-    for (Node elem : this.enemyBoard.getChildren()) {
-      if (elem.getId().equals(fieldToMark)) {
-        Field field = (Field) elem;
-        field.setFill(Color.RED);
-        return;
-      }
-    }
-  }
+//  private void updateEnemyBoard() {
+//
+//    this.playerBoard.setDisable(true);
+//    FieldNumber fieldNumber = null;
+//    try {
+//      fieldNumber = (FieldNumber) Listener.listen();
+//    } catch (IOException | ClassNotFoundException e) {
+//      e.printStackTrace();
+//    }
+//    String fieldToMark = null;
+//    if (fieldNumber != null) {
+//      fieldToMark = fieldNumber.getFieldId();
+//    }
+//    for (Node elem : this.enemyBoard.getChildren()) {
+//      if (elem.getId().equals(fieldToMark)) {
+//        Field field = (Field) elem;
+//        field.setFill(Color.RED);
+//        return;
+//      }
+//    }
+//  }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
