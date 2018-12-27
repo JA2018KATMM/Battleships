@@ -1,5 +1,7 @@
 package academy.konrad.group.battleships.server;
 
+import org.pmw.tinylog.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,7 +10,7 @@ import java.util.List;
 
 class ListenerThread extends Thread {
 
-  private static final int PORT_NUMBER = 6666;
+  private static final int PORT_NUMBER = 8081;
   private static final List<Socket> clients = new ArrayList<>();
 
   @Override
@@ -26,7 +28,12 @@ class ListenerThread extends Thread {
     while (!Thread.currentThread().isInterrupted()) {
       try {
         Socket clientSocket = serverSocket.accept();
-        if (clientSocket != null) {
+        SingleApp singleApp = new SingleApp(clientSocket);
+        Thread thread = new Thread(singleApp);
+        Logger.error("Jest watek");
+        thread.start();
+
+        /*if (clientSocket != null) {
           clients.add(clientSocket);
         }
         if (clients.size() == 2) {
@@ -36,6 +43,7 @@ class ListenerThread extends Thread {
           Thread thread = new Thread(clientsPair);
           thread.start();
         }
+        */
 
       } catch (IOException exception) {
         exception.printStackTrace();
