@@ -1,6 +1,7 @@
 package academy.konrad.group.battleships.server;
 
 import academy.konrad.group.battleships.userinterface.FieldNumber;
+import org.pmw.tinylog.Logger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,16 +24,16 @@ class SingleGame implements Runnable {
   @Override
   public void run() {
     boolean shouldContinue = true;
+    Logger.error("Jest para");
     while (shouldContinue) {
       try {
         FieldNumber firstFieldNumber = (FieldNumber) firstIS.readObject();
         secondOS.writeObject(firstFieldNumber);
-
+        Logger.error(firstFieldNumber.toString());
         FieldNumber fieldNumber = (FieldNumber) secondIS.readObject();
         firstOS.writeObject(fieldNumber);
+        Logger.error(fieldNumber.toString());
 
-        firstOS.flush();
-        secondOS.flush();
         Thread.sleep(1000);
       } catch (InterruptedException | IOException | ClassNotFoundException exception) {
         exception.printStackTrace();
