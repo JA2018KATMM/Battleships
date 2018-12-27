@@ -1,5 +1,8 @@
 package academy.konrad.group.battleships.userinterface;
 
+import javafx.application.Platform;
+import javafx.scene.control.TextArea;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,18 +25,24 @@ public class BattleshipClient {
     }
   }
 
-  public void play() {
+  public void play(TextArea textArea) {
 
-    String fromServer;
+    Thread t = new Thread(() -> {
+      String fromServer;
 
-    try {
-      while ((fromServer = in.readLine()) != null) {
-        System.out.println("Server: " + fromServer);
-        if (fromServer.equals("Bye."))
-          break;
+      try {
+        while ((fromServer = in.readLine()) != null) {
+          System.out.println("Server: " + fromServer);
+          String message = fromServer;
+          Platform.runLater(() -> textArea.appendText(message + "\n"));
+
+          if (fromServer.equals("Bye."))
+            break;
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    });
+    t.start();
   }
 }

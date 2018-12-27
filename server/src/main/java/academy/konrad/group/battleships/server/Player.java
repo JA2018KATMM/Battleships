@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class Player extends Thread {
 
-//  private Socket socket;
+  //  private Socket socket;
   private boolean isFirst;
-//  private BufferedReader input;
+  //  private BufferedReader input;
   private PrintWriter output;
 
   public Player(Socket socket, boolean isFirst) {

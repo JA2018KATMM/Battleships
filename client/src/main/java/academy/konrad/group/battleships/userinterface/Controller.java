@@ -2,16 +2,11 @@ package academy.konrad.group.battleships.userinterface;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,16 +19,20 @@ public class Controller implements Initializable {
   private BorderPane borderPane;
 
   @FXML
-  private Button test;
+  private Button connect;
 
   @FXML
   private Label message;
 
   @FXML
+  private TextArea console;
+
+  @FXML
   private void start() {
 
+    connect.setDisable(true);
     BattleshipClient client = new BattleshipClient();
-    client.play();
+    client.play(console);
 //    enemyBoard = new Board(event -> {
 //
 //    });
@@ -83,6 +82,6 @@ public class Controller implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-
+    this.console.setText("Press Connect to START the game\n");
   }
 }
