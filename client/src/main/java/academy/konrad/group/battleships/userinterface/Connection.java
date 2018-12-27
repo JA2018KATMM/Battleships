@@ -35,7 +35,6 @@ class Connection {
 
   static InputStream getInputStream() {
     try {
-      socket.setSoTimeout(5000);
       return socket.getInputStream();
     }catch (IOException e){
       e.printStackTrace();

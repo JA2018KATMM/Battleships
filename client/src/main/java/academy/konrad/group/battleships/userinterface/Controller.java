@@ -36,7 +36,7 @@ public class Controller implements Initializable {
   private Label message;
 
   private static ObjectOutputStream objectOutputStream;
-  //private static ObjectInputStream objectInputStream;
+  private static ObjectInputStream objectInputStream;
 
   @FXML
   private void start() {
@@ -45,34 +45,29 @@ public class Controller implements Initializable {
     ((EnemyBoard) this.enemyBoard).fillBoard(100);
 
     Thread thread = new Thread(new Runnable() {
-
       @Override
       public void run() {
-        Runnable updater = new Runnable() {
-
-          private int i = 0;
-
-          @Override
-          public void run() {
-            for(Node elem : enemyBoard.getChildren()){
-              if(elem.getId().equals(String.valueOf(i))) {
-                Field field = (Field) elem;
-                field.setFill(Color.RED);
-                i++;
-                return;
-              }
+        while (true){
+          if(objectInputStream == null){
+            try {
+              objectInputStream = new ObjectInputStream(Connection.getInputStream());
+            } catch (IOException e) {
+              e.printStackTrace();
             }
           }
-        };
 
-        while (true) {
+          FieldNumber fieldNumber = null;
           try {
-            Thread.sleep(3000);
-          } catch (InterruptedException ex) {
+            fieldNumber = (FieldNumber) objectInputStream.readObject();
+          }catch (SocketTimeoutException e){
+          } catch (IOException e) {
+            e.printStackTrace();
+          } catch (ClassNotFoundException e) {
+            e.printStackTrace();
           }
-
-          // UI update is run on the Application thread
-          Platform.runLater(updater);
+          if(fieldNumber != null){
+            Platform.runLater(new Updater(fieldNumber, enemyBoard).getRunnable());
+          }
         }
       }
 
