@@ -40,6 +40,13 @@ public class Controller implements Initializable {
   @FXML
   private void start() {
 
+    startListener();
+    setUpBoards();
+
+  }
+
+  private void startListener() {
+
     Thread thread = new Thread(() -> {
       boolean shouldContinue = true;
       while (shouldContinue){
@@ -66,9 +73,6 @@ public class Controller implements Initializable {
     // don't let thread prevent JVM shutdown
     thread.setDaemon(true);
     thread.start();
-
-    setUpBoards();
-
   }
 
   private void setUpBoards() {
