@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 class ListenerThread extends Thread {
 
   private static final int PORT_NUMBER = 8081;
-  private static final List<Socket> clients = Collections.synchronizedList(new ArrayList());
+  @SuppressWarnings("unchecked")
+  private static final List<Socket> clients = Collections.synchronizedList(new ArrayList<Socket>());
 
   @Override
   public void run() {
@@ -22,29 +23,26 @@ class ListenerThread extends Thread {
     try {
       serverSocket = new ServerSocket(PORT_NUMBER);
     } catch (IOException exception) {
-      Logger.error("Exception caught when trying to listen on port "
-          + PORT_NUMBER + " or listening for a connection");
-      exception.printStackTrace();
+      Logger.error(exception.getMessage());
     }
 
     while (!Thread.currentThread().isInterrupted()) {
       try {
-        Socket clientSocket = serverSocket.accept();
-        if(clientSocket != null){
-          Logger.error(clientSocket.toString());
+        Socket clientSocket = Objects.requireNonNull(serverSocket).accept();
+        if (clientSocket != null) {
           clients.add(clientSocket);
+          Logger.info("Klient number " + clients.size() + " " + clientSocket.toString());
         }
         if (clients.size() == 2) {
           SingleGame clientsPair = new SingleGame(clients.get(0), clients.get(1));
           clients.clear();
-          Logger.error(clients.size());
           Thread thread = new Thread(clientsPair);
           thread.start();
         }
 
 
       } catch (IOException exception) {
-        exception.printStackTrace();
+        Logger.error(exception.getMessage());
         Thread.currentThread().interrupt();
       }
     }

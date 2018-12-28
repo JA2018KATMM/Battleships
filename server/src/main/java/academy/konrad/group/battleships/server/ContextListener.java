@@ -16,11 +16,16 @@ public class ContextListener implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent servletContextEvent) {
-    //TODO ustawić ścieżke dla loggera
-    Configurator.defaultConfig().writer(new FileWriter("loggii.txt")).level(Level.ERROR).activate();
-    Logger.error("zalogowane");
+    loggerSetup();
+    Logger.info("Aplikacje serwerowa została uruchomiona");
     listenerThread = new ListenerThread();
     listenerThread.start();
+  }
+
+  private void loggerSetup() {
+    //TODO ustawić ścieżke dla loggera
+    Configurator.defaultConfig().writer(new FileWriter("/home/info_serwer.txt"), Level.INFO)
+            .addWriter(new FileWriter("/home/bledy_serwer.txt"), Level.ERROR).activate();
   }
 
   @Override

@@ -9,34 +9,34 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 class SingleGame implements Runnable {
-  private final ObjectInputStream firstIS;
-  private final ObjectInputStream secondIS;
-  private final ObjectOutputStream firstOS;
-  private final ObjectOutputStream secondOS;
+  private final ObjectInputStream firstInputStream;
+  private final ObjectInputStream secondInputStream;
+  private final ObjectOutputStream firstOutputStream;
+  private final ObjectOutputStream secondOutputStream;
 
   SingleGame(Socket firstClientSocket, Socket secondClientSocket) throws IOException {
-    firstIS = new ObjectInputStream(firstClientSocket.getInputStream());
-    secondIS = new ObjectInputStream(secondClientSocket.getInputStream());
-    firstOS = new ObjectOutputStream(firstClientSocket.getOutputStream());
-    secondOS = new ObjectOutputStream(secondClientSocket.getOutputStream());
+    firstInputStream = new ObjectInputStream(firstClientSocket.getInputStream());
+    secondInputStream = new ObjectInputStream(secondClientSocket.getInputStream());
+    firstOutputStream = new ObjectOutputStream(firstClientSocket.getOutputStream());
+    secondOutputStream = new ObjectOutputStream(secondClientSocket.getOutputStream());
   }
 
   @Override
   public void run() {
     boolean shouldContinue = true;
-    Logger.error("Jest para");
+    Logger.info("Gra rozpoczęta");
     while (shouldContinue) {
       try {
-        FieldNumber firstFieldNumber = (FieldNumber) firstIS.readObject();
-        secondOS.writeObject(firstFieldNumber);
-        Logger.error(firstFieldNumber.toString());
-        FieldNumber fieldNumber = (FieldNumber) secondIS.readObject();
-        firstOS.writeObject(fieldNumber);
-        Logger.error(fieldNumber.toString());
+        FieldNumber firstFieldNumber = (FieldNumber) firstInputStream.readObject();
+        secondOutputStream.writeObject(firstFieldNumber);
+        Logger.info(firstFieldNumber.toString());
+        FieldNumber fieldNumber = (FieldNumber) secondInputStream.readObject();
+        firstOutputStream.writeObject(fieldNumber);
+        Logger.info(fieldNumber.toString());
 
         Thread.sleep(1000);
       } catch (InterruptedException | IOException | ClassNotFoundException exception) {
-        exception.printStackTrace();
+        Logger.error(exception.getMessage());
         shouldContinue = false;
       }
     }
