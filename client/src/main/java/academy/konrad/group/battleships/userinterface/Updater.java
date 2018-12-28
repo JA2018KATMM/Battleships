@@ -5,28 +5,27 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Updater {
+class Updater {
+  private final FieldNumber fieldNumber;
+  private final TilePane boardToUpdate;
 
-    private final FieldNumber fieldNumber;
-    private final TilePane boardToUpdate;
+  Updater(FieldNumber fieldNumber, TilePane boardToUpdate) {
+    this.fieldNumber = fieldNumber;
+    this.boardToUpdate = boardToUpdate;
+  }
 
-    Updater(FieldNumber fieldNumber, TilePane boardToUpdate) {
-        this.fieldNumber = fieldNumber;
-        this.boardToUpdate = boardToUpdate;
-    }
+  Runnable getRunnable() {
 
-    public Runnable getRunnable() {
-
-        return  () -> {
-            for (Node elem : boardToUpdate.getChildren()) {
-                if (elem.getId().equals(fieldNumber.getFieldId())) {
-                    Rectangle field = (Rectangle) elem;
-                    field.setFill(Color.RED);
-                    return;
-                }
-            }
-            throw new IllegalArgumentException("Nie ma takiego pola");
-        };
-    }
+    return () -> {
+      for (Node elem : boardToUpdate.getChildren()) {
+        if (elem.getId().equals(fieldNumber.getFieldId())) {
+          Rectangle field = (Rectangle) elem;
+          field.setFill(Color.RED);
+          return;
+        }
+      }
+      throw new IllegalArgumentException("Nie ma takiego pola");
+    };
+  }
 
 }

@@ -103,6 +103,7 @@
                     <excludes>
                         <exclude>**/battleships/server/*</exclude>
                         <exclude>**/battleships/userinterface/*</exclude>
+                        <exclude>**/battleships/game_elements/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

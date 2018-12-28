@@ -4,6 +4,10 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.layout.TilePane;
 
+/**
+ * Tworzy wypełnioną planszę, jeśli jest to plansza przeciwnika nie reaguje ona na klikanie,
+ * klikanie po planszy graczy ma określone zachowanie (EvenHandler).
+ */
 public class BoardFactory {
 
   public static TilePane getPlayerBoard(EventHandler<Event> handler, int numberOfFields){

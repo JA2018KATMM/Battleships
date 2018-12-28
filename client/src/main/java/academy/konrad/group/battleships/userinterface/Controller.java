@@ -20,6 +20,9 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Odpowiada za interakcje z użytkownikiem.
+ */
 public class Controller implements Initializable {
 
   private TilePane enemyBoard;
@@ -39,10 +42,8 @@ public class Controller implements Initializable {
 
   @FXML
   private void start() {
-
     startListener();
     setUpBoards();
-
   }
 
   private void startListener() {

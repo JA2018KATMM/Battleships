@@ -27,7 +27,7 @@ class Connection {
   static OutputStream getOutputStream() {
     try {
       return socket.getOutputStream();
-    }catch (IOException exception){
+    } catch (IOException exception) {
       Logger.error(exception.getMessage());
     }
 
@@ -37,7 +37,7 @@ class Connection {
   static InputStream getInputStream() {
     try {
       return socket.getInputStream();
-    }catch (IOException exception){
+    } catch (IOException exception) {
       Logger.error(exception.getMessage());
     }
     throw new IllegalStateException();
