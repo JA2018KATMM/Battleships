@@ -9,27 +9,23 @@ public class Updater {
     private final FieldNumber fieldNumber;
     private final TilePane boardToUpdate;
 
-    public Updater(FieldNumber fieldNumber, TilePane boardToUpdate) {
+    Updater(FieldNumber fieldNumber, TilePane boardToUpdate) {
         this.fieldNumber = fieldNumber;
         this.boardToUpdate = boardToUpdate;
     }
 
     public Runnable getRunnable() {
 
-        Runnable updater = new Runnable() {
-
-            @Override
-            public void run() {
-                for (Node elem : boardToUpdate.getChildren()) {
-                    if (elem.getId().equals(fieldNumber.getFieldId())) {
-                        Field field = (Field) elem;
-                        field.setFill(Color.RED);
-                        return;
-                    }
+        return  () -> {
+            for (Node elem : boardToUpdate.getChildren()) {
+                if (elem.getId().equals(fieldNumber.getFieldId())) {
+                    Field field = (Field) elem;
+                    field.setFill(Color.RED);
+                    return;
                 }
             }
+            throw new IllegalArgumentException("Nie ma takiego pola");
         };
-        return updater;
     }
 
 }

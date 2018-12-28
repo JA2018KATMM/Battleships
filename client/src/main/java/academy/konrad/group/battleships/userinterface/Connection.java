@@ -1,6 +1,7 @@
 package academy.konrad.group.battleships.userinterface;
 
 import academy.konrad.group.battleships.properties.GamePropertiesAPI;
+import org.pmw.tinylog.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,8 +27,8 @@ class Connection {
   static OutputStream getOutputStream() {
     try {
       return socket.getOutputStream();
-    }catch (IOException e){
-      e.printStackTrace();
+    }catch (IOException exception){
+      Logger.error(exception.getMessage());
     }
 
     throw new IllegalStateException();
@@ -36,8 +37,8 @@ class Connection {
   static InputStream getInputStream() {
     try {
       return socket.getInputStream();
-    }catch (IOException e){
-      e.printStackTrace();
+    }catch (IOException exception){
+      Logger.error(exception.getMessage());
     }
     throw new IllegalStateException();
   }
