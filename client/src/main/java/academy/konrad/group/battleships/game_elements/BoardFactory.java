@@ -1,0 +1,24 @@
+package academy.konrad.group.battleships.game_elements;
+
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.layout.TilePane;
+
+public class BoardFactory {
+
+  public static TilePane getPlayerBoard(EventHandler<Event> handler, int numberOfFields){
+    return setUpBoard(new Board(handler), numberOfFields);
+  }
+
+  public static TilePane getEnemyBoard(int numberOfFields){
+    return setUpBoard(new Board(), numberOfFields);
+  }
+
+
+  private static Board setUpBoard(Board board, int numberOfFields) {
+    board.setSize();
+    board.fillBoard(numberOfFields);
+    return board;
+  }
+
+}

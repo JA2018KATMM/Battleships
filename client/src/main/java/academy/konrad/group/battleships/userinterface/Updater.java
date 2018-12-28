@@ -3,6 +3,7 @@ package academy.konrad.group.battleships.userinterface;
 import javafx.scene.Node;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Updater {
 
@@ -19,7 +20,7 @@ public class Updater {
         return  () -> {
             for (Node elem : boardToUpdate.getChildren()) {
                 if (elem.getId().equals(fieldNumber.getFieldId())) {
-                    Field field = (Field) elem;
+                    Rectangle field = (Rectangle) elem;
                     field.setFill(Color.RED);
                     return;
                 }

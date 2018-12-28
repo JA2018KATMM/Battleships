@@ -28,8 +28,8 @@ public class Main extends Application {
 
   private void loggerSetup() {
     //TODO ustawić ścieżke dla loggera
-    Configurator.defaultConfig().writer(new FileWriter("/home/info_klient.txt"), Level.INFO)
-            .addWriter(new FileWriter("/home/bledy_klient.txt"), Level.ERROR).activate();
+    Configurator.defaultConfig().writer(new FileWriter("/home/marta/info_klient.txt"), Level.INFO)
+            .addWriter(new FileWriter("/home/marta/bledy_klient.txt"), Level.ERROR).activate();
   }
 
   private void renderView(Stage primaryStage) throws IOException {

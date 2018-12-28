@@ -1,5 +1,6 @@
 package academy.konrad.group.battleships.userinterface;
 
+import academy.konrad.group.battleships.game_elements.BoardFactory;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.pmw.tinylog.Logger;
 
 import java.io.IOException;
@@ -38,9 +40,6 @@ public class Controller implements Initializable {
   @FXML
   private void start() {
 
-    enemyBoard = new EnemyBoard();
-    ((EnemyBoard) this.enemyBoard).fillBoard(100);
-
     Thread thread = new Thread(() -> {
       boolean shouldContinue = true;
       while (shouldContinue){
@@ -68,8 +67,26 @@ public class Controller implements Initializable {
     thread.setDaemon(true);
     thread.start();
 
-    playerBoard = new Board(event -> {
-      Field field = (Field) event.getSource();
+    setUpBoards();
+
+  }
+
+  private void setUpBoards() {
+    setUpEnemyBoard();
+    setUpPlayerBoard();
+    VBox vbox = new VBox(50, enemyBoard, playerBoard);
+    vbox.setAlignment(Pos.CENTER);
+
+    this.borderPane.setCenter(vbox);
+  }
+
+  private void setUpEnemyBoard() {
+    this.enemyBoard = BoardFactory.getEnemyBoard(100);
+  }
+
+  private void setUpPlayerBoard() {
+    this.playerBoard = BoardFactory.getPlayerBoard((event -> {
+      Rectangle field = (Rectangle) event.getSource();
       field.setFill(Color.RED);
       field.setDisable(true);
       try {
@@ -82,13 +99,7 @@ public class Controller implements Initializable {
         Logger.error(exception.getMessage());
       }
       this.playerBoard.setDisable(false);
-    });
-    ((Board) this.playerBoard).fillBoard(100);
-
-    VBox vbox = new VBox(50, enemyBoard, playerBoard);
-    vbox.setAlignment(Pos.CENTER);
-
-    this.borderPane.setCenter(vbox);
+    }),100);
   }
 
 

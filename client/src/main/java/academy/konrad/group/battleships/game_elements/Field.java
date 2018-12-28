@@ -1,4 +1,4 @@
-package academy.konrad.group.battleships.userinterface;
+package academy.konrad.group.battleships.game_elements;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
