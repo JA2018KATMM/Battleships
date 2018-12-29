@@ -27,9 +27,9 @@ public class Main extends Application {
   }
 
   private void loggerSetup() {
-    //TODO ustawić ścieżke dla loggera
-    Configurator.defaultConfig().writer(new FileWriter("/home/marta/info_klient.txt"), Level.INFO)
-            .addWriter(new FileWriter("/home/marta/bledy_klient.txt"), Level.ERROR).activate();
+    //sciezka na serwerze
+    Configurator.defaultConfig().writer(new FileWriter("/home/admin/logi/info_klient.txt"), Level.INFO)
+            .addWriter(new FileWriter("/home/admin/logi/bledy_klient.txt"), Level.ERROR).activate();
   }
 
   private void renderView(Stage primaryStage) throws IOException {
