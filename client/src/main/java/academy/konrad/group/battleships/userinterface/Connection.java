@@ -6,6 +6,7 @@ import org.pmw.tinylog.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -17,10 +18,10 @@ class Connection {
   private Connection() {
   }
 
+  //TODO zamiana na wczytywane z właściwości
   static void initialize() throws IOException {
     InetSocketAddress socketAddress = new InetSocketAddress(
-        gamePropertiesAPI.getValueByKey("ip"),
-        gamePropertiesAPI.getIntValueByKey("port"));
+        InetAddress.getLocalHost(), 8081);
     socket.connect(socketAddress, 5000);
   }
 
