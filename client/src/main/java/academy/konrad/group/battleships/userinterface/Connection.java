@@ -20,8 +20,8 @@ class Connection {
 
   //TODO zamiana na wczytywane z właściwości
   static void initialize() throws IOException {
-    InetSocketAddress socketAddress = new InetSocketAddress(
-        InetAddress.getLocalHost(), 8081);
+    InetSocketAddress socketAddress = new InetSocketAddress
+        (InetAddress.getByName("51.38.130.222"), 8081);
     socket.connect(socketAddress, 5000);
   }
 

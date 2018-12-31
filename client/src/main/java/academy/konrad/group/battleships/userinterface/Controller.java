@@ -44,6 +44,7 @@ public class Controller implements Initializable {
   private void start() {
     startListener();
     setUpBoards();
+    Logger.info("Start aplikacji");
   }
 
   private void startListener() {
