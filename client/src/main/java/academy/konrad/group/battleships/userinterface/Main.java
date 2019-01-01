@@ -24,7 +24,7 @@ public class Main extends Application {
   private void renderView(Stage primaryStage) throws IOException {
     Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("sample.fxml"));
     primaryStage.setTitle("Statki");
-    primaryStage.setScene(new Scene(root, 800, 800));
+    primaryStage.setScene(new Scene(root, 1000, 700));
     primaryStage.show();
   }
 }

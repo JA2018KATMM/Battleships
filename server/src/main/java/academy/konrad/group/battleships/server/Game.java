@@ -1,5 +1,13 @@
 package academy.konrad.group.battleships.server;
 
-public class Game {
-//  public Player currentPlayer;
+class Game {
+
+  Player currentPlayer;
+  Player waitingPlayer;
+
+  void changeTurn(){
+    Player temp = currentPlayer;
+    currentPlayer = waitingPlayer;
+    waitingPlayer = temp;
+  }
 }

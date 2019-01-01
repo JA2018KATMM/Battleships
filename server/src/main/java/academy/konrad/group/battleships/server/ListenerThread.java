@@ -20,13 +20,13 @@ class ListenerThread extends Thread {
       System.out.println("Battleships are running!");
 
       while (true){
-//        Game game = new Game();
-        Player firstPlayer = new Player(serverSocket.accept(), true);
-        Player secondPlayer = new Player(serverSocket.accept(), false);
-//        game.currentPlayer = firstPlayer;
+        Game game = new Game();
+        Player firstPlayer = new Player(serverSocket.accept(), game);
+        Player secondPlayer = new Player(serverSocket.accept(), game);
+        game.currentPlayer = firstPlayer;
+        game.waitingPlayer = secondPlayer;
         firstPlayer.start();
         secondPlayer.start();
-
       }
 
     } catch (IOException e) {
