@@ -1,5 +1,7 @@
 package academy.konrad.group.battleships.properties;
 
+import org.pmw.tinylog.Logger;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,8 +18,8 @@ class DefaultPropertiesLoader {
       return properties;
     } catch (FileNotFoundException e) {
       throw new CannotLoadConfigurationFileException();
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException exception) {
+      Logger.error(exception.getMessage());
       throw new CannotLoadConfigurationFileException();
     }
 

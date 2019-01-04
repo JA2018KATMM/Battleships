@@ -1,85 +1,89 @@
 package academy.konrad.group.battleships.userinterface;
 
+import academy.konrad.group.battleships.game_elements.BoardFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import org.pmw.tinylog.Logger;
 
-import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
+
+
+/**
+ * Odpowiada za interakcje z użytkownikiem.
+ */
 public class Controller implements Initializable {
 
   private TilePane enemyBoard;
   private TilePane playerBoard;
 
   @FXML
-  private BorderPane borderPane;
+  private Pane local;
 
   @FXML
-  private Button test;
+  private Button connect;
 
   @FXML
-  private Label message;
+  private HBox table;
+
+  @FXML
+  private TextArea console;
+
+  private PrintWriter out;
 
   @FXML
   private void start() {
-    enemyBoard = new Board(event -> {
-
-    });
-    ((Board) this.enemyBoard).fillBoard(100);
-
-    playerBoard = new Board(event -> {
-      Field field = (Field) event.getSource();
-      field.setFill(Color.RED);
-      field.setDisable(true);
-      try {
-        Sender.send(new FieldNumber(field.getId()));
-      } catch (IOException exception) {
-        exception.printStackTrace();
-      }
-      updateEnemyBoard();
-      this.playerBoard.setDisable(false);
-    });
-    ((Board) this.playerBoard).fillBoard(100);
-
-    VBox vbox = new VBox(50, enemyBoard, playerBoard);
-    vbox.setAlignment(Pos.CENTER);
-
-    this.borderPane.setCenter(vbox);
+    establishConnection();
+    this.connect.setDisable(true);
+    setUpBoards();
+    new BattleshipClient().play(this.console, this.playerBoard, this.enemyBoard);
+    Logger.info("Start aplikacji");
   }
 
-  private void updateEnemyBoard() {
+  private void establishConnection() {
+    if(Connection.initialize()) {
+      out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
+      return;
+    }
+    this.console.appendText("No connection");
+  }
 
-    this.playerBoard.setDisable(true);
-    FieldNumber fieldNumber = null;
-    try {
-      fieldNumber = (FieldNumber) Listener.listen();
-    } catch (IOException | ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-    String fieldToMark = null;
-    if (fieldNumber != null) {
-      fieldToMark = fieldNumber.getFieldId();
-    }
-    for (Node elem : this.enemyBoard.getChildren()) {
-      if (elem.getId().equals(fieldToMark)) {
-        Field field = (Field) elem;
-        field.setFill(Color.RED);
-        return;
-      }
-    }
+  private void setUpBoards() {
+    setUpEnemyBoard();
+    setUpPlayerBoard();
+    HBox.setHgrow(this.enemyBoard, Priority.ALWAYS);
+    HBox.setHgrow(this.playerBoard, Priority.ALWAYS);
+    this.table.getChildren().addAll(enemyBoard, playerBoard);
+  }
+
+  private void setUpEnemyBoard() {
+    this.enemyBoard = BoardFactory.getEnemyBoard(100);
+  }
+
+  private void setUpPlayerBoard() {
+    this.playerBoard = BoardFactory.getPlayerBoard((event -> {
+      Rectangle field = (Rectangle) event.getSource();
+      field.setFill(Color.RED);
+      field.setDisable(true);
+      this.playerBoard.setDisable(true);
+      out.println("MOVE" + field.getId());
+    }),100);
   }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-
+    this.console.setText("Press Connect to START the game\n");
   }
 }
