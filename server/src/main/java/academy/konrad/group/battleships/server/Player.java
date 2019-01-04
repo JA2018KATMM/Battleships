@@ -1,5 +1,7 @@
 package academy.konrad.group.battleships.server;
 
+import org.pmw.tinylog.Logger;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +22,7 @@ public class Player extends Thread {
       output.println("MESSAGE Waiting for second player to connect");
 
     } catch (IOException e) {
-      System.out.println("Player died: " + e);
+      Logger.error("Player died: " + e);
     }
   }
 
@@ -44,7 +46,7 @@ public class Player extends Thread {
           game.currentPlayer.output.println("TURN");
         }
       } catch (IOException e) {
-        System.out.println("Player died: " + e);
+        Logger.error("Player died: " + e);
       }
     }
   }

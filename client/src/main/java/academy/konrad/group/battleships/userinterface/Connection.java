@@ -21,10 +21,9 @@ class Connection {
 
   //TODO zamiana na wczytywane z właściwości
   static boolean initialize()  {
-    InetSocketAddress socketAddress = null;
     try {
-      socketAddress = new InetSocketAddress
-          (InetAddress.getLocalHost(), 8081);
+      InetSocketAddress socketAddress = new InetSocketAddress
+          (InetAddress.getByName("51.38.130.222"), 8081);
       socket.connect(socketAddress, 5000);
       return true;
     } catch (IOException e) {

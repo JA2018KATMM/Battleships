@@ -6,20 +6,21 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.io.*;
-import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-public class BattleshipClient {
+ class BattleshipClient {
 
   private final BufferedReader in;
 
 
-  public BattleshipClient() {
+  BattleshipClient() {
       in = new BufferedReader(new InputStreamReader(Connection.getInputStream(), StandardCharsets.UTF_8));
   }
 
-  public void play(TextArea textArea, TilePane playerBoard, TilePane enemyBoard) {
+  void play(TextArea textArea, TilePane playerBoard, TilePane enemyBoard) {
 
     Thread t = new Thread(() -> {
       String fromServer;
@@ -56,6 +57,4 @@ public class BattleshipClient {
     });
     t.start();
   }
-
-  //void shot(String id) {out.println("MOVE" + id);}
 }

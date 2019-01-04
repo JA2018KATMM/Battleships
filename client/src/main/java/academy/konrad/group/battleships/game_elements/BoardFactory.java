@@ -18,7 +18,6 @@ public class BoardFactory {
     return setUpBoard(new Board(), numberOfFields);
   }
 
-
   private static Board setUpBoard(Board board, int numberOfFields) {
     board.setSize();
     board.fillBoard(numberOfFields);

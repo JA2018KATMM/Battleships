@@ -47,7 +47,6 @@ public class Controller implements Initializable {
   private void start() {
     establishConnection();
     this.connect.setDisable(true);
-
     setUpBoards();
     new BattleshipClient().play(this.console, this.playerBoard, this.enemyBoard);
     Logger.info("Start aplikacji");
@@ -82,7 +81,6 @@ public class Controller implements Initializable {
       out.println("MOVE" + field.getId());
     }),100);
   }
-
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

@@ -17,7 +17,6 @@ class Board extends TilePane {
   Board() {
   }
 
-
   void fillBoard(int fieldNumber) {
     for (int i = 0; i < fieldNumber; i++) {
       Rectangle rectangle = new Rectangle(30, 30);
@@ -36,6 +35,5 @@ class Board extends TilePane {
     setPrefTileHeight(30);
     setPrefTileWidth(30);
     setMaxSize(300, 300);
-
   }
 }
