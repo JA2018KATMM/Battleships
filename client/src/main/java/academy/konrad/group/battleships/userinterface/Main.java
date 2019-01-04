@@ -23,7 +23,6 @@ public class Main extends Application {
   public void start(Stage primaryStage) throws IOException {
     loggerSetup();
     renderView(primaryStage);
-    Connection.initialize();
   }
 
   private void loggerSetup() {
@@ -34,8 +33,7 @@ public class Main extends Application {
   private void renderView(Stage primaryStage) throws IOException {
     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("sample.fxml")));
     primaryStage.setTitle("Statki");
-    primaryStage.setScene(new Scene(root, 1000, 1000));
+    primaryStage.setScene(new Scene(root, 1000, 700));
     primaryStage.show();
-
   }
 }

@@ -1,24 +1,25 @@
 package academy.konrad.group.battleships.userinterface;
 
 import academy.konrad.group.battleships.game_elements.BoardFactory;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.pmw.tinylog.Logger;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
+
+
 
 /**
  * Odpowiada za interakcje z użytkownikiem.
@@ -29,61 +30,43 @@ public class Controller implements Initializable {
   private TilePane playerBoard;
 
   @FXML
-  private BorderPane borderPane;
+  private Pane local;
 
   @FXML
-  private Button test;
+  private Button connect;
 
   @FXML
-  private Label message;
+  private HBox table;
 
-  private static ObjectOutputStream objectOutputStream;
-  private static ObjectInputStream objectInputStream;
+  @FXML
+  private TextArea console;
+
+  private PrintWriter out;
 
   @FXML
   private void start() {
-    startListener();
+    establishConnection();
+    this.connect.setDisable(true);
+
     setUpBoards();
+    new BattleshipClient().play(this.console, this.playerBoard, this.enemyBoard);
     Logger.info("Start aplikacji");
   }
 
-  private void startListener() {
-
-    Thread thread = new Thread(() -> {
-      boolean shouldContinue = true;
-      while (shouldContinue){
-        if(objectInputStream == null){
-          try {
-            objectInputStream = new ObjectInputStream(Connection.getInputStream());
-          } catch (IOException exception) {
-            Logger.error(exception.getMessage());
-          }
-        }
-
-        FieldNumber fieldNumber = null;
-        try {
-          fieldNumber = (FieldNumber) objectInputStream.readObject();
-        }catch (ClassNotFoundException | IOException exception){
-          Logger.error(exception.getMessage());
-          shouldContinue = false;
-        }
-        if(fieldNumber != null){
-          Platform.runLater(new Updater(fieldNumber, enemyBoard).getRunnable());
-        }
-      }
-    });
-    // don't let thread prevent JVM shutdown
-    thread.setDaemon(true);
-    thread.start();
+  private void establishConnection() {
+    if(Connection.initialize()) {
+      out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
+      return;
+    }
+    this.console.appendText("No connection");
   }
 
   private void setUpBoards() {
     setUpEnemyBoard();
     setUpPlayerBoard();
-    VBox vbox = new VBox(50, enemyBoard, playerBoard);
-    vbox.setAlignment(Pos.CENTER);
-
-    this.borderPane.setCenter(vbox);
+    HBox.setHgrow(this.enemyBoard, Priority.ALWAYS);
+    HBox.setHgrow(this.playerBoard, Priority.ALWAYS);
+    this.table.getChildren().addAll(enemyBoard, playerBoard);
   }
 
   private void setUpEnemyBoard() {
@@ -95,22 +78,14 @@ public class Controller implements Initializable {
       Rectangle field = (Rectangle) event.getSource();
       field.setFill(Color.RED);
       field.setDisable(true);
-      try {
-        if(objectOutputStream == null){
-          objectOutputStream = new ObjectOutputStream(Connection.getOutputStream());
-        }
-        objectOutputStream.writeObject(new FieldNumber(field.getId()));
-        objectOutputStream.flush();
-      } catch (IOException exception) {
-        Logger.error(exception.getMessage());
-      }
-      this.playerBoard.setDisable(false);
+      this.playerBoard.setDisable(true);
+      out.println("MOVE" + field.getId());
     }),100);
   }
 
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-
+    this.console.setText("Press Connect to START the game\n");
   }
 }

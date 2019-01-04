@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 class Connection {
 
@@ -19,10 +20,17 @@ class Connection {
   }
 
   //TODO zamiana na wczytywane z właściwości
-  static void initialize() throws IOException {
-    InetSocketAddress socketAddress = new InetSocketAddress
-        (InetAddress.getByName("51.38.130.222"), 8081);
-    socket.connect(socketAddress, 5000);
+  static boolean initialize()  {
+    InetSocketAddress socketAddress = null;
+    try {
+      socketAddress = new InetSocketAddress
+          (InetAddress.getLocalHost(), 8081);
+      socket.connect(socketAddress, 5000);
+      return true;
+    } catch (IOException e) {
+      Logger.error(e.getMessage());
+    }
+    return false;
   }
 
   static OutputStream getOutputStream() {
