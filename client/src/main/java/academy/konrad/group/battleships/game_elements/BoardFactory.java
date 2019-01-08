@@ -21,6 +21,7 @@ public class BoardFactory {
   private static Board setUpBoard(Board board, int numberOfFields) {
     board.setSize();
     board.fillBoard(numberOfFields);
+    board.setDisable(true);
     return board;
   }
 

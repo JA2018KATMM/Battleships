@@ -17,6 +17,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 
@@ -28,6 +29,7 @@ public class Controller implements Initializable {
 
   private TilePane enemyBoard;
   private TilePane playerBoard;
+  private BattleshipClient client;
 
   @FXML
   private Pane local;
@@ -41,20 +43,27 @@ public class Controller implements Initializable {
   @FXML
   private TextArea console;
 
-  private PrintWriter out;
+  @FXML
+  private Button end;
+
+  @FXML
+  private void finish(){
+    this.client.close();
+  }
 
   @FXML
   private void start() {
     establishConnection();
     this.connect.setDisable(true);
+    this.client = new BattleshipClient();
     setUpBoards();
-    new BattleshipClient().play(this.console, this.playerBoard, this.enemyBoard);
+    this.client.play(this.console, this.playerBoard, this.enemyBoard);
     Logger.info("Start aplikacji");
   }
 
   private void establishConnection() {
     if(Connection.initialize()) {
-      out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
+//      out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
       return;
     }
     this.console.appendText("No connection");
@@ -68,8 +77,11 @@ public class Controller implements Initializable {
     this.table.getChildren().addAll(enemyBoard, playerBoard);
   }
 
-  private void setUpEnemyBoard() {
+  private synchronized void setUpEnemyBoard() {
     this.enemyBoard = BoardFactory.getEnemyBoard(100);
+    int location = this.client.getShipLocation();
+    Rectangle ship = (Rectangle) this.enemyBoard.getChildren().filtered(field -> field.getId().equals(String.valueOf(location))).get(0);
+    ship.setFill(Color.LIMEGREEN);
   }
 
   private void setUpPlayerBoard() {
@@ -78,7 +90,7 @@ public class Controller implements Initializable {
       field.setFill(Color.RED);
       field.setDisable(true);
       this.playerBoard.setDisable(true);
-      out.println("MOVE" + field.getId());
+      this.client.shot(field.getId());
     }),100);
   }
 

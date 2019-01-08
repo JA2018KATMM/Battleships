@@ -43,8 +43,17 @@ public class Player extends Thread {
           game.waitingPlayer.output.println(command);
           game.currentPlayer.output.println("MESSAGE Please wait now your opponent shots!");
           game.changeTurn();
-          game.currentPlayer.output.println("TURN");
+//          game.currentPlayer.output.println("TURN");
+        } else if (command.startsWith("END")) {
+          System.out.println(command);
+          game.currentPlayer.output.println("STOP");
+          game.waitingPlayer.output.println("WIN");
+        } else if (command.startsWith("FINISH")){
+          System.out.println(command);
+          output.println("CLOSE");
+          output.println("CLOSE");
         }
+
       } catch (IOException e) {
         Logger.error("Player died: " + e);
       }
