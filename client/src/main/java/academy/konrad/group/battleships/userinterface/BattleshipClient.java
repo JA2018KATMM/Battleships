@@ -81,7 +81,6 @@ class BattleshipClient {
             }
           }
         }
-        System.exit(1);
       } catch (IOException e) {
         e.printStackTrace();
       }

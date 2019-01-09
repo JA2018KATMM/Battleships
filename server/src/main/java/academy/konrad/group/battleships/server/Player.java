@@ -26,9 +26,10 @@ public class Player extends Thread {
     }
   }
 
+  /**
+   * This thread is only started after all 2 players connect.
+   */
   public void run() {
-
-    // The thread is only started after all 2 players connect.
     output.println("MESSAGE All players connected");
     if (game.currentPlayer.equals(this)) {
       output.println("TURN Your move");
@@ -48,9 +49,9 @@ public class Player extends Thread {
           System.out.println(command);
           game.currentPlayer.output.println("STOP");
           game.waitingPlayer.output.println("WIN");
-        } else if (command.startsWith("FINISH")){
+          game.waitingPlayer.output.println("STOP");
+        } else if (command.startsWith("FINISH")) {
           System.out.println(command);
-          output.println("CLOSE");
           output.println("CLOSE");
         }
 

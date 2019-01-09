@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 class Connection {
 
@@ -20,7 +19,7 @@ class Connection {
   }
 
   //TODO zamiana na wczytywane z właściwości
-  static boolean initialize()  {
+  static boolean initialize() {
     try {
       InetSocketAddress socketAddress = new InetSocketAddress
           (InetAddress.getLocalHost(), 8081);

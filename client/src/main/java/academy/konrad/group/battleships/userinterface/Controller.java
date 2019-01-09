@@ -11,15 +11,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import org.pmw.tinylog.Logger;
 
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Random;
 import java.util.ResourceBundle;
-
 
 
 /**
@@ -47,8 +43,10 @@ public class Controller implements Initializable {
   private Button end;
 
   @FXML
-  private void finish(){
+  private void finish() {
     this.client.close();
+    Stage stage = (Stage) end.getScene().getWindow();
+    stage.close();
   }
 
   @FXML
@@ -62,8 +60,7 @@ public class Controller implements Initializable {
   }
 
   private void establishConnection() {
-    if(Connection.initialize()) {
-//      out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
+    if (Connection.initialize()) {
       return;
     }
     this.console.appendText("No connection");
@@ -91,7 +88,7 @@ public class Controller implements Initializable {
       field.setDisable(true);
       this.playerBoard.setDisable(true);
       this.client.shot(field.getId());
-    }),100);
+    }), 100);
   }
 
   @Override
