@@ -52,8 +52,10 @@ public class Player extends Thread {
           } else if (command.startsWith("FINISH")) {
             System.out.println(command);
             output.println("CLOSE");
+          } else if (command.startsWith("HIT")){
+            System.out.println(command);
+            game.waitingPlayer.output.println(command);
           }
-
         } catch (IOException e) {
           Logger.error("Player died: " + e);
         }

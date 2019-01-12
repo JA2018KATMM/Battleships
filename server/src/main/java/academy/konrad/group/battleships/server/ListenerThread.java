@@ -25,6 +25,7 @@ class ListenerThread extends Thread {
         game.waitingPlayer = secondPlayer;
         firstPlayer.start();
         secondPlayer.start();
+        System.out.println("*** GAME STARTS ***");
       }
 
     } catch (IOException e) {

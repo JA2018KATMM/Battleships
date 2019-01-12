@@ -76,9 +76,10 @@ public class Controller implements Initializable {
 
   private synchronized void setUpEnemyBoard() {
     this.enemyBoard = BoardFactory.getEnemyBoard(100);
-    int location = this.client.getShipLocation();
-    Rectangle ship = (Rectangle) this.enemyBoard.getChildren().filtered(field -> field.getId().equals(String.valueOf(location))).get(0);
-    ship.setFill(Color.LIMEGREEN);
+    for (Integer location : client.getFleetLocation().getShips()) {
+      Rectangle ship = (Rectangle) this.enemyBoard.getChildren().filtered(field -> field.getId().equals(String.valueOf(location))).get(0);
+      ship.setFill(Color.LIMEGREEN);
+    }
   }
 
   private void setUpPlayerBoard() {
