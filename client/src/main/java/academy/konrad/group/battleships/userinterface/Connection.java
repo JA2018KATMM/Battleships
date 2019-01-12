@@ -13,7 +13,7 @@ import java.net.Socket;
 class Connection {
 
   private static final Socket socket = new Socket();
-  private static GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI();
+//  private static GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI();
 
   private Connection() {
   }
