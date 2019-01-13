@@ -13,7 +13,7 @@ import java.net.Socket;
 class Connection {
 
   private static final Socket socket = new Socket();
-//  private static GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI();
+  private static GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI();
 
   private Connection() {
   }
@@ -21,8 +21,9 @@ class Connection {
   //TODO zamiana na wczytywane z właściwości
   static boolean initialize() {
     try {
-      InetSocketAddress socketAddress = new InetSocketAddress
-          (InetAddress.getLocalHost(), 8081);
+      InetSocketAddress socketAddress =
+          new InetSocketAddress (InetAddress.getByName(gamePropertiesAPI.getValueByKey("ip")),
+              gamePropertiesAPI.getIntValueByKey("port"));
       socket.connect(socketAddress, 5000);
       return true;
     } catch (IOException e) {
