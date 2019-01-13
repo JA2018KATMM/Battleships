@@ -17,7 +17,7 @@ public class Fleet {
   }
 
   private void allocateFleet() {
-    for (int i = 0; i < 4; i++) {
+    while (ships.size() < 4){
       ships.add(new Random().nextInt(100));
     }
   }
