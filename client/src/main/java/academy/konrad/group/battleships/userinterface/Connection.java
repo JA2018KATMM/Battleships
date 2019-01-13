@@ -50,4 +50,8 @@ class Connection {
     }
     throw new IllegalStateException();
   }
+
+  public static GamePropertiesAPI getGamePropertiesAPI() {
+    return gamePropertiesAPI;
+  }
 }

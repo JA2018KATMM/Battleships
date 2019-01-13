@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import org.pmw.tinylog.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -55,9 +56,10 @@ class BattleshipClient {
             Platform.runLater(() -> field.setFill(Color.YELLOW));
             Platform.runLater(() -> textArea.appendText(message + "\n"));
           } else if (fromServer.startsWith("WELCOME")) {
-            String message = "Welome to the Battleship game!";
-            System.out.println(message);
-            System.out.println("Ship location: " + fleet.getShips());
+            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("welcomeMessage");
+            Logger.info(message + "\n "
+                + "Initial ships location: "
+                + fleet.getShips() + "\n");
             Platform.runLater(() -> textArea.appendText(message + "\n"));
           } else if (fromServer.startsWith("FIRST")) {
             if (fromServer.substring(6).equals("yes")) {
