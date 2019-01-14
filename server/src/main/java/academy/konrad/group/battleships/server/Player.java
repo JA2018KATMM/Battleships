@@ -19,7 +19,7 @@ public class Player extends Thread {
       input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
       output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
       output.println("WELCOME");
-      output.println("MESSAGE:Waiting for second player to connect");
+      output.println("MESSAGE:awaitPlayer");
 
     } catch (IOException e) {
       Logger.error("Player died: " + e);
@@ -30,7 +30,7 @@ public class Player extends Thread {
    * This thread is only started after all 2 players connect.
    */
   public void run() {
-    output.println("MESSAGE:All players connected");
+    output.println("MESSAGE:all");
     if (game.currentPlayer.equals(this))
       output.println("FIRST:yes");
     else output.println("FIRST:not");
@@ -42,7 +42,7 @@ public class Player extends Thread {
           } else if (command.startsWith("MOVE")) {
             System.out.println(command);
             game.waitingPlayer.output.println(command);
-            game.currentPlayer.output.println("MESSAGE:Wait a moment, please. Now your opponent's turn.");
+            game.currentPlayer.output.println("WAIT");
             game.changeTurn();
           } else if (command.startsWith("END")) {
             System.out.println(command);

@@ -94,6 +94,6 @@ public class Controller implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    this.console.setText("Press Connect to START the game\n");
+    this.console.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("initial"));
   }
 }

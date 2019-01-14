@@ -33,28 +33,32 @@ class BattleshipClient {
 
       try {
         while (!(fromServer = in.readLine()).equals("CLOSE")) {
-          System.out.println("Server: " + fromServer);
-          if (fromServer.startsWith("MESSAGE")) {
-            String message = fromServer.substring(8);
+          Logger.info("Server: " + fromServer);
+          if (fromServer.startsWith("WAIT")) {
+            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("wait");
+            Logger.info(message);
+            Platform.runLater(() -> textArea.appendText(message + "\n"));
+          } else if (fromServer.startsWith("MESSAGE")) {
+            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString(fromServer.substring(8));
+            Logger.info(message);
             Platform.runLater(() -> textArea.appendText(message + "\n"));
           } else if (fromServer.startsWith("STOP")) {
-            String message = "Game finished. Press finish to close";
-            System.out.println(message);
+            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("finish");
+            Logger.info(message);
             Platform.runLater(() -> textArea.appendText(message + "\n"));
           } else if (fromServer.startsWith("WIN")) {
-            String message = "The enemy ship was hit. YOU WON!";
-            System.out.println(message);
-            String winField = fromServer.substring(3);
-            Rectangle field = (Rectangle) playerBoard.getChildren().filtered(f -> f.getId().equals(winField)).get(0);
-            Platform.runLater(() -> field.setFill(Color.YELLOW));
+            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("winner");
+            Logger.info(message);
             Platform.runLater(() -> textArea.appendText(message + "\n"));
           } else if (fromServer.startsWith("HIT")) {
-            String message = "You've hit one of enemy's ships";
-            System.out.println(message);
-            String winField = fromServer.substring(3);
-            Rectangle field = (Rectangle) playerBoard.getChildren().filtered(f -> f.getId().equals(winField)).get(0);
-            Platform.runLater(() -> field.setFill(Color.YELLOW));
-            Platform.runLater(() -> textArea.appendText(message + "\n"));
+            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("enemyShipHit");
+            Logger.info(message);
+            String fieldHit = fromServer.substring(3);
+            Rectangle field = (Rectangle) playerBoard.getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
+            Platform.runLater(() -> {
+              field.setFill(Color.YELLOW);
+              textArea.appendText(message + "\n");
+            });
           } else if (fromServer.startsWith("WELCOME")) {
             String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("welcomeMessage");
             Logger.info(message + "\n "
@@ -63,45 +67,47 @@ class BattleshipClient {
             Platform.runLater(() -> textArea.appendText(message + "\n"));
           } else if (fromServer.startsWith("FIRST")) {
             if (fromServer.substring(6).equals("yes")) {
-              String message = "You are first so now it's your turn! Please shot";
-              System.out.println(message);
-              Platform.runLater(() -> textArea.appendText(message + "\n"));
-              Platform.runLater(() -> playerBoard.setDisable(false));
+              String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("firstTurn");
+              Logger.info(message);
+              Platform.runLater(() -> {
+                textArea.appendText(message + "\n");
+                playerBoard.setDisable(false);
+              });
             } else {
-              String message = "Your opponent starts the game. Wait a moment for his first move.";
-              System.out.println(message);
+              String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("secondTurn");
+              Logger.info(message);
               Platform.runLater(() -> textArea.appendText(message + "\n"));
             }
           } else if (fromServer.startsWith("MOVE")) {
             String fieldShot = fromServer.substring(4);
-            String message1 = "Now your turn! Please shot";
+            String message1 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("yourTurn");
+            String message2 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("yourShipHit");
+            String message3 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("fieldShoot") + fieldShot;
             if (fleet.getShips().contains(Integer.parseInt(fieldShot))) {
-              String message2 = "Your opponent shoot field number: " + fieldShot;
-              String message3 = "Your ship was hit!";
-              System.out.println(message2);
+              Logger.info(message3 + "\n" + message2 + "\n" + message1);
               Rectangle field = (Rectangle) enemyBoard.getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
               Platform.runLater(() -> {
                 field.setFill(Color.YELLOW);
-                textArea.appendText(message2 + "\n");
-                textArea.appendText(message3 + "\n");
-                textArea.appendText(message1 + "\n");
+                textArea.appendText(message3 + "\n"
+                    + message2 + "\n"
+                    + message1 + "\n");
               });
               fleet.getShips().remove(Integer.parseInt(fieldShot));
               out.println("HIT" + fieldShot);
               if (fleet.getShips().isEmpty()) {
-                Platform.runLater(() -> textArea.appendText("It was your last ship. YOU LOST! :(\n"));
-                out.println("END" + fieldShot);
+                String message4 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("lastShip");
+                Logger.info(message4);
+                Platform.runLater(() -> textArea.appendText(message4 + "\n"));
+                out.println("END");
               } else Platform.runLater(() -> playerBoard.setDisable(false));
             } else {
-              String message3 = "Your opponent has shoot field number: " + fieldShot;
-              System.out.println(message3);
-              System.out.println(message1);
-              Platform.runLater(() -> textArea.appendText(message3 + "\n"));
+              Logger.info(message3 + "\n" + message1);
               Rectangle field = (Rectangle) enemyBoard.getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
               Platform.runLater(() -> {
                 field.setFill(Color.RED);
+                textArea.appendText(message3 + "\n"
+                    + message1 + "\n");
                 playerBoard.setDisable(false);
-                textArea.appendText(message1 + "\n");
               });
             }
           }
