@@ -1,14 +1,14 @@
 package academy.konrad.group.battleships.properties;
 
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Properties;
 
 class PropertiesKeeper {
   private Properties gameProperties;
-  private static final String PATH_TO_PROPERTIES_FILE = "./client/src/main/resources/default.properties";
 
   PropertiesKeeper() throws CannotLoadConfigurationFileException {
-    this.gameProperties = DefaultPropertiesLoader.loadPropertiesFromFile(PATH_TO_PROPERTIES_FILE);
+    this.gameProperties = DefaultPropertiesLoader.loadPropertiesFromFile();
   }
 
   PropertiesKeeper(String defaultPropertiesPath) {
