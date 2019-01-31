@@ -18,7 +18,6 @@ class Connection {
   private Connection() {
   }
 
-  //TODO zamiana na wczytywane z właściwości
   static boolean initialize()  {
     try {
       InetSocketAddress socketAddress = new InetSocketAddress
@@ -48,5 +47,9 @@ class Connection {
       Logger.error(exception.getMessage());
     }
     throw new IllegalStateException();
+  }
+
+  public static GamePropertiesAPI getGamePropertiesAPI() {
+    return gamePropertiesAPI;
   }
 }

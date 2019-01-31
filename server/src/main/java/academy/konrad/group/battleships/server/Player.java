@@ -19,35 +19,47 @@ public class Player extends Thread {
       input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
       output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
       output.println("WELCOME");
-      output.println("MESSAGE Waiting for second player to connect");
+      output.println("MESSAGE:awaitPlayer");
 
     } catch (IOException e) {
       Logger.error("Player died: " + e);
     }
   }
 
+  /**
+   * This thread is only started after all 2 players connect.
+   */
   public void run() {
-
-    // The thread is only started after all 2 players connect.
-    output.println("MESSAGE All players connected");
-    if (game.currentPlayer.equals(this)) {
-      output.println("TURN Your move");
-    }
-    while (true) {
-      try {
-        String command = input.readLine();
-        if (command == null) {
-          break;
-        } else if (command.startsWith("MOVE")) {
-          System.out.println(command);
-          game.waitingPlayer.output.println(command);
-          game.currentPlayer.output.println("MESSAGE Please wait now your opponent shots!");
-          game.changeTurn();
-          game.currentPlayer.output.println("TURN");
+    output.println("MESSAGE:all");
+    if (game.currentPlayer.equals(this))
+      output.println("FIRST:yes");
+    else output.println("FIRST:not");
+      while (true) {
+        try {
+          String command = input.readLine();
+          if (command == null) {
+            break;
+          } else if (command.startsWith("MOVE")) {
+            System.out.println(command);
+            game.waitingPlayer.output.println(command);
+            game.currentPlayer.output.println("WAIT");
+            game.changeTurn();
+          } else if (command.startsWith("END")) {
+            System.out.println(command);
+            game.currentPlayer.output.println("STOP");
+            game.waitingPlayer.output.println("WIN" + command.substring(3));
+            game.waitingPlayer.output.println("STOP");
+          } else if (command.startsWith("FINISH")) {
+            System.out.println(command);
+            output.println("CLOSE");
+          } else if (command.startsWith("HIT")){
+            System.out.println(command);
+            game.waitingPlayer.output.println(command);
+          }
+        } catch (IOException e) {
+          Logger.error("Player died: " + e);
         }
-      } catch (IOException e) {
-        Logger.error("Player died: " + e);
       }
-    }
+
   }
 }

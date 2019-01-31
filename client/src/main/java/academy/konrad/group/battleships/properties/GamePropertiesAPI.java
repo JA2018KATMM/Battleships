@@ -13,6 +13,7 @@ public class GamePropertiesAPI {
 
   public GamePropertiesAPI() {
     this.propertiesKeeper = new PropertiesKeeper();
+    this.resourceBundle = ResourceBundle.getBundle("Language", propertiesKeeper.getDefaultLocale());
   }
 
   public int getIntValueByKey(String key) {

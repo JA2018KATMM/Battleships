@@ -11,14 +11,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import javafx.stage.Stage;
 import org.pmw.tinylog.Logger;
 
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
-
 
 
 /**
@@ -28,6 +27,7 @@ public class Controller implements Initializable {
 
   private TilePane enemyBoard;
   private TilePane playerBoard;
+  private BattleshipClient client;
 
   @FXML
   private Pane local;
@@ -41,20 +41,28 @@ public class Controller implements Initializable {
   @FXML
   private TextArea console;
 
-  private PrintWriter out;
+  @FXML
+  private Button end;
+
+  @FXML
+  private void finish() {
+    this.client.close();
+    Stage stage = (Stage) end.getScene().getWindow();
+    stage.close();
+  }
 
   @FXML
   private void start() {
     establishConnection();
     this.connect.setDisable(true);
+    this.client = new BattleshipClient();
     setUpBoards();
-    new BattleshipClient().play(this.console, this.playerBoard, this.enemyBoard);
+    this.client.play(this.console, this.playerBoard, this.enemyBoard);
     Logger.info("Start aplikacji");
   }
 
   private void establishConnection() {
-    if(Connection.initialize()) {
-      out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
+    if (Connection.initialize()) {
       return;
     }
     this.console.appendText("No connection");
@@ -68,8 +76,13 @@ public class Controller implements Initializable {
     this.table.getChildren().addAll(enemyBoard, playerBoard);
   }
 
-  private void setUpEnemyBoard() {
+  private synchronized void setUpEnemyBoard() {
     this.enemyBoard = BoardFactory.getEnemyBoard(100);
+    for (Integer location : client.getFleetLocation().getShips()) {
+      Rectangle ship = (Rectangle) this.enemyBoard.getChildren().filtered(field -> field.getId().equals(String.valueOf(location))).get(0);
+      ship.setFill(Color.LIMEGREEN);
+    }
+
   }
 
   private void setUpPlayerBoard() {
@@ -78,12 +91,15 @@ public class Controller implements Initializable {
       field.setFill(Color.RED);
       field.setDisable(true);
       this.playerBoard.setDisable(true);
-      out.println("MOVE" + field.getId());
-    }),100);
+      this.client.shot(field.getId());
+    }), 100);
   }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    this.console.setText("Press Connect to START the game\n");
+    this.console.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("initial"));
+    this.connect.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("connectButton"));
+    this.end.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("endButton"));
+
   }
 }
