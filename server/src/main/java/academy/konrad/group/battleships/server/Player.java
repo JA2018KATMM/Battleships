@@ -4,6 +4,7 @@ import org.pmw.tinylog.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 
 public class Player extends Thread {
@@ -45,7 +46,10 @@ public class Player extends Thread {
           game.changeTurn();
           game.currentPlayer.output.println("TURN");
         }
-      } catch (IOException e) {
+      }catch (SocketTimeoutException e){
+          Logger.info("Time finished for" +Thread.currentThread().getName());
+      }
+      catch (IOException e) {
         Logger.error("Player died: " + e);
       }
     }
