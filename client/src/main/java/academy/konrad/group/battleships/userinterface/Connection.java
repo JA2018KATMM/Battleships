@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 class Connection {
 
@@ -23,7 +22,7 @@ class Connection {
   static boolean initialize()  {
     try {
       InetSocketAddress socketAddress = new InetSocketAddress
-          (InetAddress.getByName("51.38.130.222"), 8081);
+          ("localhost", 8081);
       socket.connect(socketAddress, 5000);
       return true;
     } catch (IOException e) {
