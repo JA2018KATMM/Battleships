@@ -24,8 +24,8 @@ public class ContextListener implements ServletContextListener {
 
   private void loggerSetup() {
     //sciezka dla serwera
-    Configurator.defaultConfig().writer(new FileWriter("/opt/logi/info_serwer.txt"), Level.INFO)
-            .addWriter(new FileWriter("/opt/logi/bledy_serwer.txt"), Level.ERROR).activate();
+    Configurator.defaultConfig().writer(new FileWriter("/logi/info_serwer.txt"), Level.INFO)
+            .addWriter(new FileWriter("/logi/bledy_serwer.txt"), Level.ERROR).activate();
   }
 
   @Override

@@ -18,12 +18,10 @@ class Connection {
   private Connection() {
   }
 
-  //TODO zamiana na wczytywane z właściwości
-  static boolean initialize() {
+  static boolean initialize()  {
     try {
-      InetSocketAddress socketAddress =
-          new InetSocketAddress (InetAddress.getByName(gamePropertiesAPI.getValueByKey("ip")),
-              gamePropertiesAPI.getIntValueByKey("port"));
+      InetSocketAddress socketAddress = new InetSocketAddress
+          ("localhost", 8081);
       socket.connect(socketAddress, 5000);
       return true;
     } catch (IOException e) {

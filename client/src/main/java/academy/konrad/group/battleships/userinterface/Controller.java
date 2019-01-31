@@ -11,10 +11,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
 import javafx.stage.Stage;
 import org.pmw.tinylog.Logger;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 
@@ -80,6 +82,7 @@ public class Controller implements Initializable {
       Rectangle ship = (Rectangle) this.enemyBoard.getChildren().filtered(field -> field.getId().equals(String.valueOf(location))).get(0);
       ship.setFill(Color.LIMEGREEN);
     }
+
   }
 
   private void setUpPlayerBoard() {
@@ -97,5 +100,6 @@ public class Controller implements Initializable {
     this.console.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("initial"));
     this.connect.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("connectButton"));
     this.end.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("endButton"));
+
   }
 }

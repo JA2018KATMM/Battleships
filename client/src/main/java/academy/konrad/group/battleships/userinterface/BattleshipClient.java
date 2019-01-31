@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
 import org.pmw.tinylog.Logger;
 
 import java.io.*;
@@ -24,6 +25,7 @@ class BattleshipClient {
 
   public Fleet getFleetLocation() {
     return fleet;
+
   }
 
   void play(TextArea textArea, TilePane playerBoard, TilePane enemyBoard) {
@@ -111,6 +113,7 @@ class BattleshipClient {
               });
             }
           }
+
         }
       } catch (IOException e) {
         e.printStackTrace();
@@ -126,4 +129,5 @@ class BattleshipClient {
   public void close() {
     out.println("FINISH");
   }
+
 }

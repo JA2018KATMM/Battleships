@@ -60,5 +60,6 @@ public class Player extends Thread {
           Logger.error("Player died: " + e);
         }
       }
+
   }
 }
