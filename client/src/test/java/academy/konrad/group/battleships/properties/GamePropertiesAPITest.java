@@ -65,7 +65,7 @@ public class GamePropertiesAPITest {
   public void shouldPrintGreetingFromDefaultBundle() throws Exception {
     //given
     String whyItFailed = "Resource Bundle was not initialized properly";
-    String testPropertiesPath = "src/main/test/resources/test.properties";
+    String testPropertiesPath = "src/test/resources/test.properties";
     GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI(testPropertiesPath);
     //when
     gamePropertiesAPI.setDefaultLanguage();
@@ -78,7 +78,7 @@ public class GamePropertiesAPITest {
   public void shouldPrintGreetingFromEnglishBundle() throws Exception {
     //given
     String whyItFailed = "Resource Bundle was not changed to english";
-    String testPropertiesPath = "src/main/test/resources/test.properties";
+    String testPropertiesPath = "src/test/resources/test.properties";
     GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI(testPropertiesPath);
     //when
     gamePropertiesAPI.changeLanguage("en");
