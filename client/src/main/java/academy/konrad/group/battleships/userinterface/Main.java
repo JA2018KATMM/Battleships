@@ -12,18 +12,18 @@ import org.pmw.tinylog.writers.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-
 public class Main extends Application {
 
   public static void main(String[] args) {
     launch(args);
   }
 
-  @Override
+
   public void start(Stage primaryStage) throws IOException {
     loggerSetup();
     renderView(primaryStage);
   }
+
 
   private void loggerSetup() {
     Configurator.defaultConfig().writer(new FileWriter(System.getProperty("user.home") +"/logi/info_klient.txt"), Level.INFO)
