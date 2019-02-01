@@ -1,7 +1,5 @@
 package academy.konrad.group.battleships.userinterface;
 
-import academy.konrad.group.battleships.domain.Fleet;
-
 import academy.konrad.group.battleships.message.Message;
 import academy.konrad.group.battleships.message.MessageParser;
 import org.pmw.tinylog.Logger;
@@ -81,7 +79,7 @@ class BattleshipClient {
         this.messageHandler.doHit(content);
         break;
       case FIRST:
-        this.messageHandler.doFirst(content);
+        this.messageHandler.manageTurn(content);
         break;
         default:
           throw new IllegalStateException();

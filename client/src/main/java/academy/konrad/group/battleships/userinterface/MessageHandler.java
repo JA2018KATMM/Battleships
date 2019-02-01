@@ -10,33 +10,41 @@ import org.pmw.tinylog.Logger;
 /**
 * Zarzada flota i informuje kontrole UI o zmianach
  */
-public class MessageHandler {
+class MessageHandler {
 
   private final Controller controller;
   private final Fleet fleet;
   private final Sender sender = new Sender();
 
-  public MessageHandler(Controller controller, Fleet fleet) {
+  MessageHandler(Controller controller, Fleet fleet) {
     this.controller = controller;
     this.fleet = fleet;
   }
 
-  void doFirst(String answer) {
+  void manageTurn(String answer) {
     if (answer.equals("yes")) {
-      String message = Connection.getMessage("firstTurn");
-      Logger.info(message);
-      Platform.runLater(() -> {
-        this.controller.getConsole().appendText(message + "\n");
-        this.controller.getPlayerBoard().setDisable(false);
-      });
+      doFirstTurn();
     } else {
-      String message = Connection.getMessage("secondTurn");
-      Logger.info(message);
-      Platform.runLater(() -> this.controller.getConsole().appendText(message + "\n"));
+      doSecondTurn();
     }
   }
 
-   void doHit(String fieldHit) {
+  private void doSecondTurn() {
+    String message = Connection.getMessage("secondTurn");
+    Logger.info(message);
+    Platform.runLater(() -> this.controller.getConsole().appendText(message + "\n"));
+  }
+
+  private void doFirstTurn() {
+    String message = Connection.getMessage("firstTurn");
+    Logger.info(message);
+    Platform.runLater(() -> {
+      this.controller.getConsole().appendText(message + "\n");
+      this.controller.getPlayerBoard().setDisable(false);
+    });
+  }
+
+  void doHit(String fieldHit) {
     String message = Connection.getMessage("enemyShipHit");
     Logger.info(message);
 
@@ -62,34 +70,47 @@ public class MessageHandler {
     String message1 = Connection.getMessage("yourTurn");
     String message2 = Connection.getMessage("yourShipHit");
     String message3 = Connection.getMessage("fieldShoot") + fieldShot;
-    if (this.fleet.getShips().contains(Integer.parseInt(fieldShot))) {
-      Logger.info(message3 + "\n" + message2 + "\n" + message1);
-      Rectangle field = (Rectangle) controller.getEnemyBoard().getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
-      Platform.runLater(() -> {
-        field.setFill(Color.YELLOW);
-        controller.getConsole().appendText(message3 + "\n"
-            + message2 + "\n"
-            + message1 + "\n");
-      });
-      fleet.getShips().remove(Integer.parseInt(fieldShot));
-      this.sender.send("HIT:" + fieldShot);
-      if (fleet.getShips().isEmpty()) {
-        String message4 = Connection.getMessage("lastShip");
-        Logger.info(message4);
-        Platform.runLater(() -> controller.getConsole().appendText(message4 + "\n"));
-        sender.send("END");
-      } else Platform.runLater(() -> this.controller.getPlayerBoard().setDisable(false));
+    boolean isShipShot = this.fleet.getShips().contains(Integer.parseInt(fieldShot));
+    if (isShipShot) {
+      shotShip(message3, message2, message1, fieldShot);
+      checkIfGameFinished();
     } else {
-      Logger.info(message3 + "\n" + message1);
-      Rectangle field = (Rectangle) this.controller.getEnemyBoard().getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
-      Platform.runLater(() -> {
-        field.setFill(Color.RED);
-        this.controller.getConsole().appendText(message3 + "\n"
-            + message1 + "\n");
-        this.controller.getPlayerBoard().setDisable(false);
-      });
+      shotWater(message3, message1, fieldShot);
     }
 
+  }
+
+  private void shotWater(String message3, String message1, String fieldShot) {
+    Logger.info(message3 + "\n" + message1);
+    Rectangle field = (Rectangle) this.controller.getEnemyBoard().getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
+    Platform.runLater(() -> {
+      field.setFill(Color.RED);
+      this.controller.getConsole().appendText(message3 + "\n"
+          + message1 + "\n");
+      this.controller.getPlayerBoard().setDisable(false);
+    });
+  }
+
+  private void checkIfGameFinished() {
+    if (fleet.getShips().isEmpty()) {
+      String message4 = Connection.getMessage("lastShip");
+      Logger.info(message4);
+      Platform.runLater(() -> controller.getConsole().appendText(message4 + "\n"));
+      sender.send("END");
+    } else Platform.runLater(() -> this.controller.getPlayerBoard().setDisable(false));
+  }
+
+  private void shotShip(String message3, String message2, String message1, String fieldShot) {
+    Logger.info(message3 + "\n" + message2 + "\n" + message1);
+    Rectangle field = (Rectangle) controller.getEnemyBoard().getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
+    Platform.runLater(() -> {
+      field.setFill(Color.YELLOW);
+      controller.getConsole().appendText(message3 + "\n"
+          + message2 + "\n"
+          + message1 + "\n");
+    });
+    fleet.getShips().remove(Integer.parseInt(fieldShot));
+    this.sender.send("HIT:" + fieldShot);
   }
 
 }
