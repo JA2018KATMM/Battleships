@@ -1,9 +1,7 @@
 package academy.konrad.group.battleships.userinterface;
 
 import academy.konrad.group.battleships.domain.Fleet;
-import javafx.application.Platform;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import org.pmw.tinylog.Logger;
 
 
@@ -40,19 +38,13 @@ class MessageHandler {
     String message = Connection.getMessage("firstTurn");
     Logger.info(message);
     this.controller.updateConsole(message + "\n");
-    Platform.runLater(() -> {
-      this.controller.getPlayerBoard().setDisable(false);
-    });
+    this.controller.enablePlayerBoard();
   }
 
   void doHit(String fieldHit) {
     String message = Connection.getMessage("enemyShipHit");
     Logger.info(message);
-
-    Rectangle field = (Rectangle)this.controller.getPlayerBoard().getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
-    Platform.runLater(() -> {
-      field.setFill(Color.YELLOW);
-    });
+    this.controller.changeFieldColorOnPlayerBoard(fieldHit, Color.YELLOW);
     this.controller.updateConsole(message + "\n");
   }
 
@@ -78,16 +70,13 @@ class MessageHandler {
     } else {
       shotWater(message3, message1, fieldShot);
     }
+    this.controller.enablePlayerBoard();
 
   }
 
   private void shotWater(String message3, String message1, String fieldShot) {
     Logger.info(message3 + "\n" + message1);
-    Rectangle field = (Rectangle) this.controller.getEnemyBoard().getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
-    Platform.runLater(() -> {
-      field.setFill(Color.RED);
-      this.controller.getPlayerBoard().setDisable(false);
-    });
+    this.controller.changeFieldColorOnPlayerBoard(fieldShot, Color.RED);
     this.controller.updateConsole(message3 + "\n"
         + message1 + "\n");
   }
@@ -98,15 +87,15 @@ class MessageHandler {
       Logger.info(message4);
       this.controller.updateConsole(message4 + "\n");
       sender.send("END");
-    } else Platform.runLater(() -> this.controller.getPlayerBoard().setDisable(false));
+      this.controller.disablePlayerBoard();
+    } else{
+      this.controller.disablePlayerBoard();
+    }
   }
 
   private void shotShip(String message3, String message2, String message1, String fieldShot) {
     Logger.info(message3 + "\n" + message2 + "\n" + message1);
-    Rectangle field = (Rectangle) controller.getEnemyBoard().getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
-    Platform.runLater(() -> {
-      field.setFill(Color.YELLOW);
-    });
+    this.controller.changeFieldColorOnEnemyBoard(fieldShot, Color.YELLOW);
     this.controller.updateConsole(message3 + "\n"
         + message2 + "\n"
         + message1 + "\n");
