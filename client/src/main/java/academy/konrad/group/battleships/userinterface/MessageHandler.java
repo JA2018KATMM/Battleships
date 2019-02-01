@@ -32,14 +32,15 @@ class MessageHandler {
   private void doSecondTurn() {
     String message = Connection.getMessage("secondTurn");
     Logger.info(message);
-    Platform.runLater(() -> this.controller.getConsole().appendText(message + "\n"));
+    this.controller.updateConsole(message + "\n");
+
   }
 
   private void doFirstTurn() {
     String message = Connection.getMessage("firstTurn");
     Logger.info(message);
+    this.controller.updateConsole(message + "\n");
     Platform.runLater(() -> {
-      this.controller.getConsole().appendText(message + "\n");
       this.controller.getPlayerBoard().setDisable(false);
     });
   }
@@ -51,13 +52,13 @@ class MessageHandler {
     Rectangle field = (Rectangle)this.controller.getPlayerBoard().getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
     Platform.runLater(() -> {
       field.setFill(Color.YELLOW);
-      this.controller.getConsole().appendText(message + "\n");
     });
+    this.controller.updateConsole(message + "\n");
   }
 
    void showMessageOnTextArea(String text){
     Logger.info(text);
-    Platform.runLater(() -> this.controller.getConsole().appendText(text + "\n"));
+    this.controller.updateConsole(text + "\n");
   }
 
   void logStart(String message) {
@@ -85,17 +86,17 @@ class MessageHandler {
     Rectangle field = (Rectangle) this.controller.getEnemyBoard().getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
     Platform.runLater(() -> {
       field.setFill(Color.RED);
-      this.controller.getConsole().appendText(message3 + "\n"
-          + message1 + "\n");
       this.controller.getPlayerBoard().setDisable(false);
     });
+    this.controller.updateConsole(message3 + "\n"
+        + message1 + "\n");
   }
 
   private void checkIfGameFinished() {
     if (fleet.getShips().isEmpty()) {
       String message4 = Connection.getMessage("lastShip");
       Logger.info(message4);
-      Platform.runLater(() -> controller.getConsole().appendText(message4 + "\n"));
+      this.controller.updateConsole(message4 + "\n");
       sender.send("END");
     } else Platform.runLater(() -> this.controller.getPlayerBoard().setDisable(false));
   }
@@ -105,10 +106,10 @@ class MessageHandler {
     Rectangle field = (Rectangle) controller.getEnemyBoard().getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
     Platform.runLater(() -> {
       field.setFill(Color.YELLOW);
-      controller.getConsole().appendText(message3 + "\n"
-          + message2 + "\n"
-          + message1 + "\n");
     });
+    this.controller.updateConsole(message3 + "\n"
+        + message2 + "\n"
+        + message1 + "\n");
     fleet.getShips().remove(Integer.parseInt(fieldShot));
     this.sender.send("HIT:" + fieldShot);
   }

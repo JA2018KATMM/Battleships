@@ -2,6 +2,7 @@ package academy.konrad.group.battleships.userinterface;
 
 import academy.konrad.group.battleships.domain.Fleet;
 import academy.konrad.group.battleships.game_elements.BoardFactory;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -96,6 +97,10 @@ public class Controller implements Initializable {
     this.client = new BattleshipClient(messageHandler);
     this.client.play();
     Logger.info("Start aplikacji");
+  }
+
+  void updateConsole(String text){
+    Platform.runLater(() -> this.console.appendText(text));
   }
 
   private void establishConnection() {
