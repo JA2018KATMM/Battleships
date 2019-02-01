@@ -82,7 +82,7 @@ public class Controller implements Initializable {
 
   @FXML
   private void finish() {
-    new Sender().close();
+    new Sender().send("FINISH");
     Stage stage = (Stage) end.getScene().getWindow();
     stage.close();
   }
@@ -131,7 +131,7 @@ public class Controller implements Initializable {
       field.setFill(Color.RED);
       field.setDisable(true);
       this.playerBoard.setDisable(true);
-      new Sender().shot(field.getId());
+      new Sender().send("MOVE:" +field.getId());
     }), 100);
   }
 

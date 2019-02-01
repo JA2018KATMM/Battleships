@@ -6,15 +6,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.pmw.tinylog.Logger;
 
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 
+/**
+* Zarzada flota i informuje kontrole UI o zmianach
+ */
 public class MessageHandler {
 
-  private final PrintWriter out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
   private final Controller controller;
   private final Fleet fleet;
+  private final Sender sender = new Sender();
 
   public MessageHandler(Controller controller, Fleet fleet) {
     this.controller = controller;
@@ -53,7 +53,6 @@ public class MessageHandler {
   }
 
   void logStart(String message) {
-
     Logger.info(message + "\n "
         + "Initial ships location: "
         + fleet.getShips() + "\n");
@@ -73,12 +72,12 @@ public class MessageHandler {
             + message1 + "\n");
       });
       fleet.getShips().remove(Integer.parseInt(fieldShot));
-      out.println("HIT:" + fieldShot);
+      this.sender.send("HIT:" + fieldShot);
       if (fleet.getShips().isEmpty()) {
         String message4 = Connection.getMessage("lastShip");
         Logger.info(message4);
         Platform.runLater(() -> controller.getConsole().appendText(message4 + "\n"));
-        out.println("END");
+        sender.send("END");
       } else Platform.runLater(() -> this.controller.getPlayerBoard().setDisable(false));
     } else {
       Logger.info(message3 + "\n" + message1);
