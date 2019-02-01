@@ -1,4 +1,4 @@
-package academy.konrad.group.battleships.userinterface;
+package academy.konrad.group.battleships.message;
 
 public enum Message {
 
