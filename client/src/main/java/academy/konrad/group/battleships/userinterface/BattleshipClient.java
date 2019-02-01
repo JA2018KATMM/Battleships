@@ -7,12 +7,12 @@ import javafx.scene.layout.TilePane;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.apache.commons.lang.StringUtils;
+import academy.konrad.group.battleships.message.Message;
+import academy.konrad.group.battleships.message.MessageHandler;
 import org.pmw.tinylog.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Optional;
 
 class BattleshipClient {
@@ -26,13 +26,13 @@ class BattleshipClient {
   private TilePane enemyBoard;
 
   BattleshipClient() {
-    in = new BufferedReader(new InputStreamReader(Connection.getInputStream(), StandardCharsets.UTF_8));
-    out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
+    this.in = new BufferedReader(new InputStreamReader(Connection.getInputStream(), StandardCharsets.UTF_8));
+    this.out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
+
   }
 
   Fleet getFleetLocation() {
     return fleet;
-
   }
 
   void play(TextArea textArea, TilePane playerBoard, TilePane enemyBoard) {
@@ -41,12 +41,9 @@ class BattleshipClient {
     this.enemyBoard = enemyBoard;
 
     Thread t = new Thread(() -> {
-
-
       try {
         while (isRun) {
           String fromServer = in.readLine();
-          System.out.println(fromServer);
           String title = MessageHandler.getMessageTitle(fromServer);
           String content = MessageHandler.getMessageContent(fromServer);
           Optional<Message> option = MessageHandler.findChosenOption(title);
@@ -58,6 +55,7 @@ class BattleshipClient {
         }
       } catch (IOException e) {
         Logger.error(e.getMessage());
+        isRun = false;
       }
     });
     t.start();
@@ -70,21 +68,26 @@ class BattleshipClient {
         doMove(content);
         break;
       case WELCOME:
-        doWelcome();
+        String messageStart = getMessage("welcomeMessage");
+        logStart(messageStart);
+        showMessageOnTextArea(messageStart);
         break;
       case CLOSE:
+        this.isRun = false;
         break;
       case WAIT:
         break;
       case MESSAGE:
-        String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString(content);
-        doMessage(message);
+        String message = getMessage(content);
+        showMessageOnTextArea(message);
         break;
       case STOP:
-        doStop();
+        String textStop = getMessage("finish");
+        showMessageOnTextArea(textStop);
         break;
       case WIN:
-        doWin();
+        String text = getMessage("winner");
+        showMessageOnTextArea(text);
         break;
       case HIT:
         doHit(content);
@@ -92,28 +95,30 @@ class BattleshipClient {
       case FIRST:
         doFirst(content);
         break;
+        default:
+          throw new IllegalStateException();
         
     }
 
-}
+  }
 
   private void doFirst(String answer) {
     if (answer.equals("yes")) {
-      String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("firstTurn");
+      String message = getMessage("firstTurn");
       Logger.info(message);
       Platform.runLater(() -> {
         textArea.appendText(message + "\n");
         playerBoard.setDisable(false);
       });
     } else {
-      String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("secondTurn");
+      String message = getMessage("secondTurn");
       Logger.info(message);
       Platform.runLater(() -> textArea.appendText(message + "\n"));
     }
   }
 
   private void doHit(String fieldHit) {
-    String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("enemyShipHit");
+    String message = getMessage("enemyShipHit");
     Logger.info(message);
     
     Rectangle field = (Rectangle) playerBoard.getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
@@ -123,37 +128,22 @@ class BattleshipClient {
     });
   }
 
-  private void doWin() {
-    String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("winner");
-    Logger.info(message);
-    Platform.runLater(() -> textArea.appendText(message + "\n"));
+  private void showMessageOnTextArea(String text){
+    Logger.info(text);
+    Platform.runLater(() -> textArea.appendText(text + "\n"));
   }
 
-  private void doStop() {
-    String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("finish");
-    Logger.info(message);
-    Platform.runLater(() -> textArea.appendText(message + "\n"));
-  }
+  private void logStart(String message) {
 
-  private void doMessage(String fromServer) {
-    
-    Logger.info(fromServer);
-    Platform.runLater(() -> textArea.appendText(fromServer + "\n"));
-  }
-
-
-  private void doWelcome() {
-    String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("welcomeMessage");
     Logger.info(message + "\n "
         + "Initial ships location: "
         + fleet.getShips() + "\n");
-    Platform.runLater(() -> this.textArea.appendText(message + "\n"));
   }
 
   private void doMove(String fieldShot) {
-    String message1 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("yourTurn");
-    String message2 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("yourShipHit");
-    String message3 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("fieldShoot") + fieldShot;
+    String message1 = getMessage("yourTurn");
+    String message2 = getMessage("yourShipHit");
+    String message3 = getMessage("fieldShoot") + fieldShot;
     if (this.fleet.getShips().contains(Integer.parseInt(fieldShot))) {
       Logger.info(message3 + "\n" + message2 + "\n" + message1);
       Rectangle field = (Rectangle) this.enemyBoard.getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
@@ -166,7 +156,7 @@ class BattleshipClient {
       fleet.getShips().remove(Integer.parseInt(fieldShot));
       out.println("HIT:" + fieldShot);
       if (fleet.getShips().isEmpty()) {
-        String message4 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("lastShip");
+        String message4 = getMessage("lastShip");
         Logger.info(message4);
         Platform.runLater(() -> textArea.appendText(message4 + "\n"));
         out.println("END");
@@ -184,11 +174,15 @@ class BattleshipClient {
     
   }
 
-  public void shot(String id) {
+  private String getMessage(String key) {
+    return Connection.getGamePropertiesAPI().getCurrentBundle().getString(key);
+  }
+
+  void shot(String id) {
     out.println("MOVE:" + id);
   }
 
-  public void close() {
+  void close() {
     out.println("FINISH");
   }
 

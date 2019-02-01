@@ -3,6 +3,7 @@ package academy.konrad.group.battleships.userinterface;
 import academy.konrad.group.battleships.game_elements.BoardFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
@@ -16,7 +17,7 @@ import javafx.stage.Stage;
 import org.pmw.tinylog.Logger;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -79,8 +80,11 @@ public class Controller implements Initializable {
   private synchronized void setUpEnemyBoard() {
     this.enemyBoard = BoardFactory.getEnemyBoard(100);
     for (Integer location : client.getFleetLocation().getShips()) {
-      Rectangle ship = (Rectangle) this.enemyBoard.getChildren().filtered(field -> field.getId().equals(String.valueOf(location))).get(0);
-      ship.setFill(Color.LIMEGREEN);
+      Optional<Node> ship = this.enemyBoard.getChildren().stream().filter(field -> field.getId().equals(String.valueOf(location))).findFirst();
+      if(ship.isPresent()) {
+        Rectangle rectangleShip = (Rectangle) ship.get();
+        rectangleShip.setFill(Color.LIMEGREEN);
+      }
     }
 
   }

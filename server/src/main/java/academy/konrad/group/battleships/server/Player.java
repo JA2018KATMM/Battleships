@@ -1,7 +1,7 @@
 package academy.konrad.group.battleships.server;
 
-import academy.konrad.group.battleships.userinterface.Message;
-import academy.konrad.group.battleships.userinterface.MessageHandler;
+import academy.konrad.group.battleships.message.Message;
+import academy.konrad.group.battleships.message.MessageHandler;
 import org.pmw.tinylog.Logger;
 
 import java.io.*;
