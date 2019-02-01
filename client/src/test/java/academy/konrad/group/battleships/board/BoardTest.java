@@ -1,4 +1,4 @@
-package academy.konrad.group.battleships.game_elements;
+package academy.konrad.group.battleships.board;
 
 import org.testng.annotations.Test;
 

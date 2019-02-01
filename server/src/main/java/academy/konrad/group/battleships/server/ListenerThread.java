@@ -21,6 +21,8 @@ class ListenerThread extends Thread {
         Game game = new Game();
         Player firstPlayer = new Player(serverSocket.accept(), game);
         Player secondPlayer = new Player(serverSocket.accept(), game);
+        firstPlayer.setName("Gracz pierwszy");
+        secondPlayer.setName("Gracz drugi");
         game.currentPlayer = firstPlayer;
         game.waitingPlayer = secondPlayer;
         firstPlayer.start();

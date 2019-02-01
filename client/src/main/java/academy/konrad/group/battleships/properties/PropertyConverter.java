@@ -9,7 +9,7 @@ class PropertyConverter {
   static int convertToInt(String property) throws CannotReadPropertyException {
     try {
       return Integer.parseInt(property);
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException exception) {
       throw new CannotReadPropertyException();
     }
   }

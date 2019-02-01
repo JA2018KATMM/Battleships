@@ -1,7 +1,7 @@
 package academy.konrad.group.battleships.userinterface;
 
 import academy.konrad.group.battleships.domain.Fleet;
-import academy.konrad.group.battleships.game_elements.BoardFactory;
+import academy.konrad.group.battleships.board.BoardFactory;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,38 +49,6 @@ public class Controller implements Initializable {
 
   private Fleet fleet = new Fleet();
 
-  public TilePane getEnemyBoard() {
-    return enemyBoard;
-  }
-
-  public TilePane getPlayerBoard() {
-    return playerBoard;
-  }
-
-  public BattleshipClient getClient() {
-    return client;
-  }
-
-  public Pane getLocal() {
-    return local;
-  }
-
-  public Button getConnect() {
-    return connect;
-  }
-
-  public HBox getTable() {
-    return table;
-  }
-
-  public TextArea getConsole() {
-    return console;
-  }
-
-  public Button getEnd() {
-    return end;
-  }
-
   @FXML
   private void finish() {
     new Sender().send("FINISH");
@@ -99,11 +67,11 @@ public class Controller implements Initializable {
     Logger.info("Start aplikacji");
   }
 
-  void updateConsole(String text){
+  void updateConsole(String text) {
     Platform.runLater(() -> this.console.appendText(text));
   }
 
-  void setBoardAccess(boolean flag){
+  void setBoardAccess(boolean flag) {
     Platform.runLater(() -> this.playerBoard.setDisable(flag));
   }
 
@@ -125,8 +93,9 @@ public class Controller implements Initializable {
   private synchronized void setUpEnemyBoard() {
     this.enemyBoard = BoardFactory.getEnemyBoard(100);
     for (Integer location : fleet.getShips()) {
-      Optional<Node> ship = this.enemyBoard.getChildren().stream().filter(field -> field.getId().equals(String.valueOf(location))).findFirst();
-      if(ship.isPresent()) {
+      Optional<Node> ship = this.enemyBoard.getChildren().stream().
+          filter(field -> field.getId().equals(String.valueOf(location))).findFirst();
+      if (ship.isPresent()) {
         Rectangle rectangleShip = (Rectangle) ship.get();
         rectangleShip.setFill(Color.LIMEGREEN);
       }
@@ -140,26 +109,35 @@ public class Controller implements Initializable {
       field.setFill(Color.RED);
       field.setDisable(true);
       this.playerBoard.setDisable(true);
-      new Sender().send("MOVE:" +field.getId());
+      new Sender().send("MOVE:" + field.getId());
     }), 100);
   }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     this.console.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("initial"));
-    this.connect.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("connectButton"));
+    this.connect.setText(Connection.getGamePropertiesAPI().getCurrentBundle().
+        getString("connectButton"));
     this.end.setText(Connection.getGamePropertiesAPI().getCurrentBundle().getString("endButton"));
 
   }
 
   void changeFieldColorOnPlayerBoard(String fieldHit, Color color) {
-    Rectangle field = (Rectangle)this.playerBoard.getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
-    Platform.runLater(() -> field.setFill(color));
+    Optional<Node> field = this.playerBoard.getChildren().stream().filter(f -> f.getId().equals(fieldHit)).
+        findFirst();
+    if(field.isPresent()) {
+      Rectangle rectangleField = (Rectangle) field.get();
+      Platform.runLater(() -> rectangleField.setFill(color));
+    }
   }
 
   void changeFieldColorOnEnemyBoard(String fieldHit, Color color) {
-    Rectangle field = (Rectangle)this.enemyBoard.getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
-    Platform.runLater(() -> field.setFill(color));
+    Optional<Node> field = this.enemyBoard.getChildren().stream().filter(f -> f.getId().equals(fieldHit)).
+        findFirst();
+    if(field.isPresent()) {
+      Rectangle rectangleField = (Rectangle) field.get();
+      Platform.runLater(() -> rectangleField.setFill(color));
+    }
   }
 
 }

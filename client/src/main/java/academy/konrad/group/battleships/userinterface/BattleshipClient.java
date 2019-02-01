@@ -26,7 +26,7 @@ class BattleshipClient {
 
   void play() {
 
-    Thread t = new Thread(() -> {
+    Thread game = new Thread(() -> {
       try {
         while (isRun) {
           String fromServer = in.readLine();
@@ -39,17 +39,18 @@ class BattleshipClient {
             runOption(message, content);
           }
         }
-      } catch (IOException e) {
-        Logger.error(e.getMessage());
+      } catch (IOException exception) {
+        Logger.error(exception.getMessage());
         isRun = false;
       }
     });
-    t.start();
+    game.setName("Gra");
+    game.start();
   }
 
 
   private void runOption(Message option, String content) {
-    switch(option) {
+    switch (option) {
       case MOVE:
         this.messageHandler.doMove(content);
         break;

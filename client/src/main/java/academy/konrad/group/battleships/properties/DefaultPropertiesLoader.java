@@ -13,15 +13,16 @@ class DefaultPropertiesLoader {
   }
 
   /**
-   * poprawiona metoda wczytująca properties file
+   * poprawiona metoda wczytująca properties file.
    *
    */
   static Properties loadPropertiesFromFile() {
     Properties properties = new Properties();
-    try (InputStream inputStream = DefaultPropertiesLoader.class.getClassLoader().getResourceAsStream("default.properties")) {
+    try (InputStream inputStream = DefaultPropertiesLoader.class.getClassLoader().
+        getResourceAsStream("default.properties")) {
       properties.load(inputStream);
       return properties;
-    } catch (FileNotFoundException e) {
+    } catch (FileNotFoundException exception) {
       throw new CannotLoadConfigurationFileException();
     } catch (IOException exception) {
       Logger.error(exception.getMessage());

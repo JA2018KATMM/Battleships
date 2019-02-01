@@ -4,9 +4,8 @@ import academy.konrad.group.battleships.domain.Fleet;
 import javafx.scene.paint.Color;
 import org.pmw.tinylog.Logger;
 
-
 /**
-* Zarzada flota i informuje kontrole UI o zmianach
+* Zarzada flota i informuje kontrole UI o zmianach.
  */
 class MessageHandler {
 
@@ -48,7 +47,7 @@ class MessageHandler {
     this.controller.updateConsole(message + "\n");
   }
 
-   void showMessageOnTextArea(String text){
+  void showMessageOnTextArea(String text) {
     Logger.info(text);
     this.controller.updateConsole(text + "\n");
   }
@@ -76,7 +75,7 @@ class MessageHandler {
 
   private void shotWater(String message3, String message1, String fieldShot) {
     Logger.info(message3 + "\n" + message1);
-    this.controller.changeFieldColorOnPlayerBoard(fieldShot, Color.RED);
+    this.controller.changeFieldColorOnEnemyBoard(fieldShot, Color.RED);
     this.controller.updateConsole(message3 + "\n"
         + message1 + "\n");
   }
@@ -88,7 +87,7 @@ class MessageHandler {
       this.controller.updateConsole(message4 + "\n");
       sender.send("END");
       this.controller.setBoardAccess(true);
-    } else{
+    } else {
       this.controller.setBoardAccess(true);
     }
   }
