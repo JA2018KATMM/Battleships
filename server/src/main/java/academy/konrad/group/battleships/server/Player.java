@@ -1,7 +1,7 @@
 package academy.konrad.group.battleships.server;
 
 import academy.konrad.group.battleships.message.Message;
-import academy.konrad.group.battleships.message.MessageHandler;
+import academy.konrad.group.battleships.message.MessageParser;
 import org.pmw.tinylog.Logger;
 
 import java.io.*;
@@ -43,9 +43,9 @@ public class Player extends Thread {
         String command = input.readLine();
 
         if (command != null) {
-          String title = MessageHandler.getMessageTitle(command);
-          String content = MessageHandler.getMessageContent(command);
-          Optional<Message> option = MessageHandler.findChosenOption(title);
+          String title = MessageParser.getMessageTitle(command);
+          String content = MessageParser.getMessageContent(command);
+          Optional<Message> option = MessageParser.findChosenOption(title);
           Message message;
           if (option.isPresent()) {
             message = option.get();

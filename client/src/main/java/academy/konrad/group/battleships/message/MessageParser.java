@@ -4,8 +4,10 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
 import java.util.Optional;
-
-public class MessageHandler {
+/**
+*Tlumaczy wiadomosci z servera na enumy dzieli jest na tytuł i zawartość
+ */
+public class MessageParser {
 
   public static Optional<Message> findChosenOption(String fromServer) {
     return Arrays.stream(Message.values()).filter(e -> e.name().equals(fromServer)).findFirst();

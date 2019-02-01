@@ -1,5 +1,6 @@
 package academy.konrad.group.battleships.userinterface;
 
+import academy.konrad.group.battleships.domain.Fleet;
 import academy.konrad.group.battleships.game_elements.BoardFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,9 +46,43 @@ public class Controller implements Initializable {
   @FXML
   private Button end;
 
+  private Fleet fleet = new Fleet();
+
+  public TilePane getEnemyBoard() {
+    return enemyBoard;
+  }
+
+  public TilePane getPlayerBoard() {
+    return playerBoard;
+  }
+
+  public BattleshipClient getClient() {
+    return client;
+  }
+
+  public Pane getLocal() {
+    return local;
+  }
+
+  public Button getConnect() {
+    return connect;
+  }
+
+  public HBox getTable() {
+    return table;
+  }
+
+  public TextArea getConsole() {
+    return console;
+  }
+
+  public Button getEnd() {
+    return end;
+  }
+
   @FXML
   private void finish() {
-    this.client.close();
+    new Sender().close();
     Stage stage = (Stage) end.getScene().getWindow();
     stage.close();
   }
@@ -56,9 +91,10 @@ public class Controller implements Initializable {
   private void start() {
     establishConnection();
     this.connect.setDisable(true);
-    this.client = new BattleshipClient();
     setUpBoards();
-    this.client.play(this.console, this.playerBoard, this.enemyBoard);
+    MessageHandler messageHandler = new MessageHandler(this, this.fleet );
+    this.client = new BattleshipClient(messageHandler);
+    this.client.play();
     Logger.info("Start aplikacji");
   }
 
@@ -79,7 +115,7 @@ public class Controller implements Initializable {
 
   private synchronized void setUpEnemyBoard() {
     this.enemyBoard = BoardFactory.getEnemyBoard(100);
-    for (Integer location : client.getFleetLocation().getShips()) {
+    for (Integer location : fleet.getShips()) {
       Optional<Node> ship = this.enemyBoard.getChildren().stream().filter(field -> field.getId().equals(String.valueOf(location))).findFirst();
       if(ship.isPresent()) {
         Rectangle rectangleShip = (Rectangle) ship.get();
@@ -95,7 +131,7 @@ public class Controller implements Initializable {
       field.setFill(Color.RED);
       field.setDisable(true);
       this.playerBoard.setDisable(true);
-      this.client.shot(field.getId());
+      new Sender().shot(field.getId());
     }), 100);
   }
 

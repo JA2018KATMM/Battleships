@@ -51,4 +51,8 @@ class Connection {
   static GamePropertiesAPI getGamePropertiesAPI() {
     return gamePropertiesAPI;
   }
+
+  static String getMessage(String key) {
+    return gamePropertiesAPI.getCurrentBundle().getString(key);
+  }
 }
