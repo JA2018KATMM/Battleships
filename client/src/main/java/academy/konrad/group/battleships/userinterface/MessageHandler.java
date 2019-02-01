@@ -38,7 +38,7 @@ class MessageHandler {
     String message = Connection.getMessage("firstTurn");
     Logger.info(message);
     this.controller.updateConsole(message + "\n");
-    this.controller.enablePlayerBoard();
+    this.controller.setBoardAccess(false);
   }
 
   void doHit(String fieldHit) {
@@ -70,7 +70,7 @@ class MessageHandler {
     } else {
       shotWater(message3, message1, fieldShot);
     }
-    this.controller.enablePlayerBoard();
+    this.controller.setBoardAccess(false);
 
   }
 
@@ -87,9 +87,9 @@ class MessageHandler {
       Logger.info(message4);
       this.controller.updateConsole(message4 + "\n");
       sender.send("END");
-      this.controller.disablePlayerBoard();
+      this.controller.setBoardAccess(true);
     } else{
-      this.controller.disablePlayerBoard();
+      this.controller.setBoardAccess(true);
     }
   }
 

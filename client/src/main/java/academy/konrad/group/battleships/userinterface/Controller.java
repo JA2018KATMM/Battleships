@@ -103,16 +103,8 @@ public class Controller implements Initializable {
     Platform.runLater(() -> this.console.appendText(text));
   }
 
-  void disablePlayerBoard(){
-    Platform.runLater(() -> {
-      this.playerBoard.setDisable(true);
-    });
-  }
-
-  void enablePlayerBoard(){
-    Platform.runLater(() -> {
-      this.playerBoard.setDisable(false);
-    });
+  void setBoardAccess(boolean flag){
+    Platform.runLater(() -> this.playerBoard.setDisable(flag));
   }
 
   private void establishConnection() {
@@ -162,16 +154,12 @@ public class Controller implements Initializable {
 
   void changeFieldColorOnPlayerBoard(String fieldHit, Color color) {
     Rectangle field = (Rectangle)this.playerBoard.getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
-    Platform.runLater(() -> {
-      field.setFill(color);
-    });
+    Platform.runLater(() -> field.setFill(color));
   }
 
   void changeFieldColorOnEnemyBoard(String fieldHit, Color color) {
     Rectangle field = (Rectangle)this.enemyBoard.getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
-    Platform.runLater(() -> {
-      field.setFill(color);
-    });
+    Platform.runLater(() -> field.setFill(color));
   }
 
 }
