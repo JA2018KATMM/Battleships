@@ -4,7 +4,12 @@ import academy.konrad.group.battleships.message.Message;
 import academy.konrad.group.battleships.message.MessageParser;
 import org.pmw.tinylog.Logger;
 
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -26,8 +31,8 @@ public class Player extends Thread {
       output.println("WELCOME");
       output.println("MESSAGE:awaitPlayer");
 
-    } catch (IOException e) {
-      Logger.error("Player died: " + e);
+    } catch (IOException exception) {
+      Logger.error("Player died: " + exception);
     }
   }
 
@@ -90,8 +95,10 @@ public class Player extends Thread {
 
   private void beforeGame() {
     output.println("MESSAGE:all");
-    if (game.currentPlayer.equals(this))
+    if (game.currentPlayer.equals(this)) {
       output.println("FIRST:yes");
-    else output.println("FIRST:not");
+    } else {
+      output.println("FIRST:not");
+    }
   }
 }
