@@ -23,7 +23,7 @@ class BattleshipClient {
     out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
   }
 
-  public Fleet getFleetLocation() {
+  Fleet getFleetLocation() {
     return fleet;
 
   }
@@ -34,25 +34,25 @@ class BattleshipClient {
       String fromServer;
 
       try {
-        while (!(fromServer = in.readLine()).equals("CLOSE")) {
+        while (!(fromServer = in.readLine()).equals(Options.CLOSE.name())) {
           Logger.info("Server: " + fromServer);
-          if (fromServer.startsWith("WAIT")) {
+          if (fromServer.startsWith(Options.WAIT.name())) {
             String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("wait");
             Logger.info(message);
             Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("MESSAGE")) {
+          } else if (fromServer.startsWith(Options.MESSAGE.name())) {
             String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString(fromServer.substring(8));
             Logger.info(message);
             Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("STOP")) {
+          } else if (fromServer.startsWith(Options.STOP.name())) {
             String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("finish");
             Logger.info(message);
             Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("WIN")) {
+          } else if (fromServer.startsWith(Options.WIN.name())) {
             String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("winner");
             Logger.info(message);
             Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("HIT")) {
+          } else if (fromServer.startsWith(Options.HIT.name())) {
             String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("enemyShipHit");
             Logger.info(message);
             String fieldHit = fromServer.substring(3);
@@ -61,13 +61,13 @@ class BattleshipClient {
               field.setFill(Color.YELLOW);
               textArea.appendText(message + "\n");
             });
-          } else if (fromServer.startsWith("WELCOME")) {
+          } else if (fromServer.startsWith(Options.WELCOME.name())) {
             String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("welcomeMessage");
             Logger.info(message + "\n "
                 + "Initial ships location: "
                 + fleet.getShips() + "\n");
             Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("FIRST")) {
+          } else if (fromServer.startsWith(Options.FIRST.name())) {
             if (fromServer.substring(6).equals("yes")) {
               String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("firstTurn");
               Logger.info(message);
@@ -80,7 +80,7 @@ class BattleshipClient {
               Logger.info(message);
               Platform.runLater(() -> textArea.appendText(message + "\n"));
             }
-          } else if (fromServer.startsWith("MOVE")) {
+          } else if (fromServer.startsWith(Options.MOVE.name())) {
             String fieldShot = fromServer.substring(4);
             String message1 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("yourTurn");
             String message2 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("yourShipHit");
@@ -100,7 +100,7 @@ class BattleshipClient {
                 String message4 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("lastShip");
                 Logger.info(message4);
                 Platform.runLater(() -> textArea.appendText(message4 + "\n"));
-                out.println("END");
+                out.println(Options.END.name());
               } else Platform.runLater(() -> playerBoard.setDisable(false));
             } else {
               Logger.info(message3 + "\n" + message1);
@@ -116,7 +116,7 @@ class BattleshipClient {
 
         }
       } catch (IOException e) {
-        e.printStackTrace();
+        Logger.error(e.getMessage());
       }
     });
     t.start();
