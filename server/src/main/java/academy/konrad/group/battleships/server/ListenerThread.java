@@ -17,7 +17,7 @@ class ListenerThread extends Thread {
     ) {
       Logger.info("Battleships are running!");
 
-      while (!Thread.currentThread().isInterrupted()){
+      while (!Thread.currentThread().isInterrupted()) {
         Game game = new Game();
         Player firstPlayer = new Player(serverSocket.accept(), game);
         Player secondPlayer = new Player(serverSocket.accept(), game);
@@ -28,9 +28,9 @@ class ListenerThread extends Thread {
         System.out.println("*** GAME STARTS ***");
       }
 
-    } catch (IOException e) {
+    } catch (IOException exception) {
       Logger.error("Could not listen on port " + PORT_NUMBER);
-      Logger.error(e.getMessage());
+      Logger.error(exception.getMessage());
     }
   }
 }

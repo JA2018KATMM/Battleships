@@ -19,8 +19,10 @@ public class Player extends Thread {
   Player(Socket socket, Game game) {
     this.game = game;
     try {
-      input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-      output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+      input = new BufferedReader
+          (new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+      output = new PrintWriter
+          (new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
       output.println("WELCOME");
       output.println("MESSAGE:awaitPlayer");
 
@@ -36,30 +38,30 @@ public class Player extends Thread {
     beforeGame();
     boolean isGame = true;
 
-      while (isGame) {
-        try {
-          String command = input.readLine();
+    while (isGame) {
+      try {
+        String command = input.readLine();
 
-          if (command != null) {
-            String title = MessageHandler.getMessageTitle(command);
-            String content = MessageHandler.getMessageContent(command);
-            Optional<Message> option = MessageHandler.findChosenOption(title);
-            Message message;
-            if (option.isPresent()) {
-              message = option.get();
-              runServerOption(message, content);
-            }
+        if (command != null) {
+          String title = MessageHandler.getMessageTitle(command);
+          String content = MessageHandler.getMessageContent(command);
+          Optional<Message> option = MessageHandler.findChosenOption(title);
+          Message message;
+          if (option.isPresent()) {
+            message = option.get();
+            runServerOption(message, content);
           }
-        } catch (IOException e) {
-          Logger.error("Player died: " + e);
-          isGame = false;
         }
+      } catch (IOException exception) {
+        Logger.error("Player died: " + exception);
+        isGame = false;
       }
+    }
 
   }
 
   private void runServerOption(Message message, String content) {
-    switch(message) {
+    switch (message) {
       case MOVE:
         game.waitingPlayer.output.println(message + ":" + content);
         game.currentPlayer.output.println("WAIT");
@@ -80,6 +82,8 @@ public class Player extends Thread {
       case HIT:
         game.waitingPlayer.output.println(message + ":" + content);
         break;
+      default:
+        throw new IllegalStateException();
 
     }
   }

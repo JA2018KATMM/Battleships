@@ -5,7 +5,7 @@ class Game {
   Player currentPlayer;
   Player waitingPlayer;
 
-  void changeTurn(){
+  void changeTurn() {
     Player temp = currentPlayer;
     currentPlayer = waitingPlayer;
     waitingPlayer = temp;
