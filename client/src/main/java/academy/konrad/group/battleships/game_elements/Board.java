@@ -17,6 +17,10 @@ class Board extends TilePane {
   Board() {
   }
 
+  EventHandler<? super MouseEvent> getHandler() {
+    return handler;
+  }
+
   void fillBoard(int fieldNumber) {
     for (int i = 0; i < fieldNumber; i++) {
       Rectangle rectangle = new Rectangle(30, 30);

@@ -1,6 +1,5 @@
 package academy.konrad.group.battleships.game_elements;
 
-import javafx.scene.layout.TilePane;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
