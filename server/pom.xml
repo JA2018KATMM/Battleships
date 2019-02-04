@@ -10,14 +10,12 @@
        <version>0.1</version>
     </parent>
     <packaging>war</packaging>
-    <build>
-        <finalName>server</finalName>
-    </build>
     <artifactId>server</artifactId>
     
     <properties>
         <!-- dependencies versions -->
         <version.plugin.javax.servlet-api>4.0.1</version.plugin.javax.servlet-api>
+        <version.plugin.maven.tomcat>2.2</version.plugin.maven.tomcat>
     </properties>
     <dependencies>
         <dependency>
@@ -31,6 +29,24 @@
             <artifactId>client</artifactId>
             <version>0.1</version>
         </dependency>
+
     </dependencies>
+
+    <build>
+        <finalName>server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>${version.plugin.maven.tomcat}</version>
+                <configuration>
+                    <url>http://localhost:8080/</url>
+                    <server>TomcatServer</server>
+                    <path>/</path>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
 
