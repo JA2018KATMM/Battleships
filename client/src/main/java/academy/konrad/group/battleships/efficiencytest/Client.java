@@ -1,57 +1,51 @@
 package academy.konrad.group.battleships.efficiencytest;
 
-import academy.konrad.group.battleships.message.Message;
-import academy.konrad.group.battleships.message.MessageParser;
-import academy.konrad.group.battleships.userinterface.Connection;
-import org.pmw.tinylog.Logger;
+import academy.konrad.group.battleships.domain.Fleet;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
-public class Client {
-    private final BufferedReader in;
-    private boolean isRun = true;
+class Client {
+
+    private BufferedReader in;
+    private PrintWriter out;
+    private Fleet fleet = new Fleet();
 
     Client() {
-        this.in = new BufferedReader(new InputStreamReader(Connection.getInputStream(), StandardCharsets.UTF_8));
-
+        Connection.initialize();
+        in = new BufferedReader(new InputStreamReader(Connection.getInputStream(), StandardCharsets.UTF_8));
+        out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
     }
-
 
     void play() {
 
-        Thread game = new Thread(() -> {
+        Thread t = new Thread(() -> {
+            String fromServer;
+
             try {
-                while (isRun) {
-                    String fromServer = in.readLine();
-                    String title = MessageParser.getMessageTitle(fromServer);
-                    String content = MessageParser.getMessageContent(fromServer);
-                    Optional<Message> option = MessageParser.findChosenOption(title);
-                    Message message;
-                    if (option.isPresent()) {
-                        message = option.get();
-                        runOption(message, content);
+                while ((fromServer = in.readLine()) != null) {
+
+                    if (fromServer.startsWith("MESSAGE")) {
+                        System.out.println("Server: " + fromServer);
+                        String message = fromServer;
+                    } else if (fromServer.startsWith("WELCOME")) {
+                        String message = "Welcome to the Battleship game!";
+                        System.out.println(message);
+                    } else if (fromServer.startsWith("MOVE")) {
+                        String fieldShot = fromServer.substring(4);
+                        String message = "Opponent's fleet: " + fieldShot;
+                        System.out.println(message);
                     }
                 }
-            } catch (IOException exception) {
-                Logger.error(exception.getMessage());
-                isRun = false;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
-        game.setName("Gra");
-        game.start();
+        t.start();
     }
 
-    private void runOption(Message option, String content) {
-        switch (option) {
-            case MOVE:
-                this.messageHandler.doMove(content);
-                break;
-            default:
-                throw new IllegalStateException();
-
-        }
+    void sendFleet() {
+        System.out.println("Players fleet: " + fleet.getShips());
+        out.println("MOVE:" + fleet.getShips());
+    }
 }

@@ -12,7 +12,7 @@ import org.pmw.tinylog.writers.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-public class GuiMain extends Application {
+public class MainWithGUI extends Application {
 
   public static void main(String[] args) {
     launch(args);
