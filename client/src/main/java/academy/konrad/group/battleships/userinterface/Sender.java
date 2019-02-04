@@ -1,18 +1,15 @@
 package academy.konrad.group.battleships.userinterface;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 class Sender {
-  static ObjectOutputStream oos;
 
-  private Sender() {
-  }
+  private final PrintWriter out = new PrintWriter(new OutputStreamWriter(
+      Connection.getOutputStream(), StandardCharsets.UTF_8), true);
 
-  static void send(Object object) throws IOException {
-    if (oos == null)
-      oos = new ObjectOutputStream(Connection.getOutputStream());
-    oos.writeObject(object);
+  void send(String text) {
+    out.println(text);
   }
 }

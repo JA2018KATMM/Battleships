@@ -19,12 +19,12 @@ class Connection {
 
   static boolean initialize()  {
     try {
-      InetSocketAddress socketAddress = new InetSocketAddress
-          ("localhost", 8081);
+      InetSocketAddress socketAddress =
+          new InetSocketAddress("localhost", 8081);
       socket.connect(socketAddress, 5000);
       return true;
-    } catch (IOException e) {
-      Logger.error(e.getMessage());
+    } catch (IOException exception) {
+      Logger.error(exception.getMessage());
     }
     return false;
   }
@@ -48,7 +48,11 @@ class Connection {
     throw new IllegalStateException();
   }
 
-  public static GamePropertiesAPI getGamePropertiesAPI() {
+  static GamePropertiesAPI getGamePropertiesAPI() {
     return gamePropertiesAPI;
+  }
+
+  static String getMessage(String key) {
+    return gamePropertiesAPI.getCurrentBundle().getString(key);
   }
 }

@@ -26,8 +26,9 @@ public class Main extends Application {
 
 
   private void loggerSetup() {
-    Configurator.defaultConfig().writer(new FileWriter(System.getProperty("user.home") +"/logi/info_klient.txt"), Level.INFO)
-            .addWriter(new FileWriter(System.getProperty("user.home") +"/logi/bledy_klient.txt"), Level.ERROR).activate();
+    Configurator.defaultConfig().writer(new FileWriter(System.getProperty("user.home")
+        + "/logi/info_klient.txt"), Level.INFO).addWriter(new FileWriter(
+            System.getProperty("user.home") + "/logi/bledy_klient.txt"), Level.ERROR).activate();
   }
 
   private void renderView(Stage primaryStage) throws IOException {

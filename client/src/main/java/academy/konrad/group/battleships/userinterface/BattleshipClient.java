@@ -1,133 +1,96 @@
 package academy.konrad.group.battleships.userinterface;
 
-import academy.konrad.group.battleships.domain.Fleet;
-import javafx.application.Platform;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
+import academy.konrad.group.battleships.message.Message;
+import academy.konrad.group.battleships.message.MessageParser;
 import org.pmw.tinylog.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
+/**
+ * Odbiera wiadomości z serwera i wywołuje odpowiednie metody na podstawie tytyłu.
+ */
 class BattleshipClient {
 
   private final BufferedReader in;
-  private final Fleet fleet = new Fleet();
-  private final PrintWriter out;
+  private boolean isRun = true;
+  private final MessageHandler messageHandler;
 
-  BattleshipClient() {
-    in = new BufferedReader(new InputStreamReader(Connection.getInputStream(), StandardCharsets.UTF_8));
-    out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
-  }
-
-  public Fleet getFleetLocation() {
-    return fleet;
+  BattleshipClient(MessageHandler messageHandler) {
+    this.messageHandler = messageHandler;
+    this.in = new BufferedReader(new InputStreamReader(Connection.getInputStream(), StandardCharsets.UTF_8));
 
   }
 
-  void play(TextArea textArea, TilePane playerBoard, TilePane enemyBoard) {
 
-    Thread t = new Thread(() -> {
-      String fromServer;
+  void play() {
 
+    Thread game = new Thread(() -> {
       try {
-        while (!(fromServer = in.readLine()).equals("CLOSE")) {
-          Logger.info("Server: " + fromServer);
-          if (fromServer.startsWith("WAIT")) {
-            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("wait");
-            Logger.info(message);
-            Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("MESSAGE")) {
-            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString(fromServer.substring(8));
-            Logger.info(message);
-            Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("STOP")) {
-            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("finish");
-            Logger.info(message);
-            Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("WIN")) {
-            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("winner");
-            Logger.info(message);
-            Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("HIT")) {
-            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("enemyShipHit");
-            Logger.info(message);
-            String fieldHit = fromServer.substring(3);
-            Rectangle field = (Rectangle) playerBoard.getChildren().filtered(f -> f.getId().equals(fieldHit)).get(0);
-            Platform.runLater(() -> {
-              field.setFill(Color.YELLOW);
-              textArea.appendText(message + "\n");
-            });
-          } else if (fromServer.startsWith("WELCOME")) {
-            String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("welcomeMessage");
-            Logger.info(message + "\n "
-                + "Initial ships location: "
-                + fleet.getShips() + "\n");
-            Platform.runLater(() -> textArea.appendText(message + "\n"));
-          } else if (fromServer.startsWith("FIRST")) {
-            if (fromServer.substring(6).equals("yes")) {
-              String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("firstTurn");
-              Logger.info(message);
-              Platform.runLater(() -> {
-                textArea.appendText(message + "\n");
-                playerBoard.setDisable(false);
-              });
-            } else {
-              String message = Connection.getGamePropertiesAPI().getCurrentBundle().getString("secondTurn");
-              Logger.info(message);
-              Platform.runLater(() -> textArea.appendText(message + "\n"));
-            }
-          } else if (fromServer.startsWith("MOVE")) {
-            String fieldShot = fromServer.substring(4);
-            String message1 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("yourTurn");
-            String message2 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("yourShipHit");
-            String message3 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("fieldShoot") + fieldShot;
-            if (fleet.getShips().contains(Integer.parseInt(fieldShot))) {
-              Logger.info(message3 + "\n" + message2 + "\n" + message1);
-              Rectangle field = (Rectangle) enemyBoard.getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
-              Platform.runLater(() -> {
-                field.setFill(Color.YELLOW);
-                textArea.appendText(message3 + "\n"
-                    + message2 + "\n"
-                    + message1 + "\n");
-              });
-              fleet.getShips().remove(Integer.parseInt(fieldShot));
-              out.println("HIT" + fieldShot);
-              if (fleet.getShips().isEmpty()) {
-                String message4 = Connection.getGamePropertiesAPI().getCurrentBundle().getString("lastShip");
-                Logger.info(message4);
-                Platform.runLater(() -> textArea.appendText(message4 + "\n"));
-                out.println("END");
-              } else Platform.runLater(() -> playerBoard.setDisable(false));
-            } else {
-              Logger.info(message3 + "\n" + message1);
-              Rectangle field = (Rectangle) enemyBoard.getChildren().filtered(f -> f.getId().equals(fieldShot)).get(0);
-              Platform.runLater(() -> {
-                field.setFill(Color.RED);
-                textArea.appendText(message3 + "\n"
-                    + message1 + "\n");
-                playerBoard.setDisable(false);
-              });
-            }
+        while (isRun) {
+          String fromServer = in.readLine();
+          String title = MessageParser.getMessageTitle(fromServer);
+          String content = MessageParser.getMessageContent(fromServer);
+          Optional<Message> option = MessageParser.findChosenOption(title);
+          Message message;
+          if (option.isPresent()) {
+            message = option.get();
+            runOption(message, content);
           }
-
         }
-      } catch (IOException e) {
-        e.printStackTrace();
+      } catch (IOException exception) {
+        Logger.error(exception.getMessage());
+        isRun = false;
       }
     });
-    t.start();
+    game.setName("Gra");
+    game.start();
   }
 
-  public void shot(String id) {
-    out.println("MOVE" + id);
+
+  private void runOption(Message option, String content) {
+    switch (option) {
+      case MOVE:
+        this.messageHandler.doMove(content);
+        break;
+      case WELCOME:
+        String messageStart = Connection.getMessage("welcomeMessage");
+        this.messageHandler.logStart(messageStart);
+        this.messageHandler.showMessageOnTextArea(messageStart);
+        break;
+      case CLOSE:
+        this.isRun = false;
+        break;
+      case WAIT:
+        break;
+      case MESSAGE:
+        String message = Connection.getMessage(content);
+        this.messageHandler.showMessageOnTextArea(message);
+        break;
+      case STOP:
+        String textStop = Connection.getMessage("finish");
+        this.messageHandler.showMessageOnTextArea(textStop);
+        break;
+      case WIN:
+        String text = Connection.getMessage("winner");
+        this.messageHandler.showMessageOnTextArea(text);
+        break;
+      case HIT:
+        this.messageHandler.doHit(content);
+        break;
+      case FIRST:
+        this.messageHandler.manageTurn(content);
+        break;
+        default:
+          throw new IllegalStateException();
+        
+    }
+
   }
 
-  public void close() {
-    out.println("FINISH");
-  }
+
+
+
 
 }

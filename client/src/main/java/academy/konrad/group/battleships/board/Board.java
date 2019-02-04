@@ -1,4 +1,4 @@
-package academy.konrad.group.battleships.game_elements;
+package academy.konrad.group.battleships.board;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -17,13 +17,17 @@ class Board extends TilePane {
   Board() {
   }
 
+  EventHandler<? super MouseEvent> getHandler() {
+    return handler;
+  }
+
   void fillBoard(int fieldNumber) {
     for (int i = 0; i < fieldNumber; i++) {
       Rectangle rectangle = new Rectangle(30, 30);
       rectangle.setFill(Color.LIGHTGRAY);
       rectangle.setStroke(Color.BLACK);
       rectangle.setId(String.valueOf(i));
-      if(handler != null) {
+      if (handler != null) {
         rectangle.setOnMouseClicked(handler);
       }
       getChildren().addAll(rectangle);

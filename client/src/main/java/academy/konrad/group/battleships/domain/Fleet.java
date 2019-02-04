@@ -8,7 +8,7 @@ public class Fleet {
 
   private final Set<Integer> ships = new HashSet<>();
 
-  public Fleet(){
+  public Fleet() {
     this.allocateFleet();
   }
 
@@ -17,7 +17,7 @@ public class Fleet {
   }
 
   private void allocateFleet() {
-    while (ships.size() < 4){
+    while (ships.size() < 4) {
       ships.add(new Random().nextInt(100));
     }
   }
