@@ -24,7 +24,7 @@ class Connection {
       socket.connect(socketAddress, 5000);
       return true;
     } catch (IOException exception) {
-      Logger.error(exception.getMessage());
+      Logger.error(exception.getCause());
     }
     return false;
   }

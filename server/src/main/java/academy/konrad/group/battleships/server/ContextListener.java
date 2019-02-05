@@ -19,6 +19,7 @@ public class ContextListener implements ServletContextListener {
     loggerSetup();
     Logger.info("Aplikacje serwerowa została uruchomiona");
     listenerThread = new ListenerThread();
+    listenerThread.setName("WĄTEK SERWERA");
     listenerThread.start();
   }
 
