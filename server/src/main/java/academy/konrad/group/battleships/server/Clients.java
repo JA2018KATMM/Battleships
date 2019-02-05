@@ -18,4 +18,8 @@ class Clients {
     int size() {
         return this.clientsList.size();
     }
+
+    void messageAll(Message message) {
+        clientsList.forEach(client -> client.sendMessage(message));
+    }
 }

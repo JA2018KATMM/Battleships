@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.concurrent.*;
 
 class ServerAdministrator {
-    private final TransferQueue<Client> clientsWaitingRoom = new LinkedTransferQueue<>();
-    private final Rooms rooms = new Rooms();
+    private final TransferQueue<ClientConnection> clientConnectionsWaitingRoom = new LinkedTransferQueue<>();
+    private final RoomAssigner roomAssigner = RoomAssigner.createAssigner();
 
     void runServer() {
         Listener listener = null;
         try {
-            listener = Listener.createListener(clientsWaitingRoom);
+            listener = Listener.createListener(clientConnectionsWaitingRoom);
         } catch (IOException e) {
             System.err.println("Server Socket threw exception during initialization");
         }
@@ -19,11 +19,12 @@ class ServerAdministrator {
 
         while(!Thread.currentThread().isInterrupted()){
             try {
-                Client client = clientsWaitingRoom.take();
-                rooms.assignRoom(client);
+                ClientConnection clientConnection = clientConnectionsWaitingRoom.take();
+                roomAssigner.assignRoom(clientConnection);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
     }
 }

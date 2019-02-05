@@ -9,7 +9,7 @@
        <artifactId>battleships</artifactId>
        <version>0.1</version>
     </parent>
-    <artifactId>client</artifactId>
+    <artifactId>clientConnection</artifactId>
     
     <properties>
         <!-- dependencies versions -->

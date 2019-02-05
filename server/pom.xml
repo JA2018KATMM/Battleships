@@ -28,7 +28,7 @@
 
         <dependency>
             <groupId>academy.konrad.group</groupId>
-            <artifactId>client</artifactId>
+            <artifactId>clientConnection</artifactId>
             <version>0.1</version>
         </dependency>
     </dependencies>
