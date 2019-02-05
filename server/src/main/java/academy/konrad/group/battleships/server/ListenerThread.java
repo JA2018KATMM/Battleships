@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 class ListenerThread extends Thread {
 
   private static final int PORT_NUMBER = 8081;
-  private int clientCounter = 0;
+  private int clientCounter = 1;
   private int gameCounter = 0;
 
   @Override

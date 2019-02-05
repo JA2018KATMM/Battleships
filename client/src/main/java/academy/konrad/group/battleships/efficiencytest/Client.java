@@ -6,21 +6,28 @@ import org.pmw.tinylog.Logger;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-class Client {
+class Client implements Runnable {
 
     private BufferedReader in;
     private PrintWriter out;
     private Fleet fleet = new Fleet();
+    private int clientNumber;
 
-    Client(String args) {
-        Connection.initialize();
-        in = new BufferedReader(new InputStreamReader(Connection.getInputStream(), StandardCharsets.UTF_8));
-        out = new PrintWriter(new OutputStreamWriter(Connection.getOutputStream(), StandardCharsets.UTF_8), true);
-        Thread.currentThread().setName("Player number: " + args);
+    Client(int clientNumber) {
+        Connection connection = new Connection();
+        in = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+        out = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8), true);
+        this.clientNumber = clientNumber;
     }
 
-    void play() {
+    private void sendFleet() {
+        Logger.info("Fleet " + fleet.getShips() + " has been sent to opponent");
+        out.println("MOVE:" + fleet.getShips());
+    }
 
+    @Override
+    public void run() {
+        Thread.currentThread().setName("Player number: " + clientNumber);
         Logger.info("Client started with his own fleet: " + fleet.getShips());
         String fromServer;
 
@@ -44,10 +51,5 @@ class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void sendFleet() {
-        Logger.info("Fleet " + fleet.getShips() + " has been sent to opponent");
-        out.println("MOVE:" + fleet.getShips());
     }
 }

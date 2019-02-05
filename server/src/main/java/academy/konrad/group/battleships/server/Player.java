@@ -68,9 +68,9 @@ public class Player extends Thread {
   private void runServerOption(Message message, String content) {
     switch (message) {
       case MOVE:
-        game.waitingPlayer.output.println(message + ":" + content);
-        game.currentPlayer.output.println("WAIT");
-        game.changeTurn();
+        if (game.currentPlayer.equals(this)) game.waitingPlayer.output.println(message + ":" + content);
+        else game.currentPlayer.output.println(message + ":" + content);
+//        game.changeTurn();
         break;
       case CLOSE:
         break;

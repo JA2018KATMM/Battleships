@@ -11,25 +11,27 @@ import java.net.Socket;
 
 class Connection {
 
-  private static final Socket socket = new Socket();
+  private Socket socket;
   private static GamePropertiesAPI gamePropertiesAPI = new GamePropertiesAPI();
 
-  private Connection() {
+  Connection() {
+    this.socket = initialize();
   }
 
-  static boolean initialize()  {
+  Socket initialize()  {
+    Socket socket = new Socket();
     try {
       InetSocketAddress socketAddress =
           new InetSocketAddress("localhost", 8081);
       socket.connect(socketAddress, 5000);
-      return true;
+      return socket;
     } catch (IOException exception) {
       Logger.error(exception.getCause());
     }
-    return false;
+    return null;
   }
 
-  static OutputStream getOutputStream() {
+  OutputStream getOutputStream() {
     try {
       return socket.getOutputStream();
     } catch (IOException exception) {
@@ -39,7 +41,7 @@ class Connection {
     throw new IllegalStateException();
   }
 
-  static InputStream getInputStream() {
+  InputStream getInputStream() {
     try {
       return socket.getInputStream();
     } catch (IOException exception) {
