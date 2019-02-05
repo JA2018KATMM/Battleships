@@ -2,6 +2,7 @@ package academy.konrad.group.battleships.efficiencytest;
 
 import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Level;
+import org.pmw.tinylog.Logger;
 import org.pmw.tinylog.writers.FileWriter;
 
 import java.util.concurrent.ExecutorService;
@@ -11,10 +12,12 @@ public class MainWithoutGUI {
 
     public static void main() {
         loggerSetup();
-        ExecutorService executors = Executors.newFixedThreadPool(10);
-        for (int i = 1; i < 11; i++) {
+        ExecutorService executors = Executors.newCachedThreadPool();
+        for (int i = 1; i < 5000; i++) {
             executors.execute(new Client(i));
         }
+        System.out.println("Zakończono tworzenie klientów");
+        Logger.info("Zakończono tworzenie klientów");
     }
 
     private static void loggerSetup() {

@@ -36,12 +36,8 @@ class Client implements Runnable {
 
                 if (fromServer.startsWith("MESSAGE")) {
                     if (fromServer.endsWith("all")) {
-                        Logger.info("All players connected game started");
                         sendFleet();
-                    } else Logger.info("Awaiting opponent to connect");
-                } else if (fromServer.startsWith("WELCOME")) {
-                    String message = "Welcome to the Battleship game!";
-                    Logger.info(message);
+                    }
                 } else if (fromServer.startsWith("MOVE")) {
                     String fieldShot = fromServer.substring(4);
                     String message = "Opponent's fleet received: " + fieldShot;
