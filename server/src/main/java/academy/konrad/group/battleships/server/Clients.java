@@ -22,4 +22,13 @@ class Clients {
     void messageAll(Message message) {
         clientsList.forEach(client -> client.sendMessage(message));
     }
+
+    void closeDisconnectedClients() {
+        clientsList.forEach(client -> {
+            if(client.isDisconnected()) {
+                client.closeConnection();
+                clientsList.remove(client);
+            }
+        });
+    }
 }

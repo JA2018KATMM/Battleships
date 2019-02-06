@@ -17,14 +17,27 @@ class ClientMessageListener implements Runnable {
 
     @Override
     public void run() {
-        while(!Thread.currentThread().isInterrupted()){
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                String line = bufferedReader.readLine();
+                if (line == null) {
+                    break;
+                }
+                roomClientsMessagesQueue.add(new Message(line));
+            }
+        } catch (IOException e) {
+            System.err.println("ClientMessageListener's bufferedReader cannot read.");
+        } finally {
+            System.err.println("Client left the room");
+            Thread.currentThread().interrupt();
             try {
-                roomClientsMessagesQueue.add(new Message(bufferedReader.readLine()));
-            } catch (IOException e) {
-                System.err.println("ClientMessageListener's bufferedReader cannot read.");
+                bufferedReader.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         }
     }
+
 
     static ClientMessageListener createMessageListener(ClientConnection clientConnection, TransferQueue<Message> roomClientsMessagesQueue) throws IOException {
         return new ClientMessageListener(clientConnection.openInputStream(), roomClientsMessagesQueue);

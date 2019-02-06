@@ -32,7 +32,10 @@ class Room implements Runnable{
     public void run() {
         while(!Thread.currentThread().isInterrupted()){
             try {
-                clients.messageAll(roomClientsMessagesQueue.take());
+                clients.closeDisconnectedClients();
+                if(isFull()) {
+                    clients.messageAll(roomClientsMessagesQueue.take());
+                }
             } catch (InterruptedException e) {
                 System.err.println("Room interrupted while reading message from clients");
             }

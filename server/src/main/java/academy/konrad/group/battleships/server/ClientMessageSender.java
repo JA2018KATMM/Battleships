@@ -15,6 +15,10 @@ class ClientMessageSender {
         printWriter.format("%s\r", message.toString());
     }
 
+    void close() {
+        printWriter.close();
+    }
+
     static ClientMessageSender createMessageSender(ClientConnection clientConnection) throws IOException {
         return new ClientMessageSender(clientConnection.openOutputStream());
     }

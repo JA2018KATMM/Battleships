@@ -20,4 +20,12 @@ class ClientConnection{
     OutputStream openOutputStream() throws IOException {
         return socket.getOutputStream();
     }
+
+    boolean isConnected() {
+        return socket.isConnected();
+    }
+
+    void close() throws IOException {
+        socket.close();
+    }
 }
