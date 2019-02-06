@@ -13,7 +13,7 @@ public class MainWithoutGUI {
     public static void main() {
         loggerSetup();
         ExecutorService executors = Executors.newCachedThreadPool();
-        for (int i = 1; i < 5000; i++) {
+        for (int i = 1; i < 10000; i++) {
             executors.execute(new Client(i));
         }
         System.out.println("Zakończono tworzenie klientów");
