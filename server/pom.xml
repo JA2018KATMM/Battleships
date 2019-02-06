@@ -9,26 +9,15 @@
        <artifactId>battleships</artifactId>
        <version>0.1</version>
     </parent>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <build>
         <finalName>server</finalName>
     </build>
     <artifactId>server</artifactId>
-    
-    <properties>
-        <!-- dependencies versions -->
-        <version.plugin.javax.servlet-api>4.0.1</version.plugin.javax.servlet-api>
-    </properties>
     <dependencies>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${version.plugin.javax.servlet-api}</version>
-        </dependency>
-
-        <dependency>
             <groupId>academy.konrad.group</groupId>
-            <artifactId>clientConnection</artifactId>
+            <artifactId>client</artifactId>
             <version>0.1</version>
         </dependency>
     </dependencies>
