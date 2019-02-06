@@ -7,7 +7,7 @@ public class App {
 
     public static void main(String[] args) throws InterruptedException {
         if (args[0].equals("-ng") || args[0].equals("--nogui"))
-            MainWithoutGUI.main();
+            MainWithoutGUI.main(args[1]);
         else {
             MainWithGUI.main(args);
         }

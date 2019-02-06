@@ -10,10 +10,11 @@ import java.util.concurrent.Executors;
 
 public class MainWithoutGUI {
 
-    public static void main() {
+    public static void main(String args) {
         loggerSetup();
         ExecutorService executors = Executors.newCachedThreadPool();
-        for (int i = 1; i < 10000; i++) {
+        Integer numberOfThreads = Integer.valueOf(args);
+        for (int i = 1; i < numberOfThreads; i++) {
             executors.execute(new Client(i));
         }
         System.out.println("Zakończono tworzenie klientów");

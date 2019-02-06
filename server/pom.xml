@@ -9,15 +9,14 @@
        <artifactId>battleships</artifactId>
        <version>0.1</version>
     </parent>
-    <packaging>war</packaging>
-    <build>
-        <finalName>server</finalName>
-    </build>
+    <packaging>jar</packaging>
+
     <artifactId>server</artifactId>
     
     <properties>
         <!-- dependencies versions -->
         <version.plugin.javax.servlet-api>4.0.1</version.plugin.javax.servlet-api>
+        <version.plugin.maven.shade-plugin>3.2.0</version.plugin.maven.shade-plugin>
     </properties>
     <dependencies>
         <dependency>
@@ -32,5 +31,33 @@
             <version>0.1</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${version.plugin.maven.shade-plugin}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>project-classifier</shadedClassifierName>
+                            <outputFile>shade\${project.artifactId}.jar</outputFile>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>academy.konrad.group.battleships.server.StressTestServer</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <finalName>server</finalName>
+    </build>
 </project>
 
