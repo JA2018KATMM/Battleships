@@ -1,5 +1,7 @@
 package academy.konrad.group.battleships.server;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,7 @@ class Clients {
     private final List<Client> clientsList;
 
     Clients(int capacity) {
-        this.clientsList = new ArrayList<>(capacity);
+        this.clientsList = Collections.synchronizedList(new ArrayList<>(capacity));
     }
 
     void add(Client client) {

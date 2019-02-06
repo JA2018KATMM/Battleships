@@ -1,10 +1,12 @@
 package academy.konrad.group.battleships.server;
 
+import org.pmw.tinylog.Logger;
+
 import java.util.concurrent.ThreadFactory;
 
 
 class ServerThreadsFactory implements ThreadFactory {
-    private int roomCounter = 0;
+    private int counter = 0;
     private final String threadName;
 
     ServerThreadsFactory(String threadName) {
@@ -13,7 +15,8 @@ class ServerThreadsFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        roomCounter++;
-        return new Thread(r, String.format("%s%d", threadName, roomCounter));
+        counter++;
+        Logger.info(String.format("Odpalam wątek %s%d", threadName, counter));
+        return new Thread(r, String.format("%s%d", threadName, counter));
     }
 }

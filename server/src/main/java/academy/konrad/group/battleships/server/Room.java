@@ -44,7 +44,7 @@ class Room implements Runnable{
 
     static Room createRoom(int roomCapacity) {
         //size of pool is roomCapacity + 1 as each client has a listening thread and only one shared thread is sending messages to clients.
-        ExecutorService executorService = Executors.newFixedThreadPool(roomCapacity + 1, new ServerThreadsFactory("Room"));
+        ExecutorService executorService = Executors.newFixedThreadPool(roomCapacity + 1, new ServerThreadsFactory("ClientThread"));
         return new Room(roomCapacity, executorService);
     }
 }

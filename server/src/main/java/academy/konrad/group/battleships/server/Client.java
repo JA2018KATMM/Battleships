@@ -5,10 +5,12 @@ import java.util.concurrent.TransferQueue;
 
 class Client {
 
+    private final ClientMessageListener messageListener;
     private final ClientMessageSender clientMessageSender;
     private final ClientConnection clientConnection;
 
-    private Client(ClientMessageSender clientMessageSender, ClientConnection clientConnection) {
+    private Client(ClientMessageListener messageListener, ClientMessageSender clientMessageSender, ClientConnection clientConnection) {
+        this.messageListener = messageListener;
         this.clientMessageSender = clientMessageSender;
         this.clientConnection = clientConnection;
     }
@@ -35,6 +37,6 @@ class Client {
         ClientMessageListener messageListener = ClientMessageListener.createMessageListener(clientConnection, roomClientsMessagesQueue);
         threadsManager.execute(messageListener);
         ClientMessageSender clientMessageSender = ClientMessageSender.createMessageSender(clientConnection);
-        return new Client(clientMessageSender, clientConnection);
+        return new Client(messageListener, clientMessageSender, clientConnection);
     }
 }
