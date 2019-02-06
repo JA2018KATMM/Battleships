@@ -25,6 +25,5 @@ class ServerAdministrator {
                 e.printStackTrace();
             }
         }
-
     }
 }

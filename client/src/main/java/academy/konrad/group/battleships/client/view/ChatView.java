@@ -1,4 +1,6 @@
-package academy.konrad.group.battleships.view;
+package academy.konrad.group.battleships.client.view;
+
+import academy.konrad.group.battleships.client.communication.Message;
 
 /**
  * Displays user interface and messages

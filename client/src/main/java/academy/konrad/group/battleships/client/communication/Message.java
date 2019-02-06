@@ -1,9 +1,9 @@
-package academy.konrad.group.battleships.client.serverconnection;
+package academy.konrad.group.battleships.client.communication;
 
 public class Message {
-    private String content;
+    private final String content;
 
-    Message(String content) {
+    public Message(String content) {
 
         this.content = content;
     }

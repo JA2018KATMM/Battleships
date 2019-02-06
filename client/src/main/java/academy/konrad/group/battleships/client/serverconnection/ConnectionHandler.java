@@ -7,17 +7,10 @@ import java.net.Socket;
 
 class ConnectionHandler {
 
-    private final String hostName;
-    private final int portNumber;
-    private Socket clientSocket;
+    private final Socket clientSocket;
 
-    private ConnectionHandler(String hostName, int portNumber){
-        this.hostName = hostName;
-        this.portNumber = portNumber;
-    }
-
-    Socket connectToServerSocket() throws IOException {
-        return new Socket(hostName, portNumber);
+    private ConnectionHandler(Socket clientSocket){
+        this.clientSocket = clientSocket;
     }
 
     InputStream openInputStream() throws IOException {
@@ -28,9 +21,7 @@ class ConnectionHandler {
         return clientSocket.getOutputStream();
     }
 
-
-
-    static ConnectionHandler create(String hostName, int portNumber){
-        return new ConnectionHandler(hostName, portNumber);
+    static ConnectionHandler create(String hostName, int portNumber) throws IOException {
+        return new ConnectionHandler(new Socket(hostName, portNumber));
     }
 }

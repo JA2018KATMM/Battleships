@@ -1,4 +1,4 @@
-package academy.konrad.group.battleships.communication;
+package academy.konrad.group.battleships.client.communication;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;

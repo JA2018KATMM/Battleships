@@ -1,9 +1,9 @@
-package academy.konrad.group.battleships.communication;
+package academy.konrad.group.battleships.client.communication;
 
 /**
  * Reads input from user
  */
-public interface UsersInputReader {
+public interface UsersInputReader{
 
     String readLine();
 
